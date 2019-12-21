@@ -86,6 +86,7 @@ public class ProPictureBox : PictureBox
         MouseUp += OnMouseUp;
         MouseWheel += OnMouseWheel;
         Resize += OnResize;
+        this.SizeMode = PictureBoxSizeMode.Zoom;
     }
 
     private ProTransformation FixTranslation(ProTransformation value)
@@ -147,8 +148,11 @@ public class ProPictureBox : PictureBox
 
     protected override void OnPaint(PaintEventArgs e)
     {
-        var imRect = Transformation.ConvertToIm(ClientRectangle);
-        e.Graphics.DrawImage(Image, ClientRectangle, imRect, GraphicsUnit.Pixel);
+        if (Image != null)
+        {
+            var imRect = Transformation.ConvertToIm(ClientRectangle);
+            e.Graphics.DrawImage(Image, ClientRectangle, imRect, GraphicsUnit.Pixel);
+        }
     }
 
     public void DecideInitialTransformation()

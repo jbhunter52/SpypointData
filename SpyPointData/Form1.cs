@@ -14,8 +14,10 @@ namespace SpyPointData
 {
     public partial class Form1 : Form
     {
-        public SPConnection SP;
-        private ProPictureBox PPP;
+        //private ProPictureBox PPP;
+        private DataCollection Data;
+        private List<LoginInfo> UserLogins;
+        private string file = @"C:\Users\Jared\AppData\Local\SpyPoint\Data.json";
 
         public Form1()
         {
@@ -26,46 +28,69 @@ namespace SpyPointData
 
             treeView1.SelectedNode = null;
 
-            SP = new SPConnection();
-            if (File.Exists(SP.DataFile))
+            UserLogins = new List<LoginInfo>();
+            UserLogins.Add(new LoginInfo("e.beatty27@icloud.com", "sxpvyt"));
+            UserLogins.Add(new LoginInfo("jbhunter52@yahoo.com", "fjkn3u"));
+
+            Data = new DataCollection();
+
+            if (File.Exists(file))
             {
-                SP.Load();
-                treeView1.Nodes.Add(SP.GetNodes(deerToolStripMenuItem.Checked, bucksToolStripMenuItem.Checked));
-                
+                Data.Load(file);
+                SetNodes();
+              
             }
 
-            
+            //PPP = new ProPictureBox();
+            //splitContainer2.Panel2.Controls.Add(PPP);
+            //PPP.Dock = DockStyle.Fill;
 
-            PPP = new ProPictureBox();
-            splitContainer2.Panel2.Controls.Add(PPP);
-            PPP.Dock = DockStyle.Fill;
-
-            Bitmap bmp = new Bitmap(PPP.Width, PPP.Height);
-            using (Graphics graph = Graphics.FromImage(bmp))
-            {
-                Rectangle ImageSize = new Rectangle(0,0,bmp.Width, bmp.Height);
-                graph.FillRectangle(Brushes.White, ImageSize);
-            }
-            PPP.Image = bmp;
+            //Bitmap bmp = new Bitmap(imageBox1.Width, imageBox1.Height);
+            //using (Graphics graph = Graphics.FromImage(bmp))
+            //{
+            //    Rectangle ImageSize = new Rectangle(0,0,bmp.Width, bmp.Height);
+            //    graph.FillRectangle(Brushes.White, ImageSize);
+            //}
+            //imageBox1.Image = bmp;
 
             treeView1.SelectedNode = null;
             treeView1.AfterSelect += treeView1_AfterSelect;
         }
 
+        private void SetNodes()
+        {
+            treeView1.Nodes.Clear();
+            TreeNode main = new TreeNode("SpyPointData");
+            TreeNode[] nodes = Data.GetNodes(deerToolStripMenuItem.Checked, bucksToolStripMenuItem.Checked);
+            main.Nodes.AddRange(nodes);
+            int cnt = 0;
+            foreach (TreeNode user in main.Nodes)
+            {
+                foreach (TreeNode cam in user.Nodes)
+                {
+                    cnt += cam.Nodes.Count;
+                }
+                
+            }
+            main.Text = "SpyPointData, " + cnt.ToString();
+            main.Name = "SpyPointData";
+            treeView1.Nodes.Add(main);
+        }
 
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SP.CameraInfoList.Clear();
-            SP.CameraPictures.Clear();
-            SP.Login();
-            SP.GetCameraInfo();
-            SP.GetAllPicInfo();
-            SP.DownloadPhotosFromAllCameras();
+            Data = new DataCollection();
 
-            treeView1.Nodes.Clear();
-            treeView1.Nodes.Add(SP.GetNodes(deerToolStripMenuItem.Checked, bucksToolStripMenuItem.Checked));
+            foreach (var login in UserLogins)
+            {
+                SPConnection SP = Data.Add(login);
+                SP.Login();
+                SP.GetCameraInfo();
+                SP.GetAllPicInfo();
+                SP.DownloadPhotosFromAllCameras();
+            }
 
-            SP.Save();
+            SetNodes();           
 
         }
 
@@ -74,13 +99,14 @@ namespace SpyPointData
             Photo p;
             string tag = (string)e.Node.Tag;
 
-            p = SP.FindPhoto(tag);
+            p = Data.FindPhoto(tag);
 
             if (p != null)
             {
                 chartHistogram.Series.Clear();
-                System.Drawing.Image image = SP.GetPhotoFromFile(p);
-                PPP.Image = image;
+                System.Drawing.Image image = Data.GetPhotoFromFile(p);
+                imageBox1.Image = image;
+                imageBox1.ZoomToFit();
                 labelCamName.Text = p.CameraName;
                 if (p.Buck != null)
                     checkBoxBuck.Checked = p.Buck;
@@ -105,6 +131,18 @@ namespace SpyPointData
             List<TreeNode> nodes = new List<TreeNode>();
             if (node.Parent == null) //if null a user is selected
             {
+                foreach (TreeNode user in node.Nodes)
+                {
+                    foreach (TreeNode n in user.Nodes)
+                    {
+                        TreeNode[] pics = new TreeNode[n.Nodes.Count];
+                        n.Nodes.CopyTo(pics, 0);
+                        nodes.AddRange(pics);
+                    }
+                }
+            }
+            else if (node.Parent.Name.Equals("SpyPointData")) //if "main" a user is selected
+            {
                 foreach (TreeNode n in node.Nodes)
                 {
                     TreeNode[] pics = new TreeNode[n.Nodes.Count];
@@ -124,26 +162,36 @@ namespace SpyPointData
             HistogramType htype;
             Enum.TryParse<HistogramType>(comboBoxChartType.SelectedValue.ToString(), out htype);
 
-            chartHistogram = SP.Histogram(nodes.ToArray(), 24, chartHistogram, htype);
+            chartHistogram = Data.Histogram(nodes.ToArray(), 24, chartHistogram, htype);
         }
         private void mergeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SPConnection sp = new SPConnection(); 
-            sp.Login();
-            sp.GetCameraInfo();
-            sp.GetAllPicInfo();
+            DataCollection data = new DataCollection();
 
-            SP.Merge(sp);
+            foreach (var login in UserLogins)
+            {
+                SPConnection SP = data.Add(login);
+                SP.Login();
+                SP.GetCameraInfo();
+                SP.GetAllPicInfo();
+                SPConnection oldSP = Data.Connections.Find(c => c.uuid.Equals(SP.uuid));
 
-            treeView1.Nodes.Clear();
-            treeView1.Nodes.Add(SP.GetNodes(deerToolStripMenuItem.Checked, bucksToolStripMenuItem.Checked));
+                if (oldSP != null) //Already exists
+                    oldSP.Merge(SP);
+                else //Doesn't exist yet
+                {
+                    SP.DownloadPhotosFromAllCameras();
+                    Data.Connections.Add(SP);
+                }
+            }
 
-            SP.Save();
+            SetNodes();
+            Data.Save(file);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SP.Save();
+            Data.Save(file);
             this.Close();
         }
 
@@ -152,7 +200,7 @@ namespace SpyPointData
             Photo p;
             string tag = (string)treeView1.SelectedNode.Tag;
             
-            p = SP.FindPhoto(tag);
+            p = Data.FindPhoto(tag);
 
             if (p == null)
             {
@@ -175,7 +223,7 @@ namespace SpyPointData
             {
                 TreeNode n = treeView1.SelectedNode;
                 string tag = (string)treeView1.SelectedNode.Tag;
-                Photo p = SP.FindPhoto(tag);
+                Photo p = Data.FindPhoto(tag);
                 if (p != null)
                 {
                     checkBoxBuck.Checked = !checkBoxBuck.Checked;
@@ -186,7 +234,7 @@ namespace SpyPointData
             {
                 TreeNode n = treeView1.SelectedNode;
                 string tag = (string)treeView1.SelectedNode.Tag;
-                Photo p = SP.FindPhoto(tag);
+                Photo p = Data.FindPhoto(tag);
                 if (p != null)
                 {
                     checkBoxDeer.Checked = !checkBoxDeer.Checked;
@@ -202,7 +250,7 @@ namespace SpyPointData
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SP.Save();
+            Data.Save(file);
         }
 
         private void checkBoxDeer_CheckedChanged(object sender, EventArgs e)
@@ -210,7 +258,7 @@ namespace SpyPointData
             Photo p;
             string tag = (string)treeView1.SelectedNode.Tag;
 
-            p = SP.FindPhoto(tag);
+            p = Data.FindPhoto(tag);
             if (p == null)
             {
                 return;
@@ -232,9 +280,7 @@ namespace SpyPointData
         }
         private void Redraw()
         {
-            treeView1.Nodes.Clear();
-            TreeNode node = SP.GetNodes(deerToolStripMenuItem.Checked, bucksToolStripMenuItem.Checked);
-            treeView1.Nodes.Add(node);
+            SetNodes();
             treeView1.SelectedNode = treeView1.Nodes[0];          
         }
 
@@ -242,6 +288,38 @@ namespace SpyPointData
         private void comboBoxChartType_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateHistogram();
+        }
+
+        private void importCardPicsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Jpeg files (*.jpg)|*.jpg";
+            ofd.Title = "Select photos";
+            ofd.Multiselect = true;
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (string file in ofd.FileNames)
+                {
+                    Data.AddCardPic(file);
+                }
+            }
+        }
+
+        private void treeView1_DoubleClick(object sender, EventArgs e)
+        {
+            string tag = (string)treeView1.SelectedNode.Tag;
+
+            Photo p = Data.FindPhoto(tag);
+
+            if (p != null)
+            {
+                string s = JsonConvert.SerializeObject(p, Formatting.Indented);
+
+                InfoWindow iw = new InfoWindow();
+                iw.SetTextData(s);
+                iw.ShowDialog();
+            }
+
         }
     }
 }

@@ -68,11 +68,13 @@ namespace SpyPointData
         public Medium medium { get; set; }
         public Large large { get; set; }
         public Hd hd { get; set; }
-        public bool? hdPending { get; set; }
+        public bool hdPending { get; set; }
         public string FileName { get; set; }
         public bool Buck { get; set; }
         public bool Deer { get; set; }
         public string CameraName { get; set; }
+        public bool HaveCardPic { get; set; }
+        public string CardPicFilename { get; set; }
     }
 
     public class CameraPics
