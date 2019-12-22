@@ -15,15 +15,32 @@ namespace SpyPointData
     public class DataCollection
     {
         public List<SPConnection> Connections;
+        public delegate void ProgressUpdate(string s);
+        public event ProgressUpdate OnProgressUpdate;
         public DataCollection()
         {
             Connections = new List<SPConnection>();
+            
+        }
+        public void RegisterEvents()
+        {
+            foreach (var connection in Connections)
+            {
+                connection.OnProgressUpdate += connection_OnProgressUpdate;
+            }
         }
         public SPConnection Add(LoginInfo login)
         {
             SPConnection connection = new SPConnection(login);
+            connection.OnProgressUpdate += connection_OnProgressUpdate;
             Connections.Add(connection);
             return connection;
+        }
+
+        void connection_OnProgressUpdate(string s)
+        {
+            if (OnProgressUpdate != null)
+                OnProgressUpdate(s);
         }
         public void Load(string file)
         {
@@ -44,12 +61,12 @@ namespace SpyPointData
                 sw.Write(json);
             }
         }
-        public TreeNode[] GetNodes(bool deerFilter, bool buckFilter)
+        public TreeNode[] GetNodes(FilterCriteria fc)
         {
             List<TreeNode> nodes = new List<TreeNode>();
             foreach (SPConnection connection in Connections)
             {
-                nodes.Add(connection.GetNodes(deerFilter, buckFilter));
+                nodes.Add(connection.GetNodes(fc));
             }
             return nodes.ToArray();
         }

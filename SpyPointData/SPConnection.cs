@@ -23,6 +23,8 @@ namespace SpyPointData
         public Dictionary<string, CameraPics> CameraPictures { get; set; }
         public string Dir { get; set; }
         public string DataFile { get; set; }
+        public delegate void ProgressUpdate(string s);
+        public event ProgressUpdate OnProgressUpdate;
 
         public SPConnection(LoginInfo login)
         {
@@ -44,7 +46,7 @@ namespace SpyPointData
                 GetPicInfoFromCamera(ci);
             }
         }
-        public TreeNode GetNodes(bool deerFilter, bool buckFilter)
+        public TreeNode GetNodes(FilterCriteria fc)
         {
             TreeNode user = new TreeNode();
             user.Text = this.uuid;
@@ -73,16 +75,31 @@ namespace SpyPointData
                     //Apply filters
                     bool keep = true;
 
-                    if (deerFilter)
+                    if (fc.Deer)
                     {
                         if (p.Deer == false)
                             keep = false;
                     }
-                    if (buckFilter)
+                    if (fc.Buck)
                     {
                         if (p.Buck == false)
                             keep = false;
+                        else //Photo is buck, filter by age as well
+                        {
+                            if (p.BuckAge == 0 && !fc.Age0)
+                                keep = false;
+                            if (p.BuckAge == 1 && !fc.Age1)
+                                keep = false;
+                            if (p.BuckAge == 2 && !fc.Age2)
+                                keep = false;
+                            if (p.BuckAge == 3 && !fc.Age3)
+                                keep = false;
+                            if (p.BuckAge == 4 && !fc.Age4)
+                                keep = false;
+
+                        }
                     }
+
 
                     if (keep)
                         camNode.Nodes.Add(n);
@@ -141,7 +158,8 @@ namespace SpyPointData
                 client.Headers.Add("Authorization", "bearer " + token);
                 response = client.DownloadString(CameraAllURL);
             }
-            System.Diagnostics.Debug.WriteLine(response);
+            Debug(response, false);
+
             List<CameraInfo> list = JsonConvert.DeserializeObject<List<CameraInfo>>(response);
             foreach (CameraInfo ci in list)
             {
@@ -154,7 +172,7 @@ namespace SpyPointData
         public void GetPicInfoFromCamera(CameraInfo ci)
         {
             CameraPics allPics = new CameraPics(ci.id);
-            System.Diagnostics.Debug.WriteLine("Getting, " + ci.config.name);
+            Debug("Getting, " + ci.config.name);
             string response = "";
             string url = "https://restapi.spypoint.com/api/v3/photo/" + ci.id;
             bool more = true;
@@ -167,12 +185,12 @@ namespace SpyPointData
                     client.Method = "POST";
                     client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id);
                     client.Headers.Add("Authorization", "bearer " + token);
-                    System.Diagnostics.Debug.WriteLine(date);
+                    Debug(date);
                     response = client.UploadString(url, postdata);
                 }
-                //System.Diagnostics.Debug.WriteLine(response);
+                //Debug(response);
                 CameraPics pics = JsonConvert.DeserializeObject<CameraPics>(response);
-                System.Diagnostics.Debug.WriteLine(pics.countPhotos.ToString() + ", pictures");
+                Debug(pics.countPhotos.ToString() + ", pictures");
 
                 if (pics.countPhotos == 0)
                     more = false;
@@ -262,7 +280,7 @@ namespace SpyPointData
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Error getting image\n" + ex.Message);
+                Debug("Error getting image\n" + ex.Message);
             }
         }
 
@@ -281,7 +299,7 @@ namespace SpyPointData
         }
         public void Merge(SPConnection sp)
         {
-            System.Diagnostics.Debug.WriteLine("Merging");
+                Debug("Merging");
             int cntHd = 0;
             int cntNew = 0;
 
@@ -290,7 +308,7 @@ namespace SpyPointData
                 
                 //Directory for any new cameras should already exist
                 CameraInfo ci = kvp.Value;
-                System.Diagnostics.Debug.WriteLine("Merging, " + ci.config.name);
+                Debug("Merging, " + ci.config.name);
                 if (this.CameraInfoList.ContainsKey(kvp.Key))
                 {
                     //Camera already exists
@@ -298,8 +316,8 @@ namespace SpyPointData
                     CameraPics cp = sp.CameraPictures[kvp.Key];
                     CameraPics cpOld = this.CameraPictures[kvp.Key];
 
-                    System.Diagnostics.Debug.WriteLine("Old count, " + cpOld.photos.Count.ToString());
-                    System.Diagnostics.Debug.WriteLine("New count, " + cp.photos.Count.ToString());
+                    Debug("Old count, " + cpOld.photos.Count.ToString());
+                    Debug("New count, " + cp.photos.Count.ToString());
 
                     foreach (Photo p in cp.photos) //cycle through new pictures
                     {
@@ -312,14 +330,13 @@ namespace SpyPointData
                                 //New photo contains hd
                                 if (old.hd.path.Length < 1)
                                 {
-                                    System.Diagnostics.Debug.WriteLine("Updating to hd, " + p.originDate.ToString());
+                                    Debug("Updating to hd, " + p.originDate.ToString());
                                     //Old photo no hd
-                                    bool buck = old.Buck;
-                                    bool deer = old.Deer;
-                                    old = p; //update old database picture
-                                    old.Buck = buck;
-                                    old.Deer = deer;
-                                    GetPhotoAndSave(old, ci);
+                                    p.Buck = old.Buck;
+                                    p.Deer = old.Deer;
+                                    GetPhotoAndSave(p, ci);
+                                    int ind = cpOld.photos.IndexOf(old);
+                                    cpOld.photos[ind] = p; //update old database picture
                                     cntHd++;
                                 }
                             }
@@ -327,7 +344,7 @@ namespace SpyPointData
                         else
                         {
                             //Photo does not exist, download it and add it
-                            System.Diagnostics.Debug.WriteLine("Adding, " + p.originDate.ToString());
+                            Debug("Adding, " + p.originDate.ToString());
                             GetPhotoAndSave(p, ci);
                             cpOld.photos.Add(p);
                             cpOld.countPhotos = cpOld.photos.Count;
@@ -339,7 +356,7 @@ namespace SpyPointData
                 else
                 {
                     //New camera detected
-                    System.Diagnostics.Debug.WriteLine("New camera detected, getting all photos");
+                    Debug("New camera detected, getting all photos");
                     this.CameraInfoList.Add(ci.id, ci); //Add cameraInfo
                     CameraPics cp = sp.CameraPictures[ci.id];
                     this.CameraPictures.Add(cp.cameraId, cp); //Add camera picture info
@@ -348,7 +365,7 @@ namespace SpyPointData
                 }
             }
 
-            System.Diagnostics.Debug.WriteLine("Sorting");
+            Debug("Sorting");
             foreach (var kvp in this.CameraPictures)
             {
                 CameraPics cp = kvp.Value;
@@ -357,11 +374,20 @@ namespace SpyPointData
             }
 
 
-            System.Diagnostics.Debug.WriteLine("HD added, " + cntHd.ToString());
-            System.Diagnostics.Debug.WriteLine("New added, " + cntNew.ToString());
-            System.Diagnostics.Debug.WriteLine("Merge Done");
+            Debug("HD added, " + cntHd.ToString());
+            Debug("New added, " + cntNew.ToString());
+            Debug("Merge Done");
         }
+        private void Debug(string s, bool report = true)
+        {
+            System.Diagnostics.Debug.WriteLine(s);
 
+            if (report)
+            {
+                if (OnProgressUpdate != null)
+                    OnProgressUpdate(s);
+            }
+        }
 
     }
 

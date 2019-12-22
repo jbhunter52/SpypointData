@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,6 +40,12 @@
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bucksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buckAgeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAge0p5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAge1p5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAge2p5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAge3p5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAge4p5 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -49,6 +55,8 @@
             this.labelCamName = new System.Windows.Forms.Label();
             this.checkBoxBuck = new System.Windows.Forms.CheckBox();
             this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxBuckAge = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -115,7 +123,8 @@
             // 
             this.filterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deerToolStripMenuItem,
-            this.bucksToolStripMenuItem});
+            this.bucksToolStripMenuItem,
+            this.buckAgeToolStripMenuItem});
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             this.filterToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.filterToolStripMenuItem.Text = "Filter";
@@ -124,7 +133,7 @@
             // 
             this.deerToolStripMenuItem.CheckOnClick = true;
             this.deerToolStripMenuItem.Name = "deerToolStripMenuItem";
-            this.deerToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.deerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deerToolStripMenuItem.Text = "Deer";
             this.deerToolStripMenuItem.Click += new System.EventHandler(this.deerToolStripMenuItem_Click);
             // 
@@ -132,9 +141,71 @@
             // 
             this.bucksToolStripMenuItem.CheckOnClick = true;
             this.bucksToolStripMenuItem.Name = "bucksToolStripMenuItem";
-            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bucksToolStripMenuItem.Text = "Bucks";
             this.bucksToolStripMenuItem.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
+            // 
+            // buckAgeToolStripMenuItem
+            // 
+            this.buckAgeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemAge0p5,
+            this.toolStripMenuItemAge1p5,
+            this.toolStripMenuItemAge2p5,
+            this.toolStripMenuItemAge3p5,
+            this.toolStripMenuItemAge4p5});
+            this.buckAgeToolStripMenuItem.Name = "buckAgeToolStripMenuItem";
+            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.buckAgeToolStripMenuItem.Text = "Buck Age";
+            // 
+            // toolStripMenuItemAge0p5
+            // 
+            this.toolStripMenuItemAge0p5.Checked = true;
+            this.toolStripMenuItemAge0p5.CheckOnClick = true;
+            this.toolStripMenuItemAge0p5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemAge0p5.Name = "toolStripMenuItemAge0p5";
+            this.toolStripMenuItemAge0p5.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAge0p5.Text = "0.5";
+            this.toolStripMenuItemAge0p5.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemAge1p5
+            // 
+            this.toolStripMenuItemAge1p5.Checked = true;
+            this.toolStripMenuItemAge1p5.CheckOnClick = true;
+            this.toolStripMenuItemAge1p5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemAge1p5.Name = "toolStripMenuItemAge1p5";
+            this.toolStripMenuItemAge1p5.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAge1p5.Text = "1.5";
+            this.toolStripMenuItemAge1p5.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemAge2p5
+            // 
+            this.toolStripMenuItemAge2p5.Checked = true;
+            this.toolStripMenuItemAge2p5.CheckOnClick = true;
+            this.toolStripMenuItemAge2p5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemAge2p5.Name = "toolStripMenuItemAge2p5";
+            this.toolStripMenuItemAge2p5.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAge2p5.Text = "2.5";
+            this.toolStripMenuItemAge2p5.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemAge3p5
+            // 
+            this.toolStripMenuItemAge3p5.Checked = true;
+            this.toolStripMenuItemAge3p5.CheckOnClick = true;
+            this.toolStripMenuItemAge3p5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemAge3p5.Name = "toolStripMenuItemAge3p5";
+            this.toolStripMenuItemAge3p5.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAge3p5.Text = "3.5";
+            this.toolStripMenuItemAge3p5.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemAge4p5
+            // 
+            this.toolStripMenuItemAge4p5.Checked = true;
+            this.toolStripMenuItemAge4p5.CheckOnClick = true;
+            this.toolStripMenuItemAge4p5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemAge4p5.Name = "toolStripMenuItemAge4p5";
+            this.toolStripMenuItemAge4p5.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAge4p5.Text = "4.5";
+            this.toolStripMenuItemAge4p5.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -171,6 +242,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.textBoxBuckAge);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.comboBoxChartType);
             this.splitContainer2.Panel1.Controls.Add(this.chartHistogram);
             this.splitContainer2.Panel1.Controls.Add(this.checkBoxDeer);
@@ -195,16 +268,16 @@
             // 
             // chartHistogram
             // 
-            chartArea6.Name = "ChartArea1";
-            this.chartHistogram.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            this.chartHistogram.Legends.Add(legend6);
+            chartArea1.Name = "ChartArea1";
+            this.chartHistogram.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartHistogram.Legends.Add(legend1);
             this.chartHistogram.Location = new System.Drawing.Point(171, 9);
             this.chartHistogram.Name = "chartHistogram";
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.chartHistogram.Series.Add(series6);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartHistogram.Series.Add(series1);
             this.chartHistogram.Size = new System.Drawing.Size(807, 160);
             this.chartHistogram.TabIndex = 3;
             // 
@@ -245,6 +318,22 @@
             this.imageBox1.Name = "imageBox1";
             this.imageBox1.Size = new System.Drawing.Size(1097, 409);
             this.imageBox1.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(54, 129);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(54, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Buck Age";
+            // 
+            // textBoxBuckAge
+            // 
+            this.textBoxBuckAge.Location = new System.Drawing.Point(34, 145);
+            this.textBoxBuckAge.Name = "textBoxBuckAge";
+            this.textBoxBuckAge.Size = new System.Drawing.Size(100, 20);
+            this.textBoxBuckAge.TabIndex = 7;
             // 
             // Form1
             // 
@@ -296,6 +385,14 @@
         private System.Windows.Forms.ComboBox comboBoxChartType;
         private System.Windows.Forms.ToolStripMenuItem importCardPicsToolStripMenuItem;
         private Cyotek.Windows.Forms.ImageBox imageBox1;
+        private System.Windows.Forms.ToolStripMenuItem buckAgeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAge0p5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAge1p5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAge2p5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAge3p5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAge4p5;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxBuckAge;
 
     }
 }

@@ -72,6 +72,7 @@ namespace SpyPointData
         public string FileName { get; set; }
         public bool Buck { get; set; }
         public bool Deer { get; set; }
+        public int BuckAge { get; set; }
         public string CameraName { get; set; }
         public bool HaveCardPic { get; set; }
         public string CardPicFilename { get; set; }

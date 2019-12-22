@@ -61,7 +61,7 @@ namespace SpyPointData
         {
             treeView1.Nodes.Clear();
             TreeNode main = new TreeNode("SpyPointData");
-            TreeNode[] nodes = Data.GetNodes(deerToolStripMenuItem.Checked, bucksToolStripMenuItem.Checked);
+            TreeNode[] nodes = Data.GetNodes(GetFilterCriteria());
             main.Nodes.AddRange(nodes);
             int cnt = 0;
             foreach (TreeNode user in main.Nodes)
@@ -76,7 +76,18 @@ namespace SpyPointData
             main.Name = "SpyPointData";
             treeView1.Nodes.Add(main);
         }
-
+        private FilterCriteria GetFilterCriteria()
+        {
+            FilterCriteria fc = new FilterCriteria();
+            fc.Deer = deerToolStripMenuItem.Checked;
+            fc.Buck = bucksToolStripMenuItem.Checked;
+            fc.Age0 = toolStripMenuItemAge0p5.Checked;
+            fc.Age1 = toolStripMenuItemAge1p5.Checked;
+            fc.Age2 = toolStripMenuItemAge2p5.Checked;
+            fc.Age3 = toolStripMenuItemAge3p5.Checked;
+            fc.Age4 = toolStripMenuItemAge4p5.Checked;
+            return fc;
+        }
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Data = new DataCollection();
@@ -116,6 +127,14 @@ namespace SpyPointData
                     checkBoxDeer.Checked = p.Deer;
                 else
                     checkBoxDeer.Checked = false;
+
+                if (p.BuckAge == null)
+                    textBoxBuckAge.Text = "";
+                else
+                {
+                    textBoxBuckAge.Text = (p.BuckAge + 0.5).ToString();
+                }
+
             }
             else
             {
@@ -164,9 +183,47 @@ namespace SpyPointData
 
             chartHistogram = Data.Histogram(nodes.ToArray(), 24, chartHistogram, htype);
         }
+        private BackgroundWorker bgMerge;
+        private ProgressWindow pw;
         private void mergeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bgMerge = new BackgroundWorker();
+            bgMerge.WorkerReportsProgress = true;
+            bgMerge.DoWork += bgMerge_DoWork;
+            bgMerge.ProgressChanged += bgMerge_ProgressChanged;
+            pw = new ProgressWindow();
+            pw.Show();
+            pw.Start();
+            pw.AddText("Merge started");
+            bgMerge.RunWorkerCompleted += bgMerge_RunWorkerCompleted;
+            
+            bgMerge.RunWorkerAsync();
+        }
+
+        void Data_OnProgressUpdate(string s)
+        {
+            bgMerge.ReportProgress(0, s);
+        }
+
+        void bgMerge_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Data.OnProgressUpdate -= Data_OnProgressUpdate;
+            //pw.Close();
+            SetNodes();
+            Data.Save(file);
+        }
+
+        void bgMerge_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            pw.AddText(Convert.ToString(e.UserState));
+        }
+
+        void bgMerge_DoWork(object sender, DoWorkEventArgs e)
+        {
             DataCollection data = new DataCollection();
+            data.OnProgressUpdate += Data_OnProgressUpdate;
+            Data.OnProgressUpdate += Data_OnProgressUpdate;
+            Data.RegisterEvents();
 
             foreach (var login in UserLogins)
             {
@@ -184,9 +241,6 @@ namespace SpyPointData
                     Data.Connections.Add(SP);
                 }
             }
-
-            SetNodes();
-            Data.Save(file);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -238,6 +292,23 @@ namespace SpyPointData
                 if (p != null)
                 {
                     checkBoxDeer.Checked = !checkBoxDeer.Checked;
+                }
+                e.Handled = true;
+            }
+            int age;
+            if (int.TryParse(e.KeyChar.ToString(), out age))
+            {
+                if (age <= 4)
+                {
+                    TreeNode n = treeView1.SelectedNode;
+                    string tag = (string)treeView1.SelectedNode.Tag;
+                    Photo p = Data.FindPhoto(tag);
+                    if (p != null)
+                    {
+                        p.BuckAge = age;
+                        textBoxBuckAge.Text = (age+0.5).ToString();
+                    }
+                    
                 }
                 e.Handled = true;
             }
