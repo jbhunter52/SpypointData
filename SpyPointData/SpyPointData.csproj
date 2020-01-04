@@ -40,6 +40,14 @@
       <HintPath>..\packages\ExifLib.1.7.0.0\lib\net45\ExifLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="GMap.NET.Core, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
+      <HintPath>..\packages\GMap.NET.WindowsForms.1.7.5\lib\net40\GMap.NET.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GMap.NET.WindowsForms, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
+      <HintPath>..\packages\GMap.NET.WindowsForms.1.7.5\lib\net40\GMap.NET.WindowsForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.17.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.17\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
@@ -62,8 +70,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuckData.cs" />
+    <Compile Include="BuckID.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BuckID.Designer.cs">
+      <DependentUpon>BuckID.cs</DependentUpon>
+    </Compile>
     <Compile Include="CameraInfo.cs" />
     <Compile Include="CameraPics.cs" />
+    <Compile Include="AddBuckForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddBuckForm.Designer.cs">
+      <DependentUpon>AddBuckForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeCamNameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeCamNameForm.Designer.cs">
+      <DependentUpon>ChangeCamNameForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CookieAwareWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -98,7 +125,22 @@
     <Compile Include="ProPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SetCoordinatesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetCoordinatesForm.Designer.cs">
+      <DependentUpon>SetCoordinatesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SPConnection.cs" />
+    <EmbeddedResource Include="BuckID.resx">
+      <DependentUpon>BuckID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddBuckForm.resx">
+      <DependentUpon>AddBuckForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeCamNameForm.resx">
+      <DependentUpon>ChangeCamNameForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -114,6 +156,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetCoordinatesForm.resx">
+      <DependentUpon>SetCoordinatesForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

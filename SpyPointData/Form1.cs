@@ -18,7 +18,7 @@ namespace SpyPointData
         private DataCollection Data;
         private List<LoginInfo> UserLogins;
         private string file = @"C:\Users\Jared\AppData\Local\SpyPoint\Data.json";
-
+        private BuckData BuckData;
         public Form1()
         {
             InitializeComponent();
@@ -32,13 +32,19 @@ namespace SpyPointData
             UserLogins.Add(new LoginInfo("e.beatty27@icloud.com", "sxpvyt"));
             UserLogins.Add(new LoginInfo("jbhunter52@yahoo.com", "fjkn3u"));
 
+            BuckData = new SpyPointData.BuckData();
+            BuckData.Load();
+            foreach (BuckID id in BuckData.IDs)
+            {
+                comboBoxBuckIDs.Items.Add(id.Name);
+            }
+
             Data = new DataCollection();
 
             if (File.Exists(file))
             {
                 Data.Load(file);
-                SetNodes();
-              
+                Redraw();
             }
 
             //PPP = new ProPictureBox();
@@ -61,7 +67,15 @@ namespace SpyPointData
         {
             treeView1.Nodes.Clear();
             TreeNode main = new TreeNode("SpyPointData");
-            TreeNode[] nodes = Data.GetNodes(GetFilterCriteria());
+
+            OrganizeMethod method = OrganizeMethod.Camera;
+            if (cameraIdToolStripMenuItem.Checked)
+                method = OrganizeMethod.Camera;
+            else if (locationToolStripMenuItem.Checked)
+                method = OrganizeMethod.Location;
+
+
+            TreeNode[] nodes = Data.GetNodes(GetFilterCriteria(), method);
             main.Nodes.AddRange(nodes);
             int cnt = 0;
             foreach (TreeNode user in main.Nodes)
@@ -208,6 +222,7 @@ namespace SpyPointData
         void bgMerge_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Data.OnProgressUpdate -= Data_OnProgressUpdate;
+            
             //pw.Close();
             SetNodes();
             Data.Save(file);
@@ -312,8 +327,17 @@ namespace SpyPointData
                 }
                 e.Handled = true;
             }
-        }
 
+        }
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.N)
+            {
+                e.Handled = true;
+                changeCameraNameToolStripMenuItem.PerformClick();
+                
+            }
+        }
         private void bucksToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Redraw();
@@ -352,7 +376,14 @@ namespace SpyPointData
         private void Redraw()
         {
             SetNodes();
-            treeView1.SelectedNode = treeView1.Nodes[0];          
+            foreach (TreeNode user in treeView1.Nodes[0].Nodes)
+            {
+                user.Expand();
+                
+            }
+            treeView1.SelectedNode = treeView1.Nodes[0];
+            treeView1.Nodes[0].Expand();
+            
         }
 
 
@@ -392,5 +423,99 @@ namespace SpyPointData
             }
 
         }
+
+        private void cameraIdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            locationToolStripMenuItem.Checked = !locationToolStripMenuItem.Checked;
+            Redraw();
+        }
+
+        private void locationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cameraIdToolStripMenuItem.Checked = !cameraIdToolStripMenuItem.Checked;
+            Redraw();
+        }
+
+        private void changeCameraNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Photo p;
+
+            string tag = (string)treeView1.SelectedNode.Tag;
+
+            p = Data.FindPhoto(tag);
+
+            if (p == null)
+                return;
+
+            using (var changeNameForm = new ChangeCamNameForm())
+            {
+                changeNameForm.SetName(p.CameraName);
+                var result = changeNameForm.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    p.CameraName = changeNameForm.CamName;
+                }
+            }
+            
+            
+
+        }
+
+        private void setLocationCoordinatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraIdToolStripMenuItem.Checked)
+                return;
+            TreeNode node = treeView1.SelectedNode;
+            if (!node.Parent.Text.Contains("@"))
+                return;
+
+            SetCoordinatesForm form = new SetCoordinatesForm();
+                
+            if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                double lat = form.Latitude;
+                double lng = form.Longitude;
+
+                foreach (TreeNode picNode in node.Nodes)
+                {
+                    Photo p;
+                    p = Data.FindPhoto((string)picNode.Tag);
+
+                    if (p != null)
+                    {
+                        p.HaveLocation = true;
+                        p.Latitude = lat;
+                        p.Longitude = lng;
+                    }
+                }
+            }
+        }
+
+        private void buckIDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BuckIDForm buckIDform = new BuckIDForm();
+            BuckData.Save();
+
+            if (buckIDform.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                BuckData bd = buckIDform.BuckData;
+                comboBoxBuckIDs.Items.Clear();
+                foreach (BuckID id in bd.IDs)
+                {
+                    comboBoxBuckIDs.Items.Add(id.Name);
+                }
+            }
+        }
+
+        private void comboBoxBuckIDs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string idName = (string)comboBoxBuckIDs.SelectedItem;
+
+            Photo p;
+
+            
+        }
+
+
     }
 }

@@ -46,68 +46,100 @@ namespace SpyPointData
                 GetPicInfoFromCamera(ci);
             }
         }
-        public TreeNode GetNodes(FilterCriteria fc)
+
+        public string GetNodeName(Photo p)
+        {
+            return p.originDate.ToShortDateString() + ", " + p.originDate.ToString("hh:mm:ss tt");
+        }
+        private class PhotoOrg
+        {
+            public Photo P;
+            public string CamId;
+            public PhotoOrg(Photo p, string camid)
+            {
+                P = p;
+                CamId = camid;
+            }
+        }
+        public TreeNode GetNodes(FilterCriteria fc, OrganizeMethod method)
         {
             TreeNode user = new TreeNode();
-            user.Text = this.uuid;
-            foreach (var kvp in CameraPictures)
+            user.Text = this.UserLogin.Username;
+
+            if (method == OrganizeMethod.Camera)
             {
-                CameraPics cp = kvp.Value;
-                string name = CameraInfoList[kvp.Key].config.name;
-                TreeNode camNode = new TreeNode(name);
-                camNode.Tag = cp.cameraId;
-
-                foreach (Photo p in cp.photos)
+                foreach (var kvp in CameraPictures)
                 {
-                    TreeNode n = new TreeNode(p.originDate.ToShortDateString() + ", " + p.originDate.ToShortTimeString());
-                    n.Tag = p.id;
-
-                    if (p.Deer == null)
-                        p.Deer = false;
-                    if (p.Buck == null)
-                        p.Buck = false;
-
-                    if (p.Buck)
-                        n.ForeColor = System.Drawing.Color.DarkGreen;
-                    if (p.Deer)
-                        n.BackColor = System.Drawing.Color.LightGray;
-
-                    //Apply filters
-                    bool keep = true;
-
-                    if (fc.Deer)
+                    CameraPics cp = kvp.Value;
+                    string name = CameraInfoList[kvp.Key].config.name;
+                    TreeNode camNode = new TreeNode(name);
+                    camNode.Tag = cp.cameraId;
+                    foreach (Photo p in cp.photos)
                     {
-                        if (p.Deer == false)
-                            keep = false;
+                        TreeNode n = new TreeNode(GetNodeName(p));
+                        n.Tag = p.id;
+                        //if (p.Deer == null)
+                        //    p.Deer = false;
+                        //if (p.Buck == null)
+                        //    p.Buck = false;
+                        if (p.Buck)
+                            n.ForeColor = System.Drawing.Color.DarkGreen;
+                        if (p.Deer)
+                            n.BackColor = System.Drawing.Color.LightGray;
+                        //Apply filters
+                        if (p.CheckFilter(fc))
+                            camNode.Nodes.Add(n);
                     }
-                    if (fc.Buck)
-                    {
-                        if (p.Buck == false)
-                            keep = false;
-                        else //Photo is buck, filter by age as well
-                        {
-                            if (p.BuckAge == 0 && !fc.Age0)
-                                keep = false;
-                            if (p.BuckAge == 1 && !fc.Age1)
-                                keep = false;
-                            if (p.BuckAge == 2 && !fc.Age2)
-                                keep = false;
-                            if (p.BuckAge == 3 && !fc.Age3)
-                                keep = false;
-                            if (p.BuckAge == 4 && !fc.Age4)
-                                keep = false;
-
-                        }
-                    }
-
-
-                    if (keep)
-                        camNode.Nodes.Add(n);
+                    
+                    user.Nodes.Add(camNode);
+                    camNode.Text += ", " + camNode.Nodes.Count.ToString() + " pics";
                 }
-                user.Nodes.Add(camNode);
-                camNode.Text += ", " + camNode.Nodes.Count.ToString() + " pics";
             }
+            if (method == OrganizeMethod.Location)
+            {
+                List<PhotoOrg> org = new List<PhotoOrg>();
+                List<string> locations = new List<string>();
+                foreach (var kvp in CameraPictures)
+                {
+                    CameraPics cp = kvp.Value;
+                    
+                    foreach (Photo p in cp.photos)
+                    {
+                        org.Add(new PhotoOrg(p, cp.cameraId));
+                        locations.Add(p.CameraName);
+                    }
+                }
 
+                org = org.OrderBy(o => o.P.originDate).Reverse().ToList();
+                locations = locations.Distinct().ToList();
+
+                foreach (string loc in locations)
+                {
+                    TreeNode locNode = new TreeNode(loc);
+
+                    List<PhotoOrg> allLoc = org.FindAll(po => po.P.CameraName.Equals(loc)).ToList();
+
+                    foreach (PhotoOrg photoOrg in allLoc)
+                    {
+                        Photo p = photoOrg.P;
+                        TreeNode n = new TreeNode(GetNodeName(p));
+                        n.Tag = p.id;
+
+                        if (p.Buck)
+                            n.ForeColor = System.Drawing.Color.DarkGreen;
+                        if (p.Deer)
+                            n.BackColor = System.Drawing.Color.LightGray;
+                        //Apply filters
+                        if (p.CheckFilter(fc))
+                            locNode.Nodes.Add(n);
+                    }
+                    if (locNode.Nodes.Count > 0)
+                    {
+                        user.Nodes.Add(locNode);
+                        locNode.Text += ", " + locNode.Nodes.Count.ToString() + " pics";
+                    }
+                }
+            }
             //count total pictures
             int cnt = 0;
             foreach (TreeNode child in user.Nodes)

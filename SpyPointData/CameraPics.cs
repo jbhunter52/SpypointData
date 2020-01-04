@@ -76,6 +76,40 @@ namespace SpyPointData
         public string CameraName { get; set; }
         public bool HaveCardPic { get; set; }
         public string CardPicFilename { get; set; }
+        public bool HaveLocation { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
+        public bool CheckFilter(FilterCriteria fc)
+        {
+            Photo p = this;
+            bool keep = true;
+            if (fc.Deer)
+            {
+                if (p.Deer == false)
+                    keep = false;
+            }
+            if (fc.Buck)
+            {
+                if (p.Buck == false)
+                    keep = false;
+                else //Photo is buck, filter by age as well
+                {
+                    if (p.BuckAge == 0 && !fc.Age0)
+                        keep = false;
+                    if (p.BuckAge == 1 && !fc.Age1)
+                        keep = false;
+                    if (p.BuckAge == 2 && !fc.Age2)
+                        keep = false;
+                    if (p.BuckAge == 3 && !fc.Age3)
+                        keep = false;
+                    if (p.BuckAge == 4 && !fc.Age4)
+                        keep = false;
+
+                }
+            }
+            return keep;
+        }
     }
 
     public class CameraPics

@@ -61,12 +61,12 @@ namespace SpyPointData
                 sw.Write(json);
             }
         }
-        public TreeNode[] GetNodes(FilterCriteria fc)
+        public TreeNode[] GetNodes(FilterCriteria fc, OrganizeMethod method)
         {
             List<TreeNode> nodes = new List<TreeNode>();
             foreach (SPConnection connection in Connections)
             {
-                nodes.Add(connection.GetNodes(fc));
+                nodes.Add(connection.GetNodes(fc, method));
             }
             return nodes.ToArray();
         }
@@ -163,7 +163,7 @@ namespace SpyPointData
             }
 
             //Make Bins
-            double[] intervals = MakeIntervals(data.ToArray(), numBins);
+            double[] intervals = MakeIntervals(data.ToArray(), numBins, htype);
             int[] binCount = new int[numBins];
             //Binning
 
@@ -236,16 +236,29 @@ namespace SpyPointData
             return -1; // error
         }
 
-        static double[] MakeIntervals(double[] data, int numBins)
+        static double[] MakeIntervals(double[] data, int numBins, HistogramType hType)
         {
-            double max = data[0]; // find min & max
-            double min = data[0];
-            for (int i = 0; i < data.Length; ++i)
+            double min;
+            double max;
+            double width;
+            if (hType == HistogramType.Date)
             {
-                if (data[i] < min) min = data[i];
-                if (data[i] > max) max = data[i];
+                max = data[0]; // find min & max
+                min = data[0];
+                for (int i = 0; i < data.Length; ++i)
+                {
+                    if (data[i] < min) min = data[i];
+                    if (data[i] > max) max = data[i];
+                }
+                width = (max - min) / numBins; // compute width
             }
-            double width = (max - min) / numBins; // compute width
+            else // HistogramType.Time
+            {
+                min = 0;
+                max = 24;
+
+                width = (max - min) / numBins; // compute width
+            }
 
             double[] intervals = new double[numBins * 2]; // intervals
             intervals[0] = min;
@@ -267,5 +280,10 @@ namespace SpyPointData
     {
         Date,
         Time
+    };
+    public enum OrganizeMethod
+    {
+        Camera,
+        Location
     };
 }
