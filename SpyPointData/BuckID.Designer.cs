@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewBuckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,20 +72,6 @@
             this.treeView1.Size = new System.Drawing.Size(273, 607);
             this.treeView1.TabIndex = 0;
             // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // imageBox1
-            // 
-            this.imageBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBox1.Location = new System.Drawing.Point(0, 0);
-            this.imageBox1.Name = "imageBox1";
-            this.imageBox1.Size = new System.Drawing.Size(971, 489);
-            this.imageBox1.TabIndex = 1;
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -97,8 +83,22 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.imageBox1);
             this.splitContainer2.Size = new System.Drawing.Size(971, 607);
-            this.splitContainer2.SplitterDistance = 114;
+            this.splitContainer2.SplitterDistance = 113;
             this.splitContainer2.TabIndex = 2;
+            // 
+            // imageBox1
+            // 
+            this.imageBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageBox1.Location = new System.Drawing.Point(0, 0);
+            this.imageBox1.Name = "imageBox1";
+            this.imageBox1.Size = new System.Drawing.Size(971, 490);
+            this.imageBox1.TabIndex = 1;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // menuStrip1
             // 
@@ -136,7 +136,6 @@
             this.Name = "BuckIDForm";
             this.Text = "BuckID";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuckIDForm_FormClosing);
-            this.Load += new System.EventHandler(this.BuckIDForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

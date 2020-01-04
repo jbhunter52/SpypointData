@@ -17,6 +17,7 @@ namespace SpyPointData
         public List<SPConnection> Connections;
         public delegate void ProgressUpdate(string s);
         public event ProgressUpdate OnProgressUpdate;
+        public BuckData BuckData;
         public DataCollection()
         {
             Connections = new List<SPConnection>();
@@ -50,6 +51,7 @@ namespace SpyPointData
                 NullValueHandling = NullValueHandling.Ignore
             });
             this.Connections = data.Connections;
+            this.BuckData = data.BuckData;
         }
         public void Save(string file)
         {

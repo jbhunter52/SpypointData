@@ -12,20 +12,18 @@ namespace SpyPointData
 {
     public partial class BuckIDForm : Form
     {
-        public BuckData BuckData;
-        public BuckIDForm()
+        public DataCollection Data;
+        public BuckIDForm(DataCollection data)
         {
             InitializeComponent();
-        }
-
-        private void BuckIDForm_Load(object sender, EventArgs e)
-        {
-            if (BuckData == null)
-                BuckData = new SpyPointData.BuckData();
-            BuckData.Load();
+            Data = data;
 
             ReDraw();
+
+            treeView1.SelectedNode = null;
+            treeView1.AfterSelect += treeView1_AfterSelect;
         }
+
 
         private string GetNodeName(Photo p)
         {
@@ -39,7 +37,7 @@ namespace SpyPointData
                 var result = addBuckName.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    BuckData.IDs.Add(new BuckID(addBuckName.BuckName));
+                    Data.BuckData.IDs.Add(new BuckID(addBuckName.BuckName));
                 }
             }
             
@@ -50,12 +48,13 @@ namespace SpyPointData
         {
             treeView1.Nodes.Clear();
 
-            foreach (BuckID id in BuckData.IDs)
+            foreach (BuckID id in Data.BuckData.IDs)
             {
                 TreeNode node = new TreeNode(id.Name);
 
-                foreach (Photo p in id.Photos)
+                foreach (BuckIDPhoto buckIDPhoto in id.Photos)
                 {
+                    Photo p = Data.FindPhoto(buckIDPhoto.PhotoID);
                     TreeNode photoNode = new TreeNode(GetNodeName(p));
                     photoNode.Tag = p.id;
                     node.Nodes.Add(photoNode);
@@ -67,7 +66,23 @@ namespace SpyPointData
         private void BuckIDForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult = System.Windows.Forms.DialogResult.OK;
-            BuckData.Save();
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            Photo p;
+            string tag = (string)e.Node.Tag;
+            p = Data.FindPhoto(tag);
+
+            if (p == null)
+            {
+                imageBox1.Image = null;
+                return;
+            }
+
+            System.Drawing.Image image = Data.GetPhotoFromFile(p);
+            imageBox1.Image = image;
+            imageBox1.ZoomToFit();
         }
 
     }

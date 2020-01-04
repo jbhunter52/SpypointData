@@ -11,49 +11,58 @@ namespace SpyPointData
     public class BuckData
     {
         public List<BuckID> IDs { get; set; }
-        public string DataFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SpyPoint", "BuckID.json");
 
         public BuckData()
         {
             IDs = new List<BuckID>();
         }
-
-        public void Load()
+        public void AddConnection(string name, Photo p)
         {
-            if (!File.Exists(DataFile))
+            //First find if photo is already connected and remove
+            foreach (BuckID id in IDs)
             {
-                Save();
+                id.Photos.RemoveAll(i => i.PhotoID.Equals(p.id));
             }
-
-            string json = File.ReadAllText(DataFile);
-            DataCollection data = JsonConvert.DeserializeObject<DataCollection>(json, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
+            
+            //Now add connection     
+            BuckID buckID = IDs.Find(id => id.Name.Equals(name));
+            buckID.Photos.Add(new BuckIDPhoto(p.id));
         }
-        public void Save()
+        public string CheckForPhoto(string photoID)
         {
-            string json = JsonConvert.SerializeObject(this);
-
-
-            using (StreamWriter sw = new StreamWriter(DataFile))
+            foreach (BuckID buckID in IDs)
             {
-                sw.Write(json);
+                foreach (var buckIDPhoto in buckID.Photos)
+                {
+                    if (buckIDPhoto.PhotoID.Equals(photoID))
+                    {
+                        return buckID.Name;
+                    }
+                }
             }
+            return null;
         }
-
     }
 
 
     public class BuckID
     {
-        public List<Photo> Photos { get; set; }
+        public List<BuckIDPhoto> Photos { get; set; }
         public string Name { get; set; }
 
         public BuckID(string name)
         {
             Name = name;
-            Photos = new List<Photo>();
+            Photos = new List<BuckIDPhoto>();
+        }
+    }
+    public class BuckIDPhoto
+    {
+        public string PhotoID { get; set; }
+
+        public BuckIDPhoto(string photoID)
+        {
+            PhotoID = photoID;
         }
     }
 

@@ -18,7 +18,6 @@ namespace SpyPointData
         private DataCollection Data;
         private List<LoginInfo> UserLogins;
         private string file = @"C:\Users\Jared\AppData\Local\SpyPoint\Data.json";
-        private BuckData BuckData;
         public Form1()
         {
             InitializeComponent();
@@ -31,13 +30,6 @@ namespace SpyPointData
             UserLogins = new List<LoginInfo>();
             UserLogins.Add(new LoginInfo("e.beatty27@icloud.com", "sxpvyt"));
             UserLogins.Add(new LoginInfo("jbhunter52@yahoo.com", "fjkn3u"));
-
-            BuckData = new SpyPointData.BuckData();
-            BuckData.Load();
-            foreach (BuckID id in BuckData.IDs)
-            {
-                comboBoxBuckIDs.Items.Add(id.Name);
-            }
 
             Data = new DataCollection();
 
@@ -123,7 +115,7 @@ namespace SpyPointData
         {
             Photo p;
             string tag = (string)e.Node.Tag;
-
+            comboBoxBuckIDs.Items.Clear();
             p = Data.FindPhoto(tag);
 
             if (p != null)
@@ -149,9 +141,26 @@ namespace SpyPointData
                     textBoxBuckAge.Text = (p.BuckAge + 0.5).ToString();
                 }
 
+                //Update BuckID combobox
+                foreach (BuckID id in Data.BuckData.IDs)
+                {
+                    comboBoxBuckIDs.Items.Add(id.Name);
+                }
+
+                //Check if photo exists in BuckData
+                string name = Data.BuckData.CheckForPhoto(p.id);
+                if (name == null)
+                    comboBoxBuckIDs.SelectedItem = null;
+                else
+                {
+                    comboBoxBuckIDs.SelectedIndexChanged -= comboBoxBuckIDs_SelectedIndexChanged;
+                    comboBoxBuckIDs.SelectedItem = name;
+                    comboBoxBuckIDs.SelectedIndexChanged += comboBoxBuckIDs_SelectedIndexChanged;
+                }
             }
             else
             {
+                imageBox1.Image = null;
                 UpdateHistogram();
             }
 
@@ -493,14 +502,13 @@ namespace SpyPointData
 
         private void buckIDToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BuckIDForm buckIDform = new BuckIDForm();
-            BuckData.Save();
+            BuckIDForm buckIDform = new BuckIDForm(Data);
 
             if (buckIDform.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                BuckData bd = buckIDform.BuckData;
+                Data = buckIDform.Data;
                 comboBoxBuckIDs.Items.Clear();
-                foreach (BuckID id in bd.IDs)
+                foreach (BuckID id in Data.BuckData.IDs)
                 {
                     comboBoxBuckIDs.Items.Add(id.Name);
                 }
@@ -509,10 +517,17 @@ namespace SpyPointData
 
         private void comboBoxBuckIDs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string idName = (string)comboBoxBuckIDs.SelectedItem;
-
             Photo p;
+            string tag = (string)treeView1.SelectedNode.Tag;
 
+            p = Data.FindPhoto(tag);
+
+            if (p == null)
+                return;
+
+
+            string idName = (string)comboBoxBuckIDs.SelectedItem;
+            Data.BuckData.AddConnection(idName, p);
             
         }
 
