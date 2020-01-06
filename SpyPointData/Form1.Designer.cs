@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +56,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.comboBoxBuckIDs = new System.Windows.Forms.ComboBox();
             this.textBoxBuckAge = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxChartType = new System.Windows.Forms.ComboBox();
@@ -64,7 +65,8 @@
             this.labelCamName = new System.Windows.Forms.Label();
             this.checkBoxBuck = new System.Windows.Forms.CheckBox();
             this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
-            this.comboBoxBuckIDs = new System.Windows.Forms.ComboBox();
+            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.weatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -82,7 +84,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.filterToolStripMenuItem,
-            this.settingToolStripMenuItem});
+            this.settingToolStripMenuItem,
+            this.dataToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1347, 24);
@@ -326,6 +329,16 @@
             this.splitContainer2.SplitterDistance = 199;
             this.splitContainer2.TabIndex = 1;
             // 
+            // comboBoxBuckIDs
+            // 
+            this.comboBoxBuckIDs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxBuckIDs.FormattingEnabled = true;
+            this.comboBoxBuckIDs.Location = new System.Drawing.Point(895, 74);
+            this.comboBoxBuckIDs.Name = "comboBoxBuckIDs";
+            this.comboBoxBuckIDs.Size = new System.Drawing.Size(172, 21);
+            this.comboBoxBuckIDs.TabIndex = 8;
+            this.comboBoxBuckIDs.SelectedIndexChanged += new System.EventHandler(this.comboBoxBuckIDs_SelectedIndexChanged);
+            // 
             // textBoxBuckAge
             // 
             this.textBoxBuckAge.Location = new System.Drawing.Point(34, 145);
@@ -353,17 +366,17 @@
             // 
             // chartHistogram
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartHistogram.ChartAreas.Add(chartArea4);
-            legend4.Enabled = false;
-            legend4.Name = "Legend1";
-            this.chartHistogram.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.chartHistogram.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.chartHistogram.Legends.Add(legend1);
             this.chartHistogram.Location = new System.Drawing.Point(171, 9);
             this.chartHistogram.Name = "chartHistogram";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartHistogram.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartHistogram.Series.Add(series1);
             this.chartHistogram.Size = new System.Drawing.Size(718, 160);
             this.chartHistogram.TabIndex = 3;
             // 
@@ -405,15 +418,20 @@
             this.imageBox1.Size = new System.Drawing.Size(1097, 409);
             this.imageBox1.TabIndex = 0;
             // 
-            // comboBoxBuckIDs
+            // dataToolStripMenuItem
             // 
-            this.comboBoxBuckIDs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxBuckIDs.FormattingEnabled = true;
-            this.comboBoxBuckIDs.Location = new System.Drawing.Point(895, 74);
-            this.comboBoxBuckIDs.Name = "comboBoxBuckIDs";
-            this.comboBoxBuckIDs.Size = new System.Drawing.Size(172, 21);
-            this.comboBoxBuckIDs.TabIndex = 8;
-            this.comboBoxBuckIDs.SelectedIndexChanged += new System.EventHandler(this.comboBoxBuckIDs_SelectedIndexChanged);
+            this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.weatherToolStripMenuItem});
+            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
+            this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.dataToolStripMenuItem.Text = "Data";
+            // 
+            // weatherToolStripMenuItem
+            // 
+            this.weatherToolStripMenuItem.Name = "weatherToolStripMenuItem";
+            this.weatherToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.weatherToolStripMenuItem.Text = "Weather";
+            this.weatherToolStripMenuItem.Click += new System.EventHandler(this.weatherToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -482,6 +500,8 @@
         private System.Windows.Forms.ToolStripMenuItem setLocationCoordinatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buckIDToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBoxBuckIDs;
+        private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem weatherToolStripMenuItem;
 
     }
 }

@@ -10,32 +10,33 @@ using System.Windows.Forms;
 
 namespace SpyPointData
 {
-    public partial class ChangeCamNameForm : Form
+    public partial class InputForm : Form
     {
-        public ChangeCamNameForm()
+        public InputForm(string formName)
         {
             InitializeComponent();
+            this.Text = formName;
         }
 
-        public string CamName;
-        private void buttonSave_Click(object sender, EventArgs e)
+        public string Input;
+        private void buttonSaveName_Click(object sender, EventArgs e)
         {
-            CamName = textBoxCameraName.Text;
+            Input = textBoxInput.Text;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        public void SetName(string s)
+        public void SetInput(string s)
         {
-            textBoxCameraName.Text = s;
+            textBoxInput.Text = s;
         }
 
-        private void ChangeCamNameForm_KeyDown(object sender, KeyEventArgs e)
+        private void InputForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                buttonSave.PerformClick();
+                buttonSaveName.PerformClick();
             }
         }
     }

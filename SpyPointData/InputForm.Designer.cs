@@ -1,6 +1,6 @@
 ﻿namespace SpyPointData
 {
-    partial class AddBuckNameForm
+    partial class InputForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxBuckName = new System.Windows.Forms.TextBox();
+            this.textBoxInput = new System.Windows.Forms.TextBox();
             this.buttonSaveName = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBoxBuckName
+            // textBoxInput
             // 
-            this.textBoxBuckName.Location = new System.Drawing.Point(76, 24);
-            this.textBoxBuckName.Name = "textBoxBuckName";
-            this.textBoxBuckName.Size = new System.Drawing.Size(188, 20);
-            this.textBoxBuckName.TabIndex = 0;
+            this.textBoxInput.Location = new System.Drawing.Point(76, 24);
+            this.textBoxInput.Name = "textBoxInput";
+            this.textBoxInput.Size = new System.Drawing.Size(188, 20);
+            this.textBoxInput.TabIndex = 0;
             // 
             // buttonSaveName
             // 
@@ -49,17 +49,17 @@
             this.buttonSaveName.UseVisualStyleBackColor = true;
             this.buttonSaveName.Click += new System.EventHandler(this.buttonSaveName_Click);
             // 
-            // AddBuckNameForm
+            // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(362, 141);
             this.Controls.Add(this.buttonSaveName);
-            this.Controls.Add(this.textBoxBuckName);
+            this.Controls.Add(this.textBoxInput);
             this.KeyPreview = true;
-            this.Name = "AddBuckNameForm";
+            this.Name = "InputForm";
             this.Text = "Add Buck Name";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddBuckNameForm_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -67,7 +67,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxBuckName;
+        private System.Windows.Forms.TextBox textBoxInput;
         private System.Windows.Forms.Button buttonSaveName;
     }
 }

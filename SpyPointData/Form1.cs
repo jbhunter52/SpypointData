@@ -456,13 +456,13 @@ namespace SpyPointData
             if (p == null)
                 return;
 
-            using (var changeNameForm = new ChangeCamNameForm())
+            using (var changeNameForm = new InputForm("Change Camera Name"))
             {
-                changeNameForm.SetName(p.CameraName);
+                changeNameForm.SetInput(p.CameraName);
                 var result = changeNameForm.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    p.CameraName = changeNameForm.CamName;
+                    p.CameraName = changeNameForm.Input;
                 }
             }
             
@@ -529,6 +529,12 @@ namespace SpyPointData
             string idName = (string)comboBoxBuckIDs.SelectedItem;
             Data.BuckData.AddConnection(idName, p);
             
+        }
+
+        private void weatherToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WeatherTracker.WeatherTracker tracker = new WeatherTracker.WeatherTracker();
+            tracker.ShowDialog();
         }
 
 

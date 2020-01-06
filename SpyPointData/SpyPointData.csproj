@@ -56,6 +56,9 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ObjectListView">
+      <HintPath>..\..\..\..\..\..\..\dev\repos\ObjectListViewFull-2.9.1\ObjectListViewDemo\ObjectListView\bin\Release\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -79,17 +82,11 @@
     </Compile>
     <Compile Include="CameraInfo.cs" />
     <Compile Include="CameraPics.cs" />
-    <Compile Include="AddBuckForm.cs">
+    <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddBuckForm.Designer.cs">
-      <DependentUpon>AddBuckForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ChangeCamNameForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ChangeCamNameForm.Designer.cs">
-      <DependentUpon>ChangeCamNameForm.cs</DependentUpon>
+    <Compile Include="InputForm.Designer.cs">
+      <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CookieAwareWebClient.cs">
       <SubType>Component</SubType>
@@ -135,11 +132,8 @@
     <EmbeddedResource Include="BuckID.resx">
       <DependentUpon>BuckID.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddBuckForm.resx">
-      <DependentUpon>AddBuckForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ChangeCamNameForm.resx">
-      <DependentUpon>ChangeCamNameForm.cs</DependentUpon>
+    <EmbeddedResource Include="InputForm.resx">
+      <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -175,6 +169,15 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\WeatherTracker\WeatherTracker\WeatherTracker.csproj">
+      <Project>{61ff8123-637d-4f5e-abfc-9f863155b291}</Project>
+      <Name>WeatherTracker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="arrow.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
