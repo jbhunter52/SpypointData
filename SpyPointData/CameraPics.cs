@@ -110,6 +110,11 @@ namespace SpyPointData
             }
             return keep;
         }
+
+        public string GetNodeName()
+        {
+            return this.originDate.ToShortDateString() + ", " + this.originDate.ToString("hh:mm:ss tt");
+        }
     }
 
     public class CameraPics

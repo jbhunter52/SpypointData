@@ -78,6 +78,10 @@ namespace SpyPointData
                 }
                 
             }
+
+            //Manual pics
+
+
             main.Text = "SpyPointData, " + cnt.ToString();
             main.Name = "SpyPointData";
             treeView1.Nodes.Add(main);
@@ -416,6 +420,18 @@ namespace SpyPointData
             }
         }
 
+        private void importManualPicsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Jpeg files (*.jpg)|*.jpg";
+            ofd.Title = "Select photos";
+            ofd.Multiselect = true;
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Data.ManualPics.AddPics(ofd.FileNames.ToList());
+            }
+        }
+
         private void treeView1_DoubleClick(object sender, EventArgs e)
         {
             string tag = (string)treeView1.SelectedNode.Tag;
@@ -536,6 +552,8 @@ namespace SpyPointData
             WeatherTracker.WeatherTracker tracker = new WeatherTracker.WeatherTracker();
             tracker.ShowDialog();
         }
+
+
 
 
     }

@@ -53,6 +53,8 @@
             this.changeCameraNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setLocationCoordinatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buckIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.weatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -65,8 +67,7 @@
             this.labelCamName = new System.Windows.Forms.Label();
             this.checkBoxBuck = new System.Windows.Forms.CheckBox();
             this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
-            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.weatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importManualPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -98,6 +99,7 @@
             this.importToolStripMenuItem,
             this.mergeToolStripMenuItem,
             this.importCardPicsToolStripMenuItem,
+            this.importManualPicsToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -106,28 +108,28 @@
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.importToolStripMenuItem.Text = "Import From Server";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // mergeToolStripMenuItem
             // 
             this.mergeToolStripMenuItem.Name = "mergeToolStripMenuItem";
-            this.mergeToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.mergeToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.mergeToolStripMenuItem.Text = "Merge from Server";
             this.mergeToolStripMenuItem.Click += new System.EventHandler(this.mergeToolStripMenuItem_Click);
             // 
             // importCardPicsToolStripMenuItem
             // 
             this.importCardPicsToolStripMenuItem.Name = "importCardPicsToolStripMenuItem";
-            this.importCardPicsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.importCardPicsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.importCardPicsToolStripMenuItem.Text = "Import Card Pics";
             this.importCardPicsToolStripMenuItem.Click += new System.EventHandler(this.importCardPicsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -278,6 +280,21 @@
             this.buckIDToolStripMenuItem.Text = "BuckID";
             this.buckIDToolStripMenuItem.Click += new System.EventHandler(this.buckIDToolStripMenuItem_Click);
             // 
+            // dataToolStripMenuItem
+            // 
+            this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.weatherToolStripMenuItem});
+            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
+            this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.dataToolStripMenuItem.Text = "Data";
+            // 
+            // weatherToolStripMenuItem
+            // 
+            this.weatherToolStripMenuItem.Name = "weatherToolStripMenuItem";
+            this.weatherToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.weatherToolStripMenuItem.Text = "Weather";
+            this.weatherToolStripMenuItem.Click += new System.EventHandler(this.weatherToolStripMenuItem_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -418,20 +435,12 @@
             this.imageBox1.Size = new System.Drawing.Size(1097, 409);
             this.imageBox1.TabIndex = 0;
             // 
-            // dataToolStripMenuItem
+            // importManualPicsToolStripMenuItem
             // 
-            this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.weatherToolStripMenuItem});
-            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.dataToolStripMenuItem.Text = "Data";
-            // 
-            // weatherToolStripMenuItem
-            // 
-            this.weatherToolStripMenuItem.Name = "weatherToolStripMenuItem";
-            this.weatherToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.weatherToolStripMenuItem.Text = "Weather";
-            this.weatherToolStripMenuItem.Click += new System.EventHandler(this.weatherToolStripMenuItem_Click);
+            this.importManualPicsToolStripMenuItem.Name = "importManualPicsToolStripMenuItem";
+            this.importManualPicsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.importManualPicsToolStripMenuItem.Text = "Import Manual Pics";
+            this.importManualPicsToolStripMenuItem.Click += new System.EventHandler(this.importManualPicsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -502,6 +511,7 @@
         private System.Windows.Forms.ComboBox comboBoxBuckIDs;
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem weatherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importManualPicsToolStripMenuItem;
 
     }
 }

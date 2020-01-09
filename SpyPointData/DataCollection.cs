@@ -15,12 +15,14 @@ namespace SpyPointData
     public class DataCollection
     {
         public List<SPConnection> Connections;
+        public ManualPics ManualPics;
         public delegate void ProgressUpdate(string s);
         public event ProgressUpdate OnProgressUpdate;
         public BuckData BuckData;
         public DataCollection()
         {
             Connections = new List<SPConnection>();
+            ManualPics = new ManualPics();
             
         }
         public void RegisterEvents()
@@ -70,6 +72,8 @@ namespace SpyPointData
             {
                 nodes.Add(connection.GetNodes(fc, method));
             }
+
+            nodes.Add(ManualPics.GetNodes(fc));
             return nodes.ToArray();
         }
         public Photo FindPhoto(string tag)

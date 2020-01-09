@@ -106,6 +106,7 @@
       <DependentUpon>InfoWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="LoginInfo.cs" />
+    <Compile Include="ManualPics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressWindow.cs">
       <SubType>Form</SubType>
