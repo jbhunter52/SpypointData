@@ -86,7 +86,6 @@ namespace SpyPointData
             }
         }
 
-
         private string GetNodeName(Photo p)
         {
             return p.originDate.ToShortDateString() + ", " + p.originDate.ToString("hh:mm:ss tt");
@@ -104,14 +103,25 @@ namespace SpyPointData
             foreach (BuckID id in Data.BuckData.IDs)
             {
                 TreeNode node = new TreeNode(id.Name);
-
+                List<Photo> photos = new List<Photo>();
                 foreach (BuckIDPhoto buckIDPhoto in id.Photos)
                 {
                     Photo p = Data.FindPhoto(buckIDPhoto.PhotoID);
+                    if (p != null)
+                    {
+                        photos.Add(p);
+                    }
+                }
+
+                photos = photos.OrderBy(p => p.originDate).ToList();
+
+                foreach (Photo p in photos)
+                {
                     TreeNode photoNode = new TreeNode(GetNodeName(p));
                     photoNode.Tag = p.id;
                     node.Nodes.Add(photoNode);
                 }
+                
                 treeView1.Nodes.Add(node);
             }
         }
@@ -133,6 +143,9 @@ namespace SpyPointData
                 foreach (BuckIDPhoto buckIDPhoto in buckID.Photos)
                 {
                     p = Data.FindPhoto(buckIDPhoto.PhotoID);
+                    if (p == null)
+                        continue;
+
                     if (p.HaveLocation)
                     {
                         
@@ -183,37 +196,34 @@ namespace SpyPointData
                 gMapControl1.ZoomAndCenterMarkers("markers");
                 gMapControl1.Zoom = 16;
             }
+            else
+            {
+                gMapControl1.Overlays.Clear();
+                gMapControl1.Invalidate();
+            }
 
             //Update trackbar
-            DateTime end = p.originDate;
-            int hours = 24;
-            DateTime start = end.Subtract(new TimeSpan(hours, 0, 0));
+            bool haveWeather = DS.CheckIfHaveDate(p.originDate);
 
-            trackBar1.Minimum = 0;
-            trackBar1.Maximum = 100;
-            trackBar1.Value = 100;
-
-            SetWeatherData(end);
-        }
-
-        private void treeListView1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (haveWeather)
             {
-                TreeViewHitTestInfo info = treeView1.HitTest(new Point(e.X, e.Y));
+                DateTime end = p.originDate;
+                int hours = 24;
+                DateTime start = end.Subtract(new TimeSpan(hours, 0, 0));
 
-                if (info.Node == null) //Not a node click
-                {
-                    TreeViewRightClickContext.Show(this, new Point(e.X, e.Y), ToolStripDropDownDirection.BelowRight);
-                }
-                else
-                {
-                    if (info.Node.Parent == null) //Only show if it is on a BuckName
-                    {
-                        rightClickedNode = info.Node;
-                        NodeRightClickContext.Show(this, new Point(e.X, e.Y), ToolStripDropDownDirection.BelowRight);
-                    }
-                }
+                trackBar1.Enabled = true;
+                trackBar1.Minimum = 0;
+                trackBar1.Maximum = 100;
+                trackBar1.Value = 100;
+
+                SetWeatherData(end);
+            }
+            else
+            {
+                trackBar1.Enabled = false;
+                textBoxTime.Text = "";
+                textBoxSpeed.Text = "";
+                textBoxBearing.Text = "";
             }
         }
 
@@ -285,6 +295,27 @@ namespace SpyPointData
             g.DrawImage(image, new PointF(0, 0));
 
             return rotatedBmp;
+        }
+
+        private void treeView1_MouseDown_1(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                TreeViewHitTestInfo info = treeView1.HitTest(new Point(e.X, e.Y));
+
+                if (info.Node == null) //Not a node click
+                {
+                    TreeViewRightClickContext.Show(this, new Point(e.X, e.Y), ToolStripDropDownDirection.BelowRight);
+                }
+                else
+                {
+                    if (info.Node.Parent == null) //Only show if it is on a BuckName
+                    {
+                        rightClickedNode = info.Node;
+                        NodeRightClickContext.Show(this, new Point(e.X, e.Y), ToolStripDropDownDirection.BelowRight);
+                    }
+                }
+            }
         }
     }
 }

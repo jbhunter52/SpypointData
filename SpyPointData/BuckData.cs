@@ -23,7 +23,11 @@ namespace SpyPointData
             {
                 id.Photos.RemoveAll(i => i.PhotoID.Equals(p.id));
             }
-            
+
+            //If name is blank then it has already been removed above, return from function
+            if (name.Equals(""))
+                return;
+
             //Now add connection     
             BuckID buckID = IDs.Find(id => id.Name.Equals(name));
             buckID.Photos.Add(new BuckIDPhoto(p.id));

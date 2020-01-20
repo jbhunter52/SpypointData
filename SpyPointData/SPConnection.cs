@@ -38,6 +38,16 @@ namespace SpyPointData
             if (!Directory.Exists(Dir))
                 Directory.CreateDirectory(Dir);
         }
+        public List<Photo> GetFilteredPhotos(FilterCriteria fc)
+        {
+            List<Photo> photos = new List<Photo>();
+            foreach (KeyValuePair<string, CameraPics> kvp in CameraPictures)
+            {
+                CameraPics cp = kvp.Value;
+                photos.AddRange(cp.GetFilteredPhotos(fc));
+            }
+            return photos;
+        }
         public void GetAllPicInfo()
         {
             foreach (var kvp in CameraInfoList)
@@ -378,6 +388,15 @@ namespace SpyPointData
                             //Photo does not exist, download it and add it
                             Debug("Adding, " + p.originDate.ToString());
                             GetPhotoAndSave(p, ci);
+
+                            //set pic coordinates to current camera location
+                            if (cpOld.HaveLocation)
+                            {
+                                p.HaveLocation = true;
+                                p.Latitude = cpOld.Latitude;
+                                p.Longitude = cpOld.Longitude;
+                            }
+
                             cpOld.photos.Add(p);
                             cpOld.countPhotos = cpOld.photos.Count;
                             cntNew++;

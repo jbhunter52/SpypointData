@@ -122,12 +122,25 @@ namespace SpyPointData
         public List<Photo> photos { get; set; }
         public string cameraId { get; set; }
         public int countPhotos { get; set; }
+        public bool HaveLocation { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
         public CameraPics(string id)
         {
             photos = new List<Photo>();
             cameraId = id;
             countPhotos = 0;
+        }
+        public List<Photo> GetFilteredPhotos(FilterCriteria fc)
+        {
+            List<Photo> filtered = new List<Photo>();
+            foreach (Photo p in this.photos)
+            {
+                if (p.CheckFilter(fc))
+                    filtered.Add(p);
+            }
+            return filtered;
         }
         public void Add(CameraPics cp)
         {

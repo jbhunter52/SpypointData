@@ -39,13 +39,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxTime = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBoxArrow = new System.Windows.Forms.PictureBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBoxArrow = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -58,9 +58,9 @@
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxArrow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxArrow)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -87,6 +87,7 @@
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(274, 659);
             this.treeView1.TabIndex = 0;
+            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown_1);
             // 
             // splitContainer2
             // 
@@ -179,6 +180,17 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Selected Time";
             // 
+            // pictureBoxArrow
+            // 
+            this.pictureBoxArrow.Image = global::SpyPointData.Properties.Resources.arrow;
+            this.pictureBoxArrow.InitialImage = null;
+            this.pictureBoxArrow.Location = new System.Drawing.Point(895, 17);
+            this.pictureBoxArrow.Name = "pictureBoxArrow";
+            this.pictureBoxArrow.Size = new System.Drawing.Size(50, 50);
+            this.pictureBoxArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxArrow.TabIndex = 1;
+            this.pictureBoxArrow.TabStop = false;
+            // 
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(28, 17);
@@ -198,7 +210,7 @@
             this.gMapControl1.LevelsKeepInMemmory = 5;
             this.gMapControl1.Location = new System.Drawing.Point(0, 0);
             this.gMapControl1.MarkersEnabled = true;
-            this.gMapControl1.MaxZoom = 18;
+            this.gMapControl1.MaxZoom = 20;
             this.gMapControl1.MinZoom = 2;
             this.gMapControl1.MouseWheelZoomEnabled = true;
             this.gMapControl1.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
@@ -244,17 +256,6 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // pictureBoxArrow
-            // 
-            this.pictureBoxArrow.Image = global::SpyPointData.Properties.Resources.arrow;
-            this.pictureBoxArrow.InitialImage = null;
-            this.pictureBoxArrow.Location = new System.Drawing.Point(895, 17);
-            this.pictureBoxArrow.Name = "pictureBoxArrow";
-            this.pictureBoxArrow.Size = new System.Drawing.Size(50, 50);
-            this.pictureBoxArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxArrow.TabIndex = 1;
-            this.pictureBoxArrow.TabStop = false;
-            // 
             // BuckIDForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -279,10 +280,10 @@
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxArrow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxArrow)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

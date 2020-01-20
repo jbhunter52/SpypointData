@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace SpyPointData
 {
+    [Serializable]
     public class ManualPics
     {
         public List<Photo> Photos;
@@ -20,6 +21,8 @@ namespace SpyPointData
 
         public void AddPics(List<string> files)
         {
+            if (Photos == null)
+                Photos = new List<Photo>();
             string dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"ManualPics");
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
@@ -29,12 +32,26 @@ namespace SpyPointData
                 using (ExifReader reader = new ExifReader(file))
                 {
                     DateTime date;
+                    Double[] GpsLongArray;
+                    Double[] GpsLatArray;
+                    Double GpsLongDouble = 0;
+                    Double GpsLatDouble = 0;
+                    bool hasGPS = false;
+
+                    if (reader.GetTagValue<Double[]>(ExifTags.GPSLongitude, out GpsLongArray)
+                        && reader.GetTagValue<Double[]>(ExifTags.GPSLatitude, out GpsLatArray))
+                    {
+                        hasGPS = true;
+                        GpsLongDouble = GpsLongArray[0] + GpsLongArray[1] / 60 + GpsLongArray[2] / 3600;
+                        GpsLatDouble = GpsLatArray[0] + GpsLatArray[1] / 60 + GpsLatArray[2] / 3600;
+                    }
                     if (reader.GetTagValue<DateTime>(ExifTags.DateTimeOriginal, out date))
                     {
                         string newName = Path.Combine(dir,Path.GetFileName(file));
-                        if (!File.Exists(newName))
+                        int ind = Photos.FindIndex(p => p.FileName == newName);
+                        if (ind < 0)
                         {
-                            File.Copy(file, newName);
+                            File.Copy(file, newName, true);
 
                             Photo p = new Photo();
                             p.CameraName = "Manual";
@@ -43,6 +60,14 @@ namespace SpyPointData
                             p.HaveCardPic = true;
                             p.originDate = date;
                             p.id = GetRandomString() + GetRandomString();
+
+                            if (hasGPS)
+                            {
+                                p.HaveLocation = true;
+                                p.Latitude = GpsLatDouble;
+                                p.Longitude = -GpsLongDouble;
+                            }
+
                             Photos.Add(p);
                         }
                     }
@@ -75,6 +100,16 @@ namespace SpyPointData
             manualNode.Nodes.AddRange(nodes.ToArray());
             return manualNode;
         }
+        public List<Photo> GetFilteredPhotos(FilterCriteria fc)
+        {
+            List<Photo> photos = new List<Photo>();
+            foreach (Photo p in Photos)
+            {
+                if (p.CheckFilter(fc))
+                    photos.Add(p);
+            }
+            return photos;
+        }
         private static string GetRandomString()
         {
             string path = Path.GetRandomFileName();
@@ -84,6 +119,16 @@ namespace SpyPointData
         public string GetNodeName(Photo p)
         {
             return p.originDate.ToShortDateString() + ", " + p.originDate.ToString("hh:mm:ss tt");
+        }
+
+        public Photo FindPhoto(string id)
+        {
+            foreach (Photo p in Photos)
+            {
+                if (p.id.Equals(id))
+                    return p;
+            }
+            return null;
         }
     }
 }

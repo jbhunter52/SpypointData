@@ -19,11 +19,22 @@ namespace SpyPointData
         public delegate void ProgressUpdate(string s);
         public event ProgressUpdate OnProgressUpdate;
         public BuckData BuckData;
+        public FilterCriteria Filter;
         public DataCollection()
         {
             Connections = new List<SPConnection>();
             ManualPics = new ManualPics();
+            Filter = new FilterCriteria();
             
+        }
+        public List<Photo> GetFilteredPhotos()
+        {
+            List<Photo> photos = new List<Photo>();
+            foreach (var conn in Connections)
+            {
+                photos.AddRange(conn.GetFilteredPhotos(Filter));
+            }
+            return photos;
         }
         public void RegisterEvents()
         {
@@ -54,6 +65,7 @@ namespace SpyPointData
             });
             this.Connections = data.Connections;
             this.BuckData = data.BuckData;
+            this.ManualPics = data.ManualPics;
         }
         public void Save(string file)
         {
@@ -65,25 +77,21 @@ namespace SpyPointData
                 sw.Write(json);
             }
         }
-        public TreeNode[] GetNodes(FilterCriteria fc, OrganizeMethod method)
-        {
-            List<TreeNode> nodes = new List<TreeNode>();
-            foreach (SPConnection connection in Connections)
-            {
-                nodes.Add(connection.GetNodes(fc, method));
-            }
 
-            nodes.Add(ManualPics.GetNodes(fc));
-            return nodes.ToArray();
-        }
         public Photo FindPhoto(string tag)
         {
+            Photo p;
             foreach (SPConnection connection in Connections)
             {
-                Photo p = connection.FindPhoto(tag);
+                p = connection.FindPhoto(tag);
                 if (p != null)
                     return p;
             }
+
+            p = ManualPics.FindPhoto(tag);
+            if (p != null)
+                return p;
+
             return null;
         }
         public System.Drawing.Image GetPhotoFromFile(Photo p)
@@ -131,16 +139,12 @@ namespace SpyPointData
                 }
             }
         }
-        public Chart Histogram(TreeNode[] nodes, int numBins, Chart c, HistogramType htype)
+        public Chart Histogram(List<Photo> photos, int numBins, Chart c, HistogramType htype)
         {
             //List of picture nodes is nodes
-            List<Photo> photos = new List<Photo>();
             List<double> data = new List<double>();
-            foreach (var n in nodes)
+            foreach (Photo p in photos)
             {
-                Photo p = FindPhoto((string)n.Tag);
-                //photos.Add(p);
-
                 if (htype == HistogramType.Date)
                     data.Add(p.originDate.ToOADate());
                 else if (htype == HistogramType.Time)

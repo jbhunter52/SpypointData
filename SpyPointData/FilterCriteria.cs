@@ -17,6 +17,13 @@ namespace SpyPointData
         public bool Age4;
         public FilterCriteria()
         {
+            Buck = false;
+            Deer = false;
+            Age0 = false;
+            Age1 = false;
+            Age2 = false;
+            Age3 = false;
+            Age4 = false;
         }
     }
 }

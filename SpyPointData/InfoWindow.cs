@@ -21,6 +21,7 @@ namespace SpyPointData
         {
             richTextBox1.Clear();
             richTextBox1.AppendText(s);
+            
         }
     }
 }
