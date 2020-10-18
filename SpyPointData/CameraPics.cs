@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+
+using Cyotek.Windows.Forms;
+using System.Windows.Forms;
 
 namespace SpyPointData
 {
@@ -17,9 +21,9 @@ namespace SpyPointData
         public string verb { get; set; }
         public string path { get; set; }
         public string host { get; set; }
+        [JsonIgnore]
         public List<Header> headers { get; set; }
     }
-
     public class Header2
     {
         public string name { get; set; }
@@ -31,9 +35,9 @@ namespace SpyPointData
         public string verb { get; set; }
         public string path { get; set; }
         public string host { get; set; }
+        [JsonIgnore]
         public List<Header2> headers { get; set; }
     }
-
     public class Header3
     {
         public string name { get; set; }
@@ -45,6 +49,7 @@ namespace SpyPointData
         public string verb { get; set; }
         public string path { get; set; }
         public string host { get; set; }
+        [JsonIgnore]
         public List<Header3> headers { get; set; }
     }
 
@@ -53,6 +58,7 @@ namespace SpyPointData
         public string verb { get; set; }
         public string path { get; set; }
         public string host { get; set; }
+        [JsonIgnore]
         public List<object> headers { get; set; }
     }
 
@@ -64,7 +70,9 @@ namespace SpyPointData
         public string originName { get; set; }
         public int originSize { get; set; }
         public DateTime originDate { get; set; }
+        [JsonIgnore]
         public Small small { get; set; }
+        [JsonIgnore]
         public Medium medium { get; set; }
         public Large large { get; set; }
         public Hd hd { get; set; }
@@ -79,11 +87,18 @@ namespace SpyPointData
         public bool HaveLocation { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public bool HidePhoto { get; set; }
+        public bool New { get; set; }
 
         public bool CheckFilter(FilterCriteria fc)
         {
             Photo p = this;
             bool keep = true;
+
+            if (fc.New)
+                if (p.New == false)
+                    keep = false;
+
             if (fc.Deer)
             {
                 if (p.Deer == false)
@@ -114,6 +129,47 @@ namespace SpyPointData
         public string GetNodeName()
         {
             return this.originDate.ToShortDateString() + ", " + this.originDate.ToString("hh:mm:ss tt");
+        }
+
+        public void ForceId()
+        {
+            if (id == null)
+            {
+                id = Guid.NewGuid().ToString();
+            }
+        }
+
+        public System.Drawing.Image GetPhotoFromFile()
+        {
+            string file = GetBestPhotoFile();
+            if (file != null)
+            {
+                return System.Drawing.Image.FromFile(file);
+            }
+
+            return null;
+        }
+        public string GetBestPhotoFile()
+        {
+            if (CardPicFilename != null)
+            {
+                return CardPicFilename;
+            }
+            if (FileName != null)
+            {
+                return FileName;
+            }
+            else
+                return null;
+        }
+
+        public void PicToImageBox(ImageBox ib)
+        {
+            System.Drawing.Image image = GetPhotoFromFile();
+            ib.Dock = DockStyle.Fill;
+            ib.Image = image;
+            ib.ZoomToFit();
+            ib.Tag = id;
         }
     }
 

@@ -21,7 +21,8 @@ namespace SpyPointData
         {
             richTextBox1.Clear();
             richTextBox1.AppendText(s);
-            
+            richTextBox1.SelectionStart = 0;
+            richTextBox1.ScrollToCaret();
         }
     }
 }

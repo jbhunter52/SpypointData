@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Reflection;
+using SpyPointSettings;
 
 namespace SpyPointData
 {
@@ -202,13 +204,49 @@ namespace SpyPointData
             }
             Debug(response, false);
 
-            List<CameraInfo> list = JsonConvert.DeserializeObject<List<CameraInfo>>(response);
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.NullValueHandling = NullValueHandling.Ignore;
+
+            List<CameraInfo> list = JsonConvert.DeserializeObject<List<CameraInfo>>(response, settings);
             foreach (CameraInfo ci in list)
             {
                 string dir = Path.Combine(Dir, ci.id);
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
-                CameraInfoList.Add(ci.id, ci);
+
+                if (CameraInfoList.ContainsKey(ci.id))
+                {
+                    CameraInfoList[ci.id] = ci;
+                }
+                else
+                    CameraInfoList.Add(ci.id, ci);
+            }
+        }
+        public void SetCameraSettings(CameraInfo ci, DelayOptions delay, MutiShotOptions multishot)
+        {
+            string response = "";
+            string url = "https://restapi.spypoint.com/api/v3/camera/settings/" + ci.id;
+
+            using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+            {
+                client.Method = "PUT";
+                client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id + "/settings");
+                client.Headers.Add("Authorization", "bearer " + token);
+                client.Headers.Add("Accept", "application/json, text/plain, */*");
+                client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
+                client.Headers.Add("Content-Type", "application/json;charset=utf-8");
+                response = client.UploadString(url, "PUT", delay.GetJson());
+            }
+
+            using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+            {
+                client.Method = "PUT";
+                client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id + "/settings");
+                client.Headers.Add("Authorization", "bearer " + token);
+                client.Headers.Add("Accept", "application/json, text/plain, */*");
+                client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
+                client.Headers.Add("Content-Type", "application/json;charset=utf-8");
+                response = client.UploadString(url,"PUT",multishot.GetJson());
             }
         }
         public void GetPicInfoFromCamera(CameraInfo ci)
@@ -376,6 +414,7 @@ namespace SpyPointData
                                     //Old photo no hd
                                     p.Buck = old.Buck;
                                     p.Deer = old.Deer;
+                                    p.New = true;
                                     GetPhotoAndSave(p, ci);
                                     int ind = cpOld.photos.IndexOf(old);
                                     cpOld.photos[ind] = p; //update old database picture
@@ -388,7 +427,7 @@ namespace SpyPointData
                             //Photo does not exist, download it and add it
                             Debug("Adding, " + p.originDate.ToString());
                             GetPhotoAndSave(p, ci);
-
+                            p.New = true;
                             //set pic coordinates to current camera location
                             if (cpOld.HaveLocation)
                             {
@@ -396,7 +435,6 @@ namespace SpyPointData
                                 p.Latitude = cpOld.Latitude;
                                 p.Longitude = cpOld.Longitude;
                             }
-
                             cpOld.photos.Add(p);
                             cpOld.countPhotos = cpOld.photos.Count;
                             cntNew++;
@@ -438,6 +476,73 @@ namespace SpyPointData
                 if (OnProgressUpdate != null)
                     OnProgressUpdate(s);
             }
+        }
+
+        private PropertyInfo[] _PropertyInfos = null;
+        public override string ToString()
+        {
+            if (_PropertyInfos == null)
+                _PropertyInfos = this.GetType().GetProperties();
+
+            var sb = new StringBuilder();
+
+            foreach (var info in _PropertyInfos)
+            {
+                var value = info.GetValue(this, null) ?? "(null)";
+                sb.AppendLine(info.Name + ": " + value.ToString());
+            }
+
+            sb.AppendLine(String.Format("CameraInfoList, found {0} CameraInfos", CameraInfoList.Count));
+            sb.AppendLine(String.Format("CameraPictures, found {0} CameraPictures", CameraPictures.Count));
+
+            sb.AppendLine("\nCameras:");
+            foreach (var ci in CameraInfoList)
+            {
+                sb.AppendLine(ci.ToString());
+            }
+
+            sb.AppendLine("\nLooping CameraPictures Objects");
+            foreach (var kvp in this.CameraPictures)
+            {
+                var cp = kvp.Value;
+                sb.AppendLine(String.Format("Key: {0}, count:{1}",kvp.Key,cp.photos.Count));
+                string dir = Path.Combine(this.Dir, kvp.Key);
+                string[] files = Directory.GetFiles(dir);
+                sb.AppendLine(String.Format("Directory pic count: {0}", files.Length));
+                sb.AppendLine("Looking for missing files:");
+
+                foreach (string f in files)
+                {
+                    string fn = Path.GetFileNameWithoutExtension(f);
+                    Photo found;
+                    if (fn.ToLower().Contains("campic"))
+                    {
+                        //hd pic
+                        string id = fn.Split('_')[0];
+                        found = cp.photos.Find(p => p.id == id);
+                        if (found != null)
+                        {
+                            if (found.CardPicFilename != f)
+                            {
+                                sb.AppendLine(String.Format("Missing cam pic, {0}", f));
+                                sb.AppendLine("Fixing");
+                                found.HaveCardPic = true;
+                                found.CardPicFilename = f;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        found = cp.photos.Find(p => p.FileName == f);
+                        if (found == null)
+                        {
+                            sb.AppendLine(f);
+                        }
+                    }
+                }
+            }
+
+            return sb.ToString();
         }
 
     }

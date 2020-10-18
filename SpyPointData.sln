@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpyPointData", "SpyPointData\SpyPointData.csproj", "{51846CF5-82F8-4906-A524-E8E6127BE7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherTracker", "..\WeatherTracker\WeatherTracker\WeatherTracker.csproj", "{61FF8123-637D-4F5E-ABFC-9F863155B291}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectListView2012", "..\ObjectListViewFull-2.9.1\ObjectListViewDemo\ObjectListView\ObjectListView2012.csproj", "{18FEDA0C-D147-4286-B39A-01204808106A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectListView2012", "..\..\..\..\..\..\dev\repos\ObjectListViewFull-2.9.1\ObjectListViewDemo\ObjectListView\ObjectListView2012.csproj", "{18FEDA0C-D147-4286-B39A-01204808106A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherTracker", "WeatherTracker\WeatherTracker\WeatherTracker.csproj", "{61FF8123-637D-4F5E-ABFC-9F863155B291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpyPointSettings", "SpyPointSettings\SpyPointSettings\SpyPointSettings.csproj", "{C71767B4-6C6A-4AED-9D01-6A567B49C97F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +21,23 @@ Global
 		{51846CF5-82F8-4906-A524-E8E6127BE7CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51846CF5-82F8-4906-A524-E8E6127BE7CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51846CF5-82F8-4906-A524-E8E6127BE7CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18FEDA0C-D147-4286-B39A-01204808106A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18FEDA0C-D147-4286-B39A-01204808106A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18FEDA0C-D147-4286-B39A-01204808106A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18FEDA0C-D147-4286-B39A-01204808106A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61FF8123-637D-4F5E-ABFC-9F863155B291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C71767B4-6C6A-4AED-9D01-6A567B49C97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C71767B4-6C6A-4AED-9D01-6A567B49C97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C71767B4-6C6A-4AED-9D01-6A567B49C97F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C71767B4-6C6A-4AED-9D01-6A567B49C97F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A3EF7AB-3CAA-4FCA-AFD8-ED5715066C59}
 	EndGlobalSection
 EndGlobal

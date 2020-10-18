@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace SpyPointData
 {
@@ -13,6 +14,13 @@ namespace SpyPointData
         public string type { get; set; }
         public int mcc { get; set; }
         public int mnc { get; set; }
+        public Processed processed { get; set; } 
+    }
+    public class Processed
+    {
+        public int percentage { get; set; }
+        public int bar { get; set; }
+        public bool lowSignal { get; set; }
     }
 
     public class Memory
@@ -24,6 +32,12 @@ namespace SpyPointData
     public class Temperature
     {
         public int value { get; set; }
+    }
+
+    public class Capability
+    {
+        public bool survivalMode { get; set; }
+        public bool hdRequest { get; set; }
     }
 
     public class Status
@@ -40,6 +54,8 @@ namespace SpyPointData
         public DateTime installDate { get; set; }
         public string modemFirmware { get; set; }
         public string sim { get; set; }
+        public List<object> notifications { get; set; }
+        public Capability capability { get; set; } 
     }
 
     public class Sensibility
@@ -106,14 +122,54 @@ namespace SpyPointData
         public object dateTime { get; set; }
         public Http http { get; set; }
     }
+    public class Plan
+    {
+        public string name { get; set; }
+        public string id { get; set; }
+        public bool isActive { get; set; }
+        public bool isFree { get; set; }
+        public int photoCountPerMonth { get; set; }
+        public int pricePerMonthIfPaidPerMonth { get; set; }
+        public int pricePerMonthIfPaidAnnually { get; set; }
+        public int pricePerYear { get; set; }
+        public int rebateIfPaidAnnually { get; set; }
+        public bool isUpgradable { get; set; }
+        public bool isDowngradable { get; set; }
+    }
 
+    public class Subscription
+    {
+        public string id { get; set; }
+        public string cameraId { get; set; }
+        public string paymentStatus { get; set; }
+        public bool isActive { get; set; }
+        public Plan plan { get; set; }
+        public string currency { get; set; }
+        public string paymentFrequency { get; set; }
+        public bool isFree { get; set; }
+        public DateTime startDateBillingCycle { get; set; }
+        public DateTime endDateBillingCycle { get; set; }
+        public DateTime monthEndBillingCycle { get; set; }
+        public int photoCount { get; set; }
+        public bool isAutoRenew { get; set; }
+    }
     public class CameraInfo
     {
         public string id { get; set; }
+        public DateTime activationDate { get; set; } 
         public string user { get; set; }
         public Status status { get; set; }
         public Config config { get; set; }
+        public DateTime hdSince { get; set; } 
         public bool isCellular { get; set; }
         public object lastPhoto { get; set; }
+        public List<Subscription> subscriptions { get; set; }
+        public object dataMatrixKey { get; set; } 
+
+
+        public override string ToString()
+        {
+            return id;
+        }
     }
 }

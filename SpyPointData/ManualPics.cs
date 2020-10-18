@@ -13,10 +13,11 @@ namespace SpyPointData
     public class ManualPics
     {
         public List<Photo> Photos;
-
+        public bool HidePics;
         public ManualPics()
         {
             Photos = new List<Photo>();
+            HidePics = false;
         }
 
         public void AddPics(List<string> files)
@@ -123,12 +124,19 @@ namespace SpyPointData
 
         public Photo FindPhoto(string id)
         {
+            if (HidePics)
+                return null;
             foreach (Photo p in Photos)
             {
                 if (p.id.Equals(id))
                     return p;
             }
             return null;
+        }
+
+        public void Sort()
+        {
+            Photos.Sort((x, y) => DateTime.Compare(x.date, y.date));
         }
     }
 }

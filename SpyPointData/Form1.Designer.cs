@@ -29,18 +29,23 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addLoginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCardPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importManualPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buckIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cameraDetailsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bucksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buckAgeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,28 +60,32 @@
             this.locationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeCameraNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setLocationCoordinatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buckIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enableMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.weatherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dumpDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeListView1 = new BrightIdeasSoftware.TreeListView();
             this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnSize = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnLocation = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnHaveGPS = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnHD = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnCount = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDeer = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnBuck = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnBuckAge = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnBuckName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.comboBoxBuckIDs = new System.Windows.Forms.ComboBox();
             this.comboBoxChartType = new System.Windows.Forms.ComboBox();
             this.chartHistogram = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.labelCamName = new System.Windows.Forms.Label();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
+            this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            this.olvColumnBuckName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnNew = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -98,6 +107,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem,
             this.filterToolStripMenuItem,
             this.settingToolStripMenuItem,
             this.dataToolStripMenuItem});
@@ -111,6 +121,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
+            this.addLoginToolStripMenuItem,
             this.importToolStripMenuItem,
             this.mergeToolStripMenuItem,
             this.importCardPicsToolStripMenuItem,
@@ -126,6 +137,13 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // addLoginToolStripMenuItem
+            // 
+            this.addLoginToolStripMenuItem.Name = "addLoginToolStripMenuItem";
+            this.addLoginToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.addLoginToolStripMenuItem.Text = "Add Login";
+            this.addLoginToolStripMenuItem.Click += new System.EventHandler(this.addLoginToolStripMenuItem_Click);
             // 
             // importToolStripMenuItem
             // 
@@ -162,15 +180,47 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buckIDToolStripMenuItem,
+            this.cameraDetailsToolStripMenuItem1});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // buckIDToolStripMenuItem
+            // 
+            this.buckIDToolStripMenuItem.Name = "buckIDToolStripMenuItem";
+            this.buckIDToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.buckIDToolStripMenuItem.Text = "BuckID";
+            this.buckIDToolStripMenuItem.Click += new System.EventHandler(this.buckIDToolStripMenuItem_Click);
+            // 
+            // cameraDetailsToolStripMenuItem1
+            // 
+            this.cameraDetailsToolStripMenuItem1.Name = "cameraDetailsToolStripMenuItem1";
+            this.cameraDetailsToolStripMenuItem1.Size = new System.Drawing.Size(153, 22);
+            this.cameraDetailsToolStripMenuItem1.Text = "Camera Details";
+            this.cameraDetailsToolStripMenuItem1.Click += new System.EventHandler(this.cameraDetailsToolStripMenuItem_Click);
+            // 
             // filterToolStripMenuItem
             // 
             this.filterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem,
             this.deerToolStripMenuItem,
             this.bucksToolStripMenuItem,
             this.buckAgeToolStripMenuItem});
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             this.filterToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.filterToolStripMenuItem.Text = "Filter";
+            // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.CheckOnClick = true;
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // deerToolStripMenuItem
             // 
@@ -256,7 +306,6 @@
             this.displayToolStripMenuItem,
             this.changeCameraNameToolStripMenuItem,
             this.setLocationCoordinatesToolStripMenuItem,
-            this.buckIDToolStripMenuItem,
             this.enableMapToolStripMenuItem});
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
             this.settingToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
@@ -303,13 +352,6 @@
             this.setLocationCoordinatesToolStripMenuItem.Text = "Set Location Coordinates";
             this.setLocationCoordinatesToolStripMenuItem.Click += new System.EventHandler(this.setLocationCoordinatesToolStripMenuItem_Click);
             // 
-            // buckIDToolStripMenuItem
-            // 
-            this.buckIDToolStripMenuItem.Name = "buckIDToolStripMenuItem";
-            this.buckIDToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.buckIDToolStripMenuItem.Text = "BuckID";
-            this.buckIDToolStripMenuItem.Click += new System.EventHandler(this.buckIDToolStripMenuItem_Click);
-            // 
             // enableMapToolStripMenuItem
             // 
             this.enableMapToolStripMenuItem.Checked = true;
@@ -323,7 +365,9 @@
             // dataToolStripMenuItem
             // 
             this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.weatherToolStripMenuItem});
+            this.weatherToolStripMenuItem,
+            this.debugDataToolStripMenuItem,
+            this.dumpDataToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.dataToolStripMenuItem.Text = "Data";
@@ -331,9 +375,23 @@
             // weatherToolStripMenuItem
             // 
             this.weatherToolStripMenuItem.Name = "weatherToolStripMenuItem";
-            this.weatherToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.weatherToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.weatherToolStripMenuItem.Text = "Weather";
             this.weatherToolStripMenuItem.Click += new System.EventHandler(this.weatherToolStripMenuItem_Click);
+            // 
+            // debugDataToolStripMenuItem
+            // 
+            this.debugDataToolStripMenuItem.Name = "debugDataToolStripMenuItem";
+            this.debugDataToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.debugDataToolStripMenuItem.Text = "Debug Data";
+            this.debugDataToolStripMenuItem.Click += new System.EventHandler(this.debugDataToolStripMenuItem_Click);
+            // 
+            // dumpDataToolStripMenuItem
+            // 
+            this.dumpDataToolStripMenuItem.Name = "dumpDataToolStripMenuItem";
+            this.dumpDataToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.dumpDataToolStripMenuItem.Text = "DumpData";
+            this.dumpDataToolStripMenuItem.Click += new System.EventHandler(this.dumpDataToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -355,8 +413,11 @@
             // treeListView1
             // 
             this.treeListView1.AllColumns.Add(this.olvColumnName);
+            this.treeListView1.AllColumns.Add(this.olvColumnNew);
+            this.treeListView1.AllColumns.Add(this.olvColumnSize);
             this.treeListView1.AllColumns.Add(this.olvColumnLocation);
             this.treeListView1.AllColumns.Add(this.olvColumnHaveGPS);
+            this.treeListView1.AllColumns.Add(this.olvColumnHD);
             this.treeListView1.AllColumns.Add(this.olvColumnCount);
             this.treeListView1.AllColumns.Add(this.olvColumnDeer);
             this.treeListView1.AllColumns.Add(this.olvColumnBuck);
@@ -365,8 +426,11 @@
             this.treeListView1.CellEditUseWholeCell = false;
             this.treeListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnName,
+            this.olvColumnNew,
+            this.olvColumnSize,
             this.olvColumnLocation,
             this.olvColumnHaveGPS,
+            this.olvColumnHD,
             this.olvColumnCount,
             this.olvColumnDeer,
             this.olvColumnBuck,
@@ -398,6 +462,11 @@
             this.olvColumnName.Text = "Name";
             this.olvColumnName.Width = 200;
             // 
+            // olvColumnSize
+            // 
+            this.olvColumnSize.MinimumWidth = 60;
+            this.olvColumnSize.Text = "Size";
+            // 
             // olvColumnLocation
             // 
             this.olvColumnLocation.MinimumWidth = 100;
@@ -409,6 +478,12 @@
             this.olvColumnHaveGPS.MinimumWidth = 35;
             this.olvColumnHaveGPS.Text = "GPS";
             this.olvColumnHaveGPS.Width = 35;
+            // 
+            // olvColumnHD
+            // 
+            this.olvColumnHD.MinimumWidth = 40;
+            this.olvColumnHD.Text = "HD";
+            this.olvColumnHD.Width = 40;
             // 
             // olvColumnCount
             // 
@@ -433,6 +508,12 @@
             this.olvColumnBuckAge.MinimumWidth = 40;
             this.olvColumnBuckAge.Text = "Age";
             this.olvColumnBuckAge.Width = 40;
+            // 
+            // olvColumnBuckName
+            // 
+            this.olvColumnBuckName.MinimumWidth = 40;
+            this.olvColumnBuckName.Text = "ID";
+            this.olvColumnBuckName.Width = 40;
             // 
             // splitContainer2
             // 
@@ -476,17 +557,17 @@
             // 
             // chartHistogram
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chartHistogram.ChartAreas.Add(chartArea5);
-            legend5.Enabled = false;
-            legend5.Name = "Legend1";
-            this.chartHistogram.Legends.Add(legend5);
+            chartArea2.Name = "ChartArea1";
+            this.chartHistogram.ChartAreas.Add(chartArea2);
+            legend2.Enabled = false;
+            legend2.Name = "Legend1";
+            this.chartHistogram.Legends.Add(legend2);
             this.chartHistogram.Location = new System.Drawing.Point(171, 9);
             this.chartHistogram.Name = "chartHistogram";
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chartHistogram.Series.Add(series5);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartHistogram.Series.Add(series2);
             this.chartHistogram.Size = new System.Drawing.Size(718, 160);
             this.chartHistogram.TabIndex = 3;
             // 
@@ -506,7 +587,7 @@
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.imageBox1);
+            this.splitContainer3.Panel1.Controls.Add(this.tableLayoutPanelPic);
             // 
             // splitContainer3.Panel2
             // 
@@ -515,13 +596,17 @@
             this.splitContainer3.SplitterDistance = 463;
             this.splitContainer3.TabIndex = 2;
             // 
-            // imageBox1
+            // tableLayoutPanelPic
             // 
-            this.imageBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBox1.Location = new System.Drawing.Point(0, 0);
-            this.imageBox1.Name = "imageBox1";
-            this.imageBox1.Size = new System.Drawing.Size(463, 409);
-            this.imageBox1.TabIndex = 0;
+            this.tableLayoutPanelPic.ColumnCount = 1;
+            this.tableLayoutPanelPic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelPic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelPic.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelPic.Name = "tableLayoutPanelPic";
+            this.tableLayoutPanelPic.RowCount = 1;
+            this.tableLayoutPanelPic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelPic.Size = new System.Drawing.Size(463, 409);
+            this.tableLayoutPanelPic.TabIndex = 0;
             // 
             // gMapControl1
             // 
@@ -551,11 +636,11 @@
             this.gMapControl1.Zoom = 16D;
             this.gMapControl1.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl1_OnMarkerClick);
             // 
-            // olvColumnBuckName
+            // olvColumnNew
             // 
-            this.olvColumnBuckName.MinimumWidth = 40;
-            this.olvColumnBuckName.Text = "ID";
-            this.olvColumnBuckName.Width = 40;
+            this.olvColumnNew.MinimumWidth = 40;
+            this.olvColumnNew.Text = "New";
+            this.olvColumnNew.Width = 40;
             // 
             // Form1
             // 
@@ -608,7 +693,6 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartHistogram;
         private System.Windows.Forms.ComboBox comboBoxChartType;
         private System.Windows.Forms.ToolStripMenuItem importCardPicsToolStripMenuItem;
-        private Cyotek.Windows.Forms.ImageBox imageBox1;
         private System.Windows.Forms.ToolStripMenuItem buckAgeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAge0p5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAge1p5;
@@ -621,7 +705,6 @@
         private System.Windows.Forms.ToolStripMenuItem locationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeCameraNameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setLocationCoordinatesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem buckIDToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBoxBuckIDs;
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem weatherToolStripMenuItem;
@@ -639,6 +722,17 @@
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.ToolStripMenuItem enableMapToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnBuckName;
+        private BrightIdeasSoftware.OLVColumn olvColumnHD;
+        private System.Windows.Forms.ToolStripMenuItem debugDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addLoginToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvColumnSize;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelPic;
+        private System.Windows.Forms.ToolStripMenuItem dumpDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buckIDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cameraDetailsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvColumnNew;
 
     }
 }

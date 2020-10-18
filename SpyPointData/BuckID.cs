@@ -19,6 +19,8 @@ namespace SpyPointData
         public ContextMenuStrip TreeViewRightClickContext;
         public WeatherTracker.DarkSkyData DS;
         public Bitmap Arrow;
+        private ImageViewer imageViewer;
+
         public BuckIDForm(DataCollection data)
         {
             InitializeComponent();
@@ -26,7 +28,9 @@ namespace SpyPointData
 
             DS = new WeatherTracker.DarkSkyData();
             DS.Load();
-            DS.UpdateCurves();            
+            DS.UpdateCurves();
+
+            imageViewer = new ImageViewer();
 
             gMapControl1.MapProvider = GMap.NET.MapProviders.GoogleHybridMapProvider.Instance;
             GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerOnly;
@@ -172,13 +176,14 @@ namespace SpyPointData
 
             if (p == null)
             {
-                imageBox1.Image = null;
+                imageViewer.NullPicture(tableLayoutPanelPic);
                 return;
             }
 
-            System.Drawing.Image image = Data.GetPhotoFromFile(p);
-            imageBox1.Image = image;
-            imageBox1.ZoomToFit();
+            imageViewer.ShowPictures(tableLayoutPanelPic, p);
+            //System.Drawing.Image image = p.GetPhotoFromFile();
+            //imageBox1.Image = image;
+            //imageBox1.ZoomToFit();
 
             //set map to location
             if (p.HaveLocation)

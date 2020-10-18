@@ -42,10 +42,10 @@
             this.pictureBoxArrow = new System.Windows.Forms.PictureBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            this.imageBox1 = new Cyotek.Windows.Forms.ImageBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -102,7 +102,7 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.imageBox1);
+            this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanelPic);
             this.splitContainer2.Size = new System.Drawing.Size(978, 659);
             this.splitContainer2.SplitterDistance = 326;
             this.splitContainer2.TabIndex = 2;
@@ -226,14 +226,6 @@
             this.gMapControl1.TabIndex = 0;
             this.gMapControl1.Zoom = 16D;
             // 
-            // imageBox1
-            // 
-            this.imageBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageBox1.Location = new System.Drawing.Point(0, 0);
-            this.imageBox1.Name = "imageBox1";
-            this.imageBox1.Size = new System.Drawing.Size(978, 329);
-            this.imageBox1.TabIndex = 1;
-            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -255,6 +247,18 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // tableLayoutPanelPic
+            // 
+            this.tableLayoutPanelPic.ColumnCount = 1;
+            this.tableLayoutPanelPic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelPic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelPic.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelPic.Name = "tableLayoutPanelPic";
+            this.tableLayoutPanelPic.RowCount = 1;
+            this.tableLayoutPanelPic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelPic.Size = new System.Drawing.Size(978, 329);
+            this.tableLayoutPanelPic.TabIndex = 0;
             // 
             // BuckIDForm
             // 
@@ -293,7 +297,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ImageList imageList1;
-        private Cyotek.Windows.Forms.ImageBox imageBox1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -308,5 +311,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxSpeed;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelPic;
     }
 }

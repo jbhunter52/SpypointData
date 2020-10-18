@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddLogin.Designer.cs">
+      <DependentUpon>AddLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="BuckData.cs" />
     <Compile Include="BuckID.cs">
       <SubType>Form</SubType>
@@ -77,8 +83,17 @@
     <Compile Include="BuckID.Designer.cs">
       <DependentUpon>BuckID.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraDetailsForm.Designer.cs">
+      <DependentUpon>CameraDetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CameraInfo.cs" />
     <Compile Include="CameraPics.cs" />
+    <Compile Include="DelayOptions.cs" />
+    <Compile Include="DumpData.cs" />
+    <Compile Include="ImageViewer.cs" />
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +119,7 @@
     </Compile>
     <Compile Include="LoginInfo.cs" />
     <Compile Include="ManualPics.cs" />
+    <Compile Include="MutiShotOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressWindow.cs">
       <SubType>Form</SubType>
@@ -127,8 +143,14 @@
       <DependentUpon>SetCoordinatesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SPConnection.cs" />
+    <EmbeddedResource Include="AddLogin.resx">
+      <DependentUpon>AddLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BuckID.resx">
       <DependentUpon>BuckID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraDetailsForm.resx">
+      <DependentUpon>CameraDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
@@ -173,7 +195,7 @@
       <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
       <Name>ObjectListView2012</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\WeatherTracker\WeatherTracker\WeatherTracker.csproj">
+    <ProjectReference Include="..\WeatherTracker\WeatherTracker\WeatherTracker.csproj">
       <Project>{61ff8123-637d-4f5e-abfc-9f863155b291}</Project>
       <Name>WeatherTracker</Name>
     </ProjectReference>

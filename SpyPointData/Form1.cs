@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using Newtonsoft.Json;
 using BrightIdeasSoftware;
+using Cyotek.Windows.Forms;
 
 namespace SpyPointData
 {
@@ -18,24 +19,28 @@ namespace SpyPointData
         private DataCollection Data;
         private List<LoginInfo> UserLogins;
         private string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SpyPoint" ,"Data.json");
+        private ImageViewer imageViewer;
+
         public Form1()
         {
             InitializeComponent();
 
             comboBoxChartType.DataSource = Enum.GetNames(typeof(HistogramType));
             comboBoxChartType.SelectedIndexChanged += comboBoxChartType_SelectedIndexChanged;
-
             UserLogins = new List<LoginInfo>();
-
+            
             Data = new DataCollection();
 
             if (File.Exists(file))
             {
                 Data.Load(file);
+                Data.FixErrors();
+                Data.ManualPics.HidePics = true;
             }
 
             InitializeTree();
-            
+            imageViewer = new ImageViewer();
+
             gMapControl1.MapProvider = GMap.NET.MapProviders.GoogleHybridMapProvider.Instance;
             GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerOnly;
             gMapControl1.Position = new GMap.NET.PointLatLng(38.0323, -89.5657);
@@ -48,6 +53,7 @@ namespace SpyPointData
                 comboBoxBuckIDs.Items.Add(id.Name);
             }
         }
+
         private void InitializeTree()
         {
 
@@ -57,7 +63,8 @@ namespace SpyPointData
                 {
                     List<object> objs = new List<object>();
                     objs.AddRange(((DataCollection)obj).Connections);
-                    objs.Add(Data.ManualPics);
+                    if (Data.ManualPics.HidePics == false)
+                        objs.Add(Data.ManualPics);
                     return objs;
                 }
                 else if (obj is SPConnection)
@@ -66,16 +73,16 @@ namespace SpyPointData
                 }
                 else if (obj is ManualPics)
                 {
-                    return ((ManualPics)obj).Photos;
+                    var mp = (ManualPics)obj;
+                    List<Photo> mf = mp.Photos.OrderByDescending(p => p.originDate).ToList();
+                    return mf;
                 }
                 else if (obj is KeyValuePair<string, CameraPics>)
                 {
-                    return ((KeyValuePair<string, CameraPics>)obj).Value.photos;
+                    return ((KeyValuePair<string, CameraPics>)obj).Value.photos.OrderByDescending(p => p.originDate).ToList();
                 }
                 else if (obj is Photo)
                 {
-
-
                     return null;
                 }
                 else
@@ -88,7 +95,14 @@ namespace SpyPointData
                 else if (obj is SPConnection)
                     return true;
                 else if (obj is ManualPics)
-                    return true;
+                {
+                    var mp = (ManualPics)obj;
+                    
+                    if (mp.HidePics)
+                        return false;
+                    else
+                        return true;
+                }
                 else if (obj is KeyValuePair<string, CameraPics>)
                     return true;
                 else if (obj is Photo)
@@ -141,6 +155,32 @@ namespace SpyPointData
                 else
                     return "";
             };
+            OLVColumn newCol = treeListView1.AllColumns.Find(c => c.Text.Equals("New"));
+            newCol.AspectGetter = delegate(object obj)
+            {
+                if (obj is Photo)
+                {
+                    Photo p = (Photo)obj;
+                    if (p.New)
+                        return "x";
+                    else
+                        return "";
+                }
+                else
+                    return "";
+            };
+            OLVColumn sizeCol = treeListView1.AllColumns.Find(c => c.Text.Equals("Size"));
+            sizeCol.AspectGetter = delegate(object obj)
+            {
+                if (obj is Photo)
+                {
+                    Photo p = (Photo)obj;
+                    string file = p.GetBestPhotoFile();
+                    return Data.GetFileSize(file);
+                }
+                else
+                    return "";
+            };
 
             OLVColumn locCol = treeListView1.AllColumns.Find(c => c.Text.Equals("Location"));
             locCol.AspectGetter = delegate(object obj)
@@ -173,6 +213,20 @@ namespace SpyPointData
                 {
                     Photo p = (Photo)obj;
                     if (p.HaveLocation)
+                        return "x";
+                    else
+                        return "";
+                }
+                else
+                    return "";
+            };
+            OLVColumn hdCol = treeListView1.AllColumns.Find(c => c.Text.Equals("HD"));
+            hdCol.AspectGetter = delegate(object obj)
+            {
+                if (obj is Photo)
+                {
+                    Photo p = (Photo)obj;
+                    if (p.HaveCardPic || p.hd.path.Count() > 1)
                         return "x";
                     else
                         return "";
@@ -265,6 +319,10 @@ namespace SpyPointData
             treeListView1.AddObject(Data);
             RefreshTree();
         }
+
+        
+
+
         private FilterCriteria GetFilterCriteria()
         {
             FilterCriteria fc = new FilterCriteria();
@@ -279,18 +337,22 @@ namespace SpyPointData
         }
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Data = new DataCollection();
+            string message = "This will delete current account.\n\nAre you sure you want to continue?";
+            var result = MessageBox.Show(message,"New Data File", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
-            foreach (var login in UserLogins)
+            if (result == System.Windows.Forms.DialogResult.Yes)
             {
-                SPConnection SP = Data.Add(login);
-                SP.Login();
-                SP.GetCameraInfo();
-                SP.GetAllPicInfo();
-                SP.DownloadPhotosFromAllCameras();
+                Data = new DataCollection();
+                foreach (var login in UserLogins)
+                {
+                    SPConnection SP = Data.Add(login);
+                    SP.Login();
+                    SP.GetCameraInfo();
+                    SP.GetAllPicInfo();
+                    SP.DownloadPhotosFromAllCameras();
+                }
+                RefreshTree();
             }
-
-            RefreshTree();
 
         }
         private void UpdateHistogram()
@@ -348,6 +410,10 @@ namespace SpyPointData
             //pw.Close();
             RefreshTree();
             Data.Save(file);
+
+            Data.Filter.New = true;
+            newToolStripMenuItem.Checked = true;
+            treeListView1.UpdateColumnFiltering();
         }
 
         void bgMerge_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -361,13 +427,16 @@ namespace SpyPointData
             data.OnProgressUpdate += Data_OnProgressUpdate;
             Data.OnProgressUpdate += Data_OnProgressUpdate;
             Data.RegisterEvents();
-
+            
             foreach (var spc in Data.Connections)
             {
                 SPConnection SP = data.Add(spc.UserLogin);
                 SP.Login();
+    
                 SP.GetCameraInfo();
                 SP.GetAllPicInfo();
+                if (spc.uuid == null)
+                    spc.uuid = "";
                 SPConnection oldSP = Data.Connections.Find(c => c.uuid.Equals(SP.uuid));
 
                 if (oldSP != null) //Already exists
@@ -382,18 +451,52 @@ namespace SpyPointData
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Data.ClearNew();
             Data.Save(file);
             this.Close();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.N)
+            if (e.Control && e.KeyCode == Keys.H)
+            {
+                Data.ManualPics.HidePics = !Data.ManualPics.HidePics;
+                treeListView1.RefreshObject(Data);
+            }
+            if (e.KeyCode == Keys.H)
+            {
+                //if (treeListView1.SelectedObjects.Count > 1)
+                //{
+                //    foreach (var o in treeListView1.SelectedObjects)
+                //    {
+                //        if (o is Photo)
+                //        {
+                //            Photo p = (Photo)o;
+                //            p.HidePhoto = !p.HidePhoto;
+                //            treeListView1.RefreshObject(p);
+                //        }
+                //    }
+                //}
+                //if (treeListView1.SelectedObject != null)
+                //{
+                //    if (treeListView1.SelectedObject is ManualPics)
+                //    {
+                //        var pics = (ManualPics)treeListView1.SelectedObject;
+                //        //foreach (Photo p in pics.Photos)
+                //        //{
+                //        //    p.HidePhoto = !p.HidePhoto;
+                //        //}
+                //        pics.HidePics = !pics.HidePics;
+                //        treeListView1.RefreshObject(pics);
+                //    }
+                //}
+            }
+            if (e.Control && e.KeyCode == Keys.N) //Change camera/location name
             {
                 e.Handled = true;
                 changeCameraNameToolStripMenuItem.PerformClick();   
             }
-            if (e.KeyCode == Keys.B)
+            if (e.KeyCode == Keys.B) //Toggle Buck
             {
                 Photo p;
                 if (treeListView1.SelectedObject is Photo)
@@ -406,7 +509,7 @@ namespace SpyPointData
                 treeListView1.RefreshObject(p);
                 e.Handled = true;
             }
-            if (e.KeyCode == Keys.D)
+            if (e.KeyCode == Keys.D) //Toggle Deer
             {
                 Photo p;
                 if (treeListView1.SelectedObject is Photo)
@@ -419,7 +522,7 @@ namespace SpyPointData
                 treeListView1.RefreshObject(p);
                 e.Handled = true;
             }
-            if (e.KeyValue >= 48 && e.KeyValue <= 57)
+            if (e.KeyValue >= 48 && e.KeyValue <= 57) //Change buck age
             {
                 int age = e.KeyValue - 48;;
                 if (age <= 4)
@@ -452,6 +555,7 @@ namespace SpyPointData
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Data.ClearNew();
             Data.Save(file);
         }
 
@@ -460,7 +564,11 @@ namespace SpyPointData
             Data.Filter.Deer = deerToolStripMenuItem.Checked;
             treeListView1.UpdateColumnFiltering();
         }
-
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Data.Filter.New = newToolStripMenuItem.Checked;
+            treeListView1.UpdateColumnFiltering();
+        }
         private void comboBoxChartType_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateHistogram();
@@ -468,19 +576,88 @@ namespace SpyPointData
 
         private void importCardPicsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Jpeg files (*.jpg)|*.jpg";
-            ofd.Title = "Select photos";
-            ofd.Multiselect = true;
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var obj = treeListView1.SelectedObject;
+
+            if (obj == null)
             {
-                foreach (string file in ofd.FileNames)
+                MessageBox.Show("Must select a single camera to import photos to.");
+                return;
+            }
+
+            string camId;
+            if (obj is KeyValuePair<string,CameraPics>)
+            {
+                var kvp = (KeyValuePair<string, CameraPics>)obj;
+                camId = kvp.Value.cameraId;
+            }
+            else
+            {
+                MessageBox.Show("Must select a single camera to import photos to.");
+                return;
+            }
+            
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            //OpenFileDialog ofd = new OpenFileDialog();
+            //ofd.Filter = "Jpeg files (*.jpg)|*.jpg";
+            //ofd.Title = "Select photos";
+            //ofd.Multiselect = true;
+            //if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                List<string> files = GetPhotosFromDir(fbd.SelectedPath, "*.jpg", true);
+                foreach (string file in files)
                 {
-                    Data.AddCardPic(file);
+                    Data.AddCardPic(file, camId);
                 }
+                treeListView1.RefreshObject(Data);
             }
         }
 
+        private List<string> GetPhotosFromDir(string sDir, string filter, bool unique)
+        {
+            var files = new List<string>();
+            try
+            {
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    files.AddRange(Directory.GetFiles(d, filter));
+                    var subFiles = GetPhotosFromDir(d, filter, false);
+                    files.AddRange(subFiles);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            if (unique)
+            {
+                List<FileInfo> fiList = new List<FileInfo>();
+                foreach (string s in files)
+                    fiList.Add(GetFileInfo(s));
+
+                List<FileInfo> distinctFileInfo = new List<FileInfo>();
+                foreach (var fi in fiList)
+                {
+                    List<FileInfo> timeMatches = fiList.Where(x => x.LastWriteTime.Equals(fi.LastWriteTime)).ToList();
+                    FileInfo best = timeMatches.OrderByDescending(x => x.Length).First();
+                    if (!distinctFileInfo.Contains(best))
+                        distinctFileInfo.Add(best);
+                }
+
+                List<string> distinct = new List<string>();
+                foreach (var fi in distinctFileInfo)
+                    distinct.Add(fi.FullName);
+
+                return distinct;
+            }
+            else
+                return files;
+        }
+        private FileInfo GetFileInfo(string file)
+        {
+            return new FileInfo(file);
+        }
         private void importManualPicsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -524,19 +701,23 @@ namespace SpyPointData
 
         private void changeCameraNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Photo p;
-            if (treeListView1.SelectedObject is Photo)
-                p = (Photo)treeListView1.SelectedObject;
-            else
+            List<Photo> selected = new List<Photo>();
+            foreach (object obj in treeListView1.SelectedObjects)
+            {
+                if (obj is Photo)
+                    selected.Add((Photo)obj);
+            }
+            if (selected.Count == 0)
                 return;
 
             using (var changeNameForm = new InputForm("Change Camera Name"))
             {
-                changeNameForm.SetInput(p.CameraName);
+                changeNameForm.SetInput(selected[0].CameraName);
                 var result = changeNameForm.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    p.CameraName = changeNameForm.Input;
+                    foreach (Photo p in selected)
+                        p.CameraName = changeNameForm.Input;
                 }
             }
             
@@ -630,6 +811,8 @@ namespace SpyPointData
             tracker.ShowDialog();
         }
 
+        private Photo LastSelectedPhoto;
+        
         private void treeListView1_SelectionChanged(object sender, EventArgs e)
         {
             Object obj = treeListView1.SelectedObject;
@@ -640,10 +823,10 @@ namespace SpyPointData
             {
                 Photo p;
                 p = (Photo)treeListView1.SelectedObject;
+                if (p == LastSelectedPhoto)
+                    return;
                 chartHistogram.Series.Clear();
-                System.Drawing.Image image = Data.GetPhotoFromFile(p);
-                imageBox1.Image = image;
-                imageBox1.ZoomToFit();
+                imageViewer.ShowPictures(tableLayoutPanelPic, p);
                 labelCamName.Text = p.CameraName;
 
                 //Check if photo exists in BuckData
@@ -664,27 +847,53 @@ namespace SpyPointData
 
                 if (p.HaveLocation && enableMapToolStripMenuItem.Checked)
                     UpdateMapMarkers(new List<object>() { p });
+
+                LastSelectedPhoto = p;
+            }
+            else if (obj is KeyValuePair<string, CameraPics>)
+            {
+                CameraPics cp = ((KeyValuePair<string, CameraPics>)obj).Value;
+                if (SelectingMarker)
+                {
+                    SelectingMarker = false;
+                    return;
+                }
+
+                if (cp.HaveLocation && enableMapToolStripMenuItem.Checked)
+                    UpdateMapMarkers(new List<object>() { cp });
+                LastSelectedPhoto = null;
             }
             else if (treeListView1.SelectedObject == null)
             {
-                imageBox1.Image = null;
+                //NullPicture();
 
-                if (enableMapToolStripMenuItem.Checked)
+                if (enableMapToolStripMenuItem.Checked && treeListView1.SelectedObjects.Count > 0)
                 {
                     List<object> objs = new List<object>();
+                    List<Photo> pics = new List<Photo>();
                     foreach (object o in treeListView1.SelectedObjects)
+                    {
                         objs.Add(o);
+
+                        if (o is Photo)
+                            pics.Add((Photo)o);
+                    }
                     UpdateMapMarkers(objs);
+                    if (pics.Count > 0)
+                        imageViewer.ShowPictures(tableLayoutPanelPic, null, pics);
                 }
+                LastSelectedPhoto = null;
             }
             else
             {
-                imageBox1.Image = null;
+                imageViewer.NullPicture(tableLayoutPanelPic);
                 UpdateHistogram();
+                LastSelectedPhoto = null;
             }
 
             //gMapControl1.Invalidate();
         }
+
         public void UpdateMapMarkers(List<object> objs)
         {
             if (objs == null)
@@ -692,18 +901,49 @@ namespace SpyPointData
             GMap.NET.WindowsForms.GMapOverlay markers = new GMap.NET.WindowsForms.GMapOverlay("markers");
             foreach (object o in objs)
             {
+                double lat = 0;
+                double lng = 0;
+                string id = "";
+
                 if (o is Photo)
                 {
                     Photo p = (Photo)o;
                     if (p.HaveLocation)
                     {
-                        GMap.NET.WindowsForms.GMapMarker marker =
-                        new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
-                            new GMap.NET.PointLatLng(p.Latitude, p.Longitude),
-                            GMap.NET.WindowsForms.Markers.GMarkerGoogleType.blue_pushpin);
-                        marker.Tag = p.id;
-                        markers.Markers.Add(marker);
+                        lat = p.Latitude;
+                        lng = p.Longitude;
+                        id = p.id;
                     }
+                }
+                else if (o is CameraPics)
+                {
+                    CameraPics cp = (CameraPics)o;
+                    if (cp.HaveLocation)
+                    {
+                        lat = cp.Latitude;
+                        lng = cp.Longitude;
+                        id = cp.cameraId;
+                    }
+                }
+                else if (o is KeyValuePair<string,CameraPics>)
+                {
+                    CameraPics cp = ((KeyValuePair<string, CameraPics>)o).Value;
+                    if (cp.HaveLocation)
+                    {
+                        lat = cp.Latitude;
+                        lng = cp.Longitude;
+                        id = cp.cameraId;
+                    }
+                }
+
+                if (lat != 0)
+                {
+                    GMap.NET.WindowsForms.GMapMarker marker =
+                        new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                        new GMap.NET.PointLatLng(lat, lng),
+                        GMap.NET.WindowsForms.Markers.GMarkerGoogleType.blue_pushpin);
+                        marker.Tag = id;
+                    markers.Markers.Add(marker);
                 }
             }
 
@@ -719,15 +959,26 @@ namespace SpyPointData
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Data.ClearNew();
             Data.Save(file);
         }
 
         private void treeListView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Object o = treeListView1.SelectedObject;
+            string mess = "";
+            if (o is KeyValuePair<string,CameraPics>)
+            {
+                CameraPics cp = ((KeyValuePair<string, CameraPics>)o).Value;
+                CameraInfo ci = Data.FindCameraId(cp.cameraId);
+                mess += JsonConvert.SerializeObject(ci, Formatting.Indented);
+
+            }
+
             string json = JsonConvert.SerializeObject(o, Formatting.Indented);
             InfoWindow iw = new InfoWindow();
-            iw.SetTextData(json);
+            mess += "\n\n\n" + json;
+            iw.SetTextData(mess);
             iw.Show();
         }
 
@@ -749,6 +1000,54 @@ namespace SpyPointData
             SelectingMarker = true;
             treeListView1.SelectObject(p, true);
         }
+
+        private void debugDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string result = Data.Debug();
+
+            InfoWindow iw = new InfoWindow();
+            iw.SetTextData(result);
+            iw.Show();
+        }
+
+        private void addLoginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var addLogin = new AddLogin();
+            DialogResult result = addLogin.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                SPConnection SP = Data.Add(addLogin.Login);
+                SP.Login();
+                SP.GetCameraInfo();
+                SP.GetAllPicInfo();
+                SP.DownloadPhotosFromAllCameras();
+                RefreshTree();
+            }
+        }
+
+        private void dumpDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WeatherTracker.DarkSkyData weather = new WeatherTracker.DarkSkyData();
+            weather.Load();
+
+            DumpData dd = new DumpData(Data, weather);
+
+            string pfile = Path.Combine("C:\\Users\\Jared\\Google Drive\\R\\Deer\\photos.csv");
+            dd.DumpPhotos(pfile);
+
+            string wfile = Path.Combine("C:\\Users\\Jared\\Google Drive\\R\\Deer\\weather.csv");
+            dd.DumpWeather(wfile);
+        }
+
+        private void cameraDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CameraDetailsForm cdf = new CameraDetailsForm(Data);
+
+            cdf.ShowDialog();
+        }
+
+
 
     }
 }

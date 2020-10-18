@@ -8,6 +8,7 @@ namespace SpyPointData
 {
     public class FilterCriteria
     {
+        public bool New;
         public bool Buck;
         public bool Deer;
         public bool Age0;
@@ -17,6 +18,7 @@ namespace SpyPointData
         public bool Age4;
         public FilterCriteria()
         {
+            New = false;
             Buck = false;
             Deer = false;
             Age0 = false;
