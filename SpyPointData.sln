@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpyPointData", "SpyPointData\SpyPointData.csproj", "{51846CF5-82F8-4906-A524-E8E6127BE7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectListView2012", "..\ObjectListViewFull-2.9.1\ObjectListViewDemo\ObjectListView\ObjectListView2012.csproj", "{18FEDA0C-D147-4286-B39A-01204808106A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectListView2012", "ObjectListViewFull-2.9.1\ObjectListViewDemo\ObjectListView\ObjectListView2012.csproj", "{18FEDA0C-D147-4286-B39A-01204808106A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherTracker", "WeatherTracker\WeatherTracker\WeatherTracker.csproj", "{61FF8123-637D-4F5E-ABFC-9F863155B291}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherTracker", "WeatherTracker\WeatherTracker.csproj", "{61FF8123-637D-4F5E-ABFC-9F863155B291}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpyPointSettings", "SpyPointSettings\SpyPointSettings\SpyPointSettings.csproj", "{C71767B4-6C6A-4AED-9D01-6A567B49C97F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpyPointSettings", "SpyPointSettings\SpyPointSettings.csproj", "{C71767B4-6C6A-4AED-9D01-6A567B49C97F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

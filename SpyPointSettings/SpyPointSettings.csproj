@@ -87,13 +87,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ObjectListViewFull-2.9.1\ObjectListViewDemo\ObjectListView\ObjectListView2012.csproj">
+    <ProjectReference Include="..\ObjectListViewFull-2.9.1\ObjectListViewDemo\ObjectListView\ObjectListView2012.csproj">
       <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
       <Name>ObjectListView2012</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SpyPointData\SpyPointData.csproj">
+    <ProjectReference Include="..\SpyPointData\SpyPointData.csproj">
       <Project>{51846cf5-82f8-4906-a524-e8e6127be7ca}</Project>
       <Name>SpyPointData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WeatherTracker\WeatherTracker.csproj">
+      <Project>{61ff8123-637d-4f5e-abfc-9f863155b291}</Project>
+      <Name>WeatherTracker</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
