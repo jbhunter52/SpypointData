@@ -95,6 +95,14 @@ namespace SpyPointData
             Photo p = this;
             bool keep = true;
 
+            if (fc.Nothing)
+            {
+                if (p.Buck)
+                    keep = false;
+                if (p.Deer)
+                    keep = false;
+            }
+
             if (fc.New)
                 if (p.New == false)
                     keep = false;
@@ -142,10 +150,17 @@ namespace SpyPointData
         public System.Drawing.Image GetPhotoFromFile()
         {
             string file = GetBestPhotoFile();
-            if (file != null)
+            if (file != null && System.IO.File.Exists(file))
             {
-                return System.Drawing.Image.FromFile(file);
+                System.Drawing.Image img;
+                using (var bmpTemp = new System.Drawing.Bitmap(file))
+                {
+                    img = new System.Drawing.Bitmap(bmpTemp);
+                }
+                return img;
             }
+
+
 
             return null;
         }

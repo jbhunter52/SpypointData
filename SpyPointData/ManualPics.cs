@@ -19,7 +19,17 @@ namespace SpyPointData
             Photos = new List<Photo>();
             HidePics = false;
         }
-
+        public void FixManualPicsMissingFile()
+        {
+            List<Photo> removeList = new List<Photo>();
+            foreach (Photo p in Photos)
+            {
+                if (!File.Exists(p.CardPicFilename))
+                    removeList.Add(p);
+            }
+            foreach (Photo p in removeList)
+                Photos.Remove(p);
+        }
         public void AddPics(List<string> files)
         {
             if (Photos == null)
@@ -30,48 +40,77 @@ namespace SpyPointData
 
             foreach (string file in files)
             {
-                using (ExifReader reader = new ExifReader(file))
+                try
                 {
-                    DateTime date;
-                    Double[] GpsLongArray;
-                    Double[] GpsLatArray;
-                    Double GpsLongDouble = 0;
-                    Double GpsLatDouble = 0;
-                    bool hasGPS = false;
+                    using (ExifReader reader = new ExifReader(file))
+                    {
+                        DateTime date;
+                        Double[] GpsLongArray;
+                        Double[] GpsLatArray;
+                        Double GpsLongDouble = 0;
+                        Double GpsLatDouble = 0;
+                        bool hasGPS = false;
 
-                    if (reader.GetTagValue<Double[]>(ExifTags.GPSLongitude, out GpsLongArray)
-                        && reader.GetTagValue<Double[]>(ExifTags.GPSLatitude, out GpsLatArray))
-                    {
-                        hasGPS = true;
-                        GpsLongDouble = GpsLongArray[0] + GpsLongArray[1] / 60 + GpsLongArray[2] / 3600;
-                        GpsLatDouble = GpsLatArray[0] + GpsLatArray[1] / 60 + GpsLatArray[2] / 3600;
-                    }
-                    if (reader.GetTagValue<DateTime>(ExifTags.DateTimeOriginal, out date))
-                    {
-                        string newName = Path.Combine(dir,Path.GetFileName(file));
-                        int ind = Photos.FindIndex(p => p.FileName == newName);
-                        if (ind < 0)
+                        if (reader.GetTagValue<Double[]>(ExifTags.GPSLongitude, out GpsLongArray)
+                            && reader.GetTagValue<Double[]>(ExifTags.GPSLatitude, out GpsLatArray))
                         {
-                            File.Copy(file, newName, true);
-
-                            Photo p = new Photo();
-                            p.CameraName = "Manual";
-                            p.CardPicFilename = newName;
-                            p.date = date;
-                            p.HaveCardPic = true;
-                            p.originDate = date;
-                            p.id = GetRandomString() + GetRandomString();
-
-                            if (hasGPS)
+                            hasGPS = true;
+                            GpsLongDouble = GpsLongArray[0] + GpsLongArray[1] / 60 + GpsLongArray[2] / 3600;
+                            GpsLatDouble = GpsLatArray[0] + GpsLatArray[1] / 60 + GpsLatArray[2] / 3600;
+                        }
+                        if (reader.GetTagValue<DateTime>(ExifTags.DateTimeOriginal, out date))
+                        {
+                            string newName = Path.Combine(dir, Path.GetFileName(file));
+                            int ind = Photos.FindIndex(p => p.originDate == date);
+                            if (ind < 0)
                             {
-                                p.HaveLocation = true;
-                                p.Latitude = GpsLatDouble;
-                                p.Longitude = -GpsLongDouble;
-                            }
+                                File.Copy(file, newName, true);
 
-                            Photos.Add(p);
+                                Photo p = new Photo();
+                                p.CameraName = "Manual";
+                                p.CardPicFilename = newName;
+                                p.date = date;
+                                p.HaveCardPic = true;
+                                p.originDate = date;
+                                p.id = GetRandomString() + GetRandomString();
+
+                                if (hasGPS)
+                                {
+                                    p.HaveLocation = true;
+                                    p.Latitude = GpsLatDouble;
+                                    p.Longitude = -GpsLongDouble;
+                                }
+
+                                Photos.Add(p);
+                            }
+                            else
+                            {
+                                Photo p = Photos[ind];
+
+                                if (File.Exists(p.CardPicFilename))
+                                    File.Delete(p.CardPicFilename);
+
+                                File.Copy(file, newName, true);
+                                p.CardPicFilename = newName;
+                                p.HaveCardPic = true;
+                                p.originDate = date;
+
+                                if (hasGPS)
+                                {
+                                    p.HaveLocation = true;
+                                    p.Latitude = GpsLatDouble;
+                                    p.Longitude = -GpsLongDouble;
+                                }
+                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+
+                    System.Diagnostics.Debug.WriteLine("");
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    System.Diagnostics.Debug.WriteLine("Cannot exif, " + file);
                 }
             }
         }

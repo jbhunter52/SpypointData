@@ -9,6 +9,7 @@ namespace SpyPointData
     public class FilterCriteria
     {
         public bool New;
+        public bool Nothing;
         public bool Buck;
         public bool Deer;
         public bool Age0;

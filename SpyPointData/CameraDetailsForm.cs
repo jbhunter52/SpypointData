@@ -40,6 +40,7 @@ namespace SpyPointData
             dt.Columns.Add(new DataColumn("Name", typeof(string)));
             dt.Columns.Add(new DataColumn("Model", typeof(string)));
             dt.Columns.Add(new DataColumn("Version", typeof(string)));
+            dt.Columns.Add(new DataColumn("LastUpdate", typeof(string)));
             dt.Columns.Add(new DataColumn("Type", typeof(string)));
             dt.Columns.Add(new DataColumn("sim", typeof(string)));
             dt.Columns.Add(new DataColumn("Battery", typeof(int)));
@@ -63,12 +64,12 @@ namespace SpyPointData
                     CameraInfo ci = kvp.Value;
 
                     DataRow dr = dt.NewRow();
-
                     dr["User"] = login;
                     dr["ID"] = ci.id;
                     dr["Name"] = ci.config.name;
                     dr["Model"] = ci.status.model;
                     dr["Version"] = ci.status.version;
+                    dr["LastUpdate"] = ci.status.lastUpdate.ToShortDateString();
                     dr["Type"] = ci.status.signal.type;
                     dr["sim"] = ci.status.sim;
                     dr["Battery"] = ci.status.batteries[0];

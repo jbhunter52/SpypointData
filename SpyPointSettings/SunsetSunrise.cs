@@ -59,7 +59,7 @@ namespace SpyPointSettings
             Sunset = DateTime.ParseExact(Result.results.sunset, format, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
 
             AfterSunrise = Sunrise.AddMinutes(minOffset);
-            BeforeSunset = Sunset.AddMinutes(minOffset);
+            BeforeSunset = Sunset.Subtract(new TimeSpan(0,minOffset,0));
 
             ShootTimeMorn = Sunrise.Subtract(new TimeSpan(0, 30, 0));
             ShootTimeEve = Sunset.Add(new TimeSpan(0, 30, 0));

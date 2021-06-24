@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Cyotek.Windows.Forms;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace SpyPointData
 {
@@ -13,6 +14,7 @@ namespace SpyPointData
     {
         public List<ImageBox> IBs = new List<ImageBox>();
         public int LastShowCount = 0;
+        public int MaxPics = 9;
 
         public ImageViewer()
         {
@@ -36,7 +38,7 @@ namespace SpyPointData
 
 
 
-            if (thisShowCount == LastShowCount && thisShowCount == 1)
+            if (thisShowCount == LastShowCount && thisShowCount == 1) //last was single, this is single
             {
                 //The likely
                 //Already have 1 ImageBox
@@ -55,7 +57,24 @@ namespace SpyPointData
                 tlp.Controls.Add(IBs[0]);
             }
 
-            if (thisShowCount > LastShowCount && thisShowCount > 1)
+            if (thisShowCount < LastShowCount && thisShowCount == 1) // moved from list to single pic selected
+            {
+                tlp.Controls.Clear();
+                IBs.Clear();
+
+                if (IBs.Count == 0)
+                    IBs.Add(new ImageBox());
+                IBs = new List<ImageBox>() { IBs[0] };
+                tlp.Controls.Add(IBs[0]);
+                SetTableLayout(thisShowCount, tlp);
+                p.PicToImageBox(IBs[0]);
+
+                //tableLayoutPanelPic.Controls.Clear();
+                
+                
+            }
+
+            if (thisShowCount > LastShowCount && thisShowCount > 1) // another pic added to list
             {
                 //Add more items
                 //GetTableLayout(tableLayoutPanelPic, thisShowCount);
@@ -94,7 +113,7 @@ namespace SpyPointData
                 }
             }
 
-            if (thisShowCount < LastShowCount && thisShowCount > 1)
+            if (thisShowCount < LastShowCount && thisShowCount > 1) //pic removed from list
             {
                 //Add more items
                 //GetTableLayout(tableLayoutPanelPic, thisShowCount);
@@ -111,6 +130,12 @@ namespace SpyPointData
                         newIBs.Add(IBs[ind]);
                     }
                 }
+                foreach (ImageBox ib in IBs)
+                {
+                    if (newIBs.Find(i => i.Tag == ib.Tag) == null)
+                        ib.Image.Dispose();
+                }
+
                 IBs = newIBs;
 
                 int cnt = 0;

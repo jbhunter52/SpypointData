@@ -110,7 +110,7 @@ namespace SpyPointSettings
 
             foreach (SPConnection conn in Data.Connections)
             {
-                if (conn.UserLogin.Username == "jbhunter52@yahoo.com")
+                if (conn.UserLogin.Username == "jbhunter52@yahoo.com" || conn.UserLogin.Username == "M17BEHRMAN@GMAIL.COM")
                 {
                     conn.Login();
                     foreach (KeyValuePair<string, CameraInfo> kvp in conn.CameraInfoList)

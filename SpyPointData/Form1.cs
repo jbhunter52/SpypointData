@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using BrightIdeasSoftware;
 using Cyotek.Windows.Forms;
+using System.Web.UI.WebControls;
 
 namespace SpyPointData
 {
@@ -226,7 +227,7 @@ namespace SpyPointData
                 if (obj is Photo)
                 {
                     Photo p = (Photo)obj;
-                    if (p.HaveCardPic || p.hd.path.Count() > 1)
+                    if (p.HaveCardPic || p.hd != null)
                         return "x";
                     else
                         return "";
@@ -463,6 +464,37 @@ namespace SpyPointData
                 Data.ManualPics.HidePics = !Data.ManualPics.HidePics;
                 treeListView1.RefreshObject(Data);
             }
+            if (e.Shift && e.KeyCode == Keys.Delete)
+            {
+                List<Photo> list = new List<Photo>();
+                if (treeListView1.SelectedObject != null)
+                {
+                    object obj = treeListView1.SelectedObject;
+                    if (obj is Photo)
+                        list.Add((Photo)obj);
+                }
+                if (treeListView1.SelectedObjects.Count > 1 )
+                {
+                    foreach (object obj in treeListView1.SelectedObjects)
+                    {
+                        if (obj is Photo)
+                            list.Add((Photo)obj);
+                    }
+                }
+                if (list.Count > 0)
+                {
+                    DialogResult result = MessageBox.Show("Are you sure you want to deleted these?\n\n" + list.Count.ToString() + " pictures", "Delete pics", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        //imageViewer.NullPicture(tableLayoutPanelPic);
+                        Data.DeletePics(list);
+                        treeListView1.RefreshObject(Data);
+                    }
+                }
+
+
+                
+            }
             if (e.KeyCode == Keys.H)
             {
                 //if (treeListView1.SelectedObjects.Count > 1)
@@ -558,7 +590,11 @@ namespace SpyPointData
             Data.ClearNew();
             Data.Save(file);
         }
-
+        private void nothingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Data.Filter.Nothing = nothingToolStripMenuItem.Checked;
+            treeListView1.UpdateColumnFiltering();
+        }
         private void deerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Data.Filter.Deer = deerToolStripMenuItem.Checked;
@@ -618,6 +654,7 @@ namespace SpyPointData
             var files = new List<string>();
             try
             {
+                files.AddRange(Directory.GetFiles(sDir, filter));
                 foreach (string d in Directory.GetDirectories(sDir))
                 {
                     files.AddRange(Directory.GetFiles(d, filter));
@@ -660,6 +697,7 @@ namespace SpyPointData
         }
         private void importManualPicsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Data.ManualPics.FixManualPicsMissingFile();
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Jpeg files (*.jpg)|*.jpg";
             ofd.Title = "Select photos";
@@ -879,7 +917,7 @@ namespace SpyPointData
                             pics.Add((Photo)o);
                     }
                     UpdateMapMarkers(objs);
-                    if (pics.Count > 0)
+                    if (pics.Count > 0 && pics.Count <= imageViewer.MaxPics)
                         imageViewer.ShowPictures(tableLayoutPanelPic, null, pics);
                 }
                 LastSelectedPhoto = null;
@@ -1046,7 +1084,6 @@ namespace SpyPointData
 
             cdf.ShowDialog();
         }
-
 
 
     }

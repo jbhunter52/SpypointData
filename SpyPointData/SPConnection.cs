@@ -23,6 +23,8 @@ namespace SpyPointData
         public LoginInfo UserLogin { get; set; }
         public Dictionary<string,CameraInfo> CameraInfoList { get; set; }
         public Dictionary<string, CameraPics> CameraPictures { get; set; }
+        [JsonIgnore]
+        public Dictionary<string,Photo> LocationPics { get; set; }
         public string Dir { get; set; }
         public string DataFile { get; set; }
         public delegate void ProgressUpdate(string s);
@@ -254,16 +256,17 @@ namespace SpyPointData
             CameraPics allPics = new CameraPics(ci.id);
             Debug("Getting, " + ci.config.name);
             string response = "";
-            string url = "https://restapi.spypoint.com/api/v3/photo/" + ci.id;
+            string url = "https://restapi.spypoint.com/api/v3/photo/all";
             bool more = true;
             string date = "2100-01-01T00:00:00.000Z";
             string postdata = "{\"dateEnd\":\"" + date + "\"}";
+            postdata = JsonConvert.SerializeObject(new PostRequest_AllCamPic(ci.id, date));
             while (more)
             {
                 using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
                 {
                     client.Method = "POST";
-                    client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id);
+                    client.Headers.Add("Referer", "https://webapp.spypoint.com/");
                     client.Headers.Add("Authorization", "bearer " + token);
                     Debug(date);
                     response = client.UploadString(url, postdata);
@@ -281,6 +284,7 @@ namespace SpyPointData
                     d = d.Subtract(new TimeSpan(0, 0, 0, 0, 100));
                     date = d.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
                     postdata = "{\"dateEnd\":\"" + date + "\"}";
+                    postdata = JsonConvert.SerializeObject(new PostRequest_AllCamPic(ci.id, date));
                 }
             }
 
@@ -331,7 +335,8 @@ namespace SpyPointData
             string host = p.large.host;
             string path = p.large.path;
 
-            if (p.hd.host.Length > 1)
+            //if (p.hd.host.Length > 1)
+            if (p.hd != null)
             {
                 host = p.hd.host;
                 path = p.hd.path;
@@ -379,7 +384,7 @@ namespace SpyPointData
         }
         public void Merge(SPConnection sp)
         {
-                Debug("Merging");
+            Debug("Merging");
             int cntHd = 0;
             int cntNew = 0;
 
@@ -405,7 +410,7 @@ namespace SpyPointData
                         if (old != null)
                         {
                             //Photo already exists, check if hd exisits
-                            if (p.hd.path.Length > 1)
+                            if (p.hd != null)
                             {
                                 //New photo contains hd
                                 if (old.hd.path.Length < 1)
@@ -547,7 +552,27 @@ namespace SpyPointData
 
     }
 
-
+    public class PostRequest_AllCamPic
+    {
+        public List<string> camera;
+        public string dateEnd;
+        public bool favorite;
+        public bool hd;
+        public int limit;
+        public List<string> tag;
+        
+        public PostRequest_AllCamPic(string cid, string dateend)
+        {
+            camera = new List<string>();
+            camera.Add(cid);
+            dateEnd = dateend;
+            favorite = false;
+            hd = false;
+            limit = 100;
+            tag = new List<string>();
+        }
+    }
+   
 
 
 }

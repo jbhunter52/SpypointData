@@ -29,6 +29,7 @@ namespace SpyPointData
             Filter = new FilterCriteria();
             
         }
+
         public void FixErrors()
         {
             //Fix all null Photo ids
@@ -126,8 +127,6 @@ namespace SpyPointData
         public void Save(string file)
         {
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-
-
             using (StreamWriter sw = new StreamWriter(file))
             {
                 sw.Write(json);
@@ -153,13 +152,43 @@ namespace SpyPointData
         public string GetFileSize(string file)
         {
             FileInfo FileVol = new FileInfo(file);
+
+            if (FileVol.Exists == false)
+                return "0";
+
             string fileLength = FileVol.Length.ToString();
             string length = string.Empty;
             if (FileVol.Length >= (1 << 10))
               length= string.Format("{0} Kb", FileVol.Length >> 10);
             return length;
         }
+        public void DeletePic(Photo p)
+        {
+            List<Photo> list = new List<Photo> { p };
+            DeletePics(list);
+        }
+        public void DeletePics(List<Photo> list)
+        {
+            foreach (var p in list)
+            {
+                foreach (var conn in Connections)
+                {
+                    foreach (var kvp in conn.CameraPictures)
+                    {
+                        CameraPics pics = kvp.Value;
 
+                        if (pics.photos.Contains(p))
+                        {
+                            if (File.Exists(p.CardPicFilename))
+                                File.Delete(p.CardPicFilename);
+                            if (File.Exists(p.FileName))
+                                File.Delete(p.FileName);
+                            pics.photos.Remove(p);
+                        }
+                    }
+                }
+            }
+        }
         public void AddCardPic(string filename, string camid)
         {
             using (ExifReader reader = new ExifReader(filename))
@@ -205,6 +234,10 @@ namespace SpyPointData
                                 string randomSeq = Guid.NewGuid().ToString();
                                 string newName = Path.Combine(dir, randomSeq + "_camPic.jpg");
                                 File.Copy(filename, newName);
+                                p.Latitude = pics.Latitude;
+                                p.Longitude = pics.Longitude;
+                                CameraInfo ci = this.FindCameraId(camid);
+                                p.CameraName = ci.config.name;
                                 p.id = randomSeq;
                                 p.HaveCardPic = true;
                                 p.originDate = (new FileInfo(filename)).LastWriteTime;
