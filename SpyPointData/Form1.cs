@@ -444,7 +444,9 @@ namespace SpyPointData
             foreach (var spc in Data.Connections)
             {
                 SPConnection SP = data.Add(spc.UserLogin);
-                SP.Login();
+                bool loginResult = SP.Login();
+                if (loginResult == false)
+                    MessageBox.Show("Login failed for " + spc.UserLogin.Username);
     
                 SP.GetCameraInfo();
                 SP.GetAllPicInfo();
@@ -1060,19 +1062,47 @@ namespace SpyPointData
             iw.Show();
         }
 
-        private void addLoginToolStripMenuItem_Click(object sender, EventArgs e)
+        private void editLoginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var addLogin = new AddLogin();
-            DialogResult result = addLogin.ShowDialog();
+            var editLogin = new EditLogin(Data);
+            DialogResult result = editLogin.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                SPConnection SP = Data.Add(addLogin.Login);
-                SP.Login();
-                SP.GetCameraInfo();
-                SP.GetAllPicInfo();
-                SP.DownloadPhotosFromAllCameras();
-                RefreshTree();
+                foreach (var login in editLogin.Logins)
+                {
+                    var spc = Data.Connections.Find(c => c.uuid == login.uuid);
+
+                    if (spc != null)
+                    {
+                        if (spc.UserLogin.Username != login.Username)
+                            spc.UserLogin.Username = login.Username;
+                        if (spc.UserLogin.Password != login.Password)
+                            spc.UserLogin.Password = login.Password;
+                    }
+                    else
+                    {
+                        SPConnection SP = Data.Add(login);
+                        bool loginResult = SP.Login();
+                        if (loginResult)
+                        {
+                            SP.GetCameraInfo();
+                            SP.GetAllPicInfo();
+                            SP.DownloadPhotosFromAllCameras();
+                            RefreshTree();
+                        }
+                        else
+                        {
+                            MessageBox.Show("New login failed");
+                            Data.Connections.Remove(SP);
+                        }
+
+                    }
+
+
+                }
+
+
             }
         }
 

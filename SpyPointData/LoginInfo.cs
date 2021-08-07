@@ -10,8 +10,9 @@ namespace SpyPointData
     [Serializable]
     public class LoginInfo
     {
-        public string Username;
-        public string Password;
+        public string uuid { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
         public LoginInfo(string username, string password)
         {
             Username = username;

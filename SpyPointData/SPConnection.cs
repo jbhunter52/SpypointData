@@ -165,7 +165,7 @@ namespace SpyPointData
             return user;
         }
 
-        public void Login()
+        public bool Login()
         {
             string username = UserLogin.Username;
             string pass = UserLogin.Password;
@@ -183,14 +183,22 @@ namespace SpyPointData
 
                 client.Headers.Add("Referer", "https://webapp.spypoint.com/login");
                 client.Method = "POST";
-                response = client.UploadString(new Uri("https://restapi.spypoint.com/api/v3/user/login"), postData);
+                try
+                {
+                    response = client.UploadString(new Uri("https://restapi.spypoint.com/api/v3/user/login"), postData);
+                }
+                catch(WebException ex)
+                {
+                    return false;
+                }
 
-
+                
             }
             Regex regex = new Regex("\"(.*?)\"");
             MatchCollection matches = regex.Matches(response);
             this.uuid = matches[1].Value.Replace("\"", "");
             this.token = matches[3].Value.Replace("\"", "");
+            return true;
         }
 
         public void GetCameraInfo()

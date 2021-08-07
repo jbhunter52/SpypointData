@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addLoginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editLoginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCardPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +55,7 @@
             this.toolStripMenuItemAge2p5 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemAge3p5 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemAge4p5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.dateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cameraIdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +71,7 @@
             this.treeListView1 = new BrightIdeasSoftware.TreeListView();
             this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnNew = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnSize = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnLocation = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnHaveGPS = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -87,8 +89,6 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            this.olvColumnDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.dateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -124,7 +124,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
-            this.addLoginToolStripMenuItem,
+            this.editLoginToolStripMenuItem,
             this.importToolStripMenuItem,
             this.mergeToolStripMenuItem,
             this.importCardPicsToolStripMenuItem,
@@ -141,12 +141,12 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // addLoginToolStripMenuItem
+            // editLoginToolStripMenuItem
             // 
-            this.addLoginToolStripMenuItem.Name = "addLoginToolStripMenuItem";
-            this.addLoginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addLoginToolStripMenuItem.Text = "Add Login";
-            this.addLoginToolStripMenuItem.Click += new System.EventHandler(this.addLoginToolStripMenuItem_Click);
+            this.editLoginToolStripMenuItem.Name = "editLoginToolStripMenuItem";
+            this.editLoginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editLoginToolStripMenuItem.Text = "Edit Logins";
+            this.editLoginToolStripMenuItem.Click += new System.EventHandler(this.editLoginToolStripMenuItem_Click);
             // 
             // importToolStripMenuItem
             // 
@@ -195,14 +195,14 @@
             // buckIDToolStripMenuItem
             // 
             this.buckIDToolStripMenuItem.Name = "buckIDToolStripMenuItem";
-            this.buckIDToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.buckIDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.buckIDToolStripMenuItem.Text = "BuckID";
             this.buckIDToolStripMenuItem.Click += new System.EventHandler(this.buckIDToolStripMenuItem_Click);
             // 
             // cameraDetailsToolStripMenuItem1
             // 
             this.cameraDetailsToolStripMenuItem1.Name = "cameraDetailsToolStripMenuItem1";
-            this.cameraDetailsToolStripMenuItem1.Size = new System.Drawing.Size(153, 22);
+            this.cameraDetailsToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.cameraDetailsToolStripMenuItem1.Text = "Camera Details";
             this.cameraDetailsToolStripMenuItem1.Click += new System.EventHandler(this.cameraDetailsToolStripMenuItem_Click);
             // 
@@ -312,6 +312,13 @@
             this.toolStripMenuItemAge4p5.Size = new System.Drawing.Size(89, 22);
             this.toolStripMenuItemAge4p5.Text = "4.5";
             this.toolStripMenuItemAge4p5.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
+            // 
+            // dateToolStripMenuItem
+            // 
+            this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
+            this.dateToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.dateToolStripMenuItem.Text = "Date";
+            this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
             // settingToolStripMenuItem
             // 
@@ -481,6 +488,13 @@
             this.olvColumnNew.Text = "New";
             this.olvColumnNew.Width = 40;
             // 
+            // olvColumnDate
+            // 
+            this.olvColumnDate.DisplayIndex = 2;
+            this.olvColumnDate.IsVisible = false;
+            this.olvColumnDate.MinimumWidth = 60;
+            this.olvColumnDate.Text = "Date";
+            // 
             // olvColumnSize
             // 
             this.olvColumnSize.DisplayIndex = 2;
@@ -581,17 +595,17 @@
             // 
             // chartHistogram
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartHistogram.ChartAreas.Add(chartArea4);
-            legend4.Enabled = false;
-            legend4.Name = "Legend1";
-            this.chartHistogram.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.chartHistogram.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.chartHistogram.Legends.Add(legend1);
             this.chartHistogram.Location = new System.Drawing.Point(194, 0);
             this.chartHistogram.Name = "chartHistogram";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartHistogram.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartHistogram.Series.Add(series1);
             this.chartHistogram.Size = new System.Drawing.Size(718, 124);
             this.chartHistogram.TabIndex = 3;
             // 
@@ -661,20 +675,6 @@
             this.gMapControl1.TabIndex = 1;
             this.gMapControl1.Zoom = 16D;
             this.gMapControl1.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl1_OnMarkerClick);
-            // 
-            // olvColumnDate
-            // 
-            this.olvColumnDate.DisplayIndex = 2;
-            this.olvColumnDate.IsVisible = false;
-            this.olvColumnDate.MinimumWidth = 60;
-            this.olvColumnDate.Text = "Date";
-            // 
-            // dateToolStripMenuItem
-            // 
-            this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
-            this.dateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.dateToolStripMenuItem.Text = "Date";
-            this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -758,7 +758,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumnBuckName;
         private BrightIdeasSoftware.OLVColumn olvColumnHD;
         private System.Windows.Forms.ToolStripMenuItem debugDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addLoginToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editLoginToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnSize;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelPic;
         private System.Windows.Forms.ToolStripMenuItem dumpDataToolStripMenuItem;

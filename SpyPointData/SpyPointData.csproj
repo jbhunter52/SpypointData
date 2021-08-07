@@ -71,11 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddLogin.cs">
+    <Compile Include="EditLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddLogin.Designer.cs">
-      <DependentUpon>AddLogin.cs</DependentUpon>
+    <Compile Include="EditLogin.Designer.cs">
+      <DependentUpon>EditLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="BuckData.cs" />
     <Compile Include="BuckID.cs">
@@ -150,8 +150,8 @@
       <DependentUpon>SetCoordinatesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SPConnection.cs" />
-    <EmbeddedResource Include="AddLogin.resx">
-      <DependentUpon>AddLogin.cs</DependentUpon>
+    <EmbeddedResource Include="EditLogin.resx">
+      <DependentUpon>EditLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BuckID.resx">
       <DependentUpon>BuckID.cs</DependentUpon>
