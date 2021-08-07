@@ -257,7 +257,9 @@ namespace SpyPointData
             foreach (Photo p in photos)
             {
                 if (htype == HistogramType.Date)
+                {
                     data.Add(p.originDate.ToOADate());
+                }
                 else if (htype == HistogramType.Time)
                 {
 
@@ -267,7 +269,6 @@ namespace SpyPointData
                     data.Add(time.ToOADate());
                 }
             }
-
             data.Sort();
 
             if (data.Count == 0)
@@ -327,10 +328,13 @@ namespace SpyPointData
 
                 if (htype == HistogramType.Date)
                 {
-                    DateTime dt = DateTime.FromOADate(intervals[i]);
+                    int ind = i * 2;
+                    double x = (intervals[ind + 1] + intervals[ind]) / 2;
+                    DateTime x_dt= DateTime.FromOADate(x);
                     DataPoint dp = new DataPoint();
-                    dp.SetValueXY(dt, binCount[i]);
-                    dp.ToolTip = dt.ToShortDateString();
+                    var y = binCount[i];
+                    dp.SetValueXY(x_dt, y);
+                    dp.ToolTip = x_dt.ToShortDateString();
                     s.Points.Add(dp);
                 }
                 if (htype == HistogramType.Time)

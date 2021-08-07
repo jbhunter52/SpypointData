@@ -170,6 +170,17 @@ namespace SpyPointData
                 else
                     return "";
             };
+            OLVColumn dateCol = treeListView1.AllColumns.Find(c => c.Text.Equals("Date"));
+            dateCol.AspectGetter = delegate (object obj)
+            {
+                if (obj is Photo)
+                {
+                    Photo p = (Photo)obj;
+                    return p.originDate;
+                }
+                else
+                    return "";
+            };
             OLVColumn sizeCol = treeListView1.AllColumns.Find(c => c.Text.Equals("Size"));
             sizeCol.AspectGetter = delegate(object obj)
             {
@@ -334,6 +345,7 @@ namespace SpyPointData
             fc.Age2 = toolStripMenuItemAge2p5.Checked;
             fc.Age3 = toolStripMenuItemAge3p5.Checked;
             fc.Age4 = toolStripMenuItemAge4p5.Checked;
+
             return fc;
         }
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1085,6 +1097,14 @@ namespace SpyPointData
             cdf.ShowDialog();
         }
 
-
+        private void dateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DateFilterForm form = new DateFilterForm(Data.Filter);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Data.Filter = form.Filter;
+            }
+            treeListView1.UpdateColumnFiltering();
+        }
     }
 }

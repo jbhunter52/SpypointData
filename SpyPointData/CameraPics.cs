@@ -131,6 +131,14 @@ namespace SpyPointData
 
                 }
             }
+            if (fc.Date)
+            {
+                if (p.originDate < fc.MinDate)
+                    keep = false;
+                if (p.originDate > fc.MaxDate)
+                    keep = false;
+
+            }
             return keep;
         }
 

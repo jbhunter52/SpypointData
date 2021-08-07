@@ -413,7 +413,7 @@ namespace SpyPointData
                             if (p.hd != null)
                             {
                                 //New photo contains hd
-                                if (old.hd.path.Length < 1)
+                                if (old.hd == null)
                                 {
                                     Debug("Updating to hd, " + p.originDate.ToString());
                                     //Old photo no hd

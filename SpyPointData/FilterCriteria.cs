@@ -17,6 +17,9 @@ namespace SpyPointData
         public bool Age2;
         public bool Age3;
         public bool Age4;
+        public bool Date;
+        public DateTime MinDate;
+        public DateTime MaxDate;
         public FilterCriteria()
         {
             New = false;
@@ -27,6 +30,8 @@ namespace SpyPointData
             Age2 = false;
             Age3 = false;
             Age4 = false;
+            MinDate = new DateTime(2017, 1, 1,0,0,0);
+            MaxDate = DateTime.Today;
         }
     }
 }

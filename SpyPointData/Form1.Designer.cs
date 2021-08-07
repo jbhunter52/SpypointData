@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +46,7 @@
             this.cameraDetailsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nothingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bucksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buckAgeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,7 +87,8 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            this.nothingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.olvColumnDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.dateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -114,7 +116,7 @@
             this.dataToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1492, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1599, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -211,7 +213,8 @@
             this.nothingToolStripMenuItem,
             this.deerToolStripMenuItem,
             this.bucksToolStripMenuItem,
-            this.buckAgeToolStripMenuItem});
+            this.buckAgeToolStripMenuItem,
+            this.dateToolStripMenuItem});
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             this.filterToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.filterToolStripMenuItem.Text = "Filter";
@@ -220,15 +223,23 @@
             // 
             this.newToolStripMenuItem.CheckOnClick = true;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // nothingToolStripMenuItem
+            // 
+            this.nothingToolStripMenuItem.CheckOnClick = true;
+            this.nothingToolStripMenuItem.Name = "nothingToolStripMenuItem";
+            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.nothingToolStripMenuItem.Text = "Nothing";
+            this.nothingToolStripMenuItem.Click += new System.EventHandler(this.nothingToolStripMenuItem_Click);
             // 
             // deerToolStripMenuItem
             // 
             this.deerToolStripMenuItem.CheckOnClick = true;
             this.deerToolStripMenuItem.Name = "deerToolStripMenuItem";
-            this.deerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deerToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.deerToolStripMenuItem.Text = "Deer";
             this.deerToolStripMenuItem.Click += new System.EventHandler(this.deerToolStripMenuItem_Click);
             // 
@@ -236,7 +247,7 @@
             // 
             this.bucksToolStripMenuItem.CheckOnClick = true;
             this.bucksToolStripMenuItem.Name = "bucksToolStripMenuItem";
-            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.bucksToolStripMenuItem.Text = "Bucks";
             this.bucksToolStripMenuItem.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
             // 
@@ -249,7 +260,7 @@
             this.toolStripMenuItemAge3p5,
             this.toolStripMenuItemAge4p5});
             this.buckAgeToolStripMenuItem.Name = "buckAgeToolStripMenuItem";
-            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.buckAgeToolStripMenuItem.Text = "Buck Age";
             // 
             // toolStripMenuItemAge0p5
@@ -408,14 +419,15 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1492, 612);
-            this.splitContainer1.SplitterDistance = 614;
+            this.splitContainer1.Size = new System.Drawing.Size(1599, 612);
+            this.splitContainer1.SplitterDistance = 658;
             this.splitContainer1.TabIndex = 1;
             // 
             // treeListView1
             // 
             this.treeListView1.AllColumns.Add(this.olvColumnName);
             this.treeListView1.AllColumns.Add(this.olvColumnNew);
+            this.treeListView1.AllColumns.Add(this.olvColumnDate);
             this.treeListView1.AllColumns.Add(this.olvColumnSize);
             this.treeListView1.AllColumns.Add(this.olvColumnLocation);
             this.treeListView1.AllColumns.Add(this.olvColumnHaveGPS);
@@ -429,7 +441,6 @@
             this.treeListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnName,
             this.olvColumnNew,
-            this.olvColumnSize,
             this.olvColumnLocation,
             this.olvColumnHaveGPS,
             this.olvColumnHD,
@@ -447,7 +458,7 @@
             this.treeListView1.SelectedBackColor = System.Drawing.Color.DodgerBlue;
             this.treeListView1.ShowFilterMenuOnRightClick = false;
             this.treeListView1.ShowGroups = false;
-            this.treeListView1.Size = new System.Drawing.Size(614, 612);
+            this.treeListView1.Size = new System.Drawing.Size(658, 612);
             this.treeListView1.TabIndex = 0;
             this.treeListView1.TriggerCellOverEventsWhenOverHeader = false;
             this.treeListView1.UnfocusedSelectedBackColor = System.Drawing.Color.Gray;
@@ -472,6 +483,8 @@
             // 
             // olvColumnSize
             // 
+            this.olvColumnSize.DisplayIndex = 2;
+            this.olvColumnSize.IsVisible = false;
             this.olvColumnSize.MinimumWidth = 60;
             this.olvColumnSize.Text = "Size";
             // 
@@ -536,19 +549,22 @@
             this.splitContainer2.Panel1.Controls.Add(this.comboBoxChartType);
             this.splitContainer2.Panel1.Controls.Add(this.chartHistogram);
             this.splitContainer2.Panel1.Controls.Add(this.labelCamName);
+            this.splitContainer2.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(874, 612);
-            this.splitContainer2.SplitterDistance = 199;
+            this.splitContainer2.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer2.Size = new System.Drawing.Size(937, 612);
+            this.splitContainer2.SplitterDistance = 109;
             this.splitContainer2.TabIndex = 1;
             // 
             // comboBoxBuckIDs
             // 
             this.comboBoxBuckIDs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBuckIDs.FormattingEnabled = true;
-            this.comboBoxBuckIDs.Location = new System.Drawing.Point(895, 74);
+            this.comboBoxBuckIDs.Location = new System.Drawing.Point(16, 72);
             this.comboBoxBuckIDs.Name = "comboBoxBuckIDs";
             this.comboBoxBuckIDs.Size = new System.Drawing.Size(172, 21);
             this.comboBoxBuckIDs.TabIndex = 8;
@@ -558,25 +574,25 @@
             // 
             this.comboBoxChartType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxChartType.FormattingEnabled = true;
-            this.comboBoxChartType.Location = new System.Drawing.Point(32, 88);
+            this.comboBoxChartType.Location = new System.Drawing.Point(16, 22);
             this.comboBoxChartType.Name = "comboBoxChartType";
             this.comboBoxChartType.Size = new System.Drawing.Size(102, 21);
             this.comboBoxChartType.TabIndex = 4;
             // 
             // chartHistogram
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartHistogram.ChartAreas.Add(chartArea2);
-            legend2.Enabled = false;
-            legend2.Name = "Legend1";
-            this.chartHistogram.Legends.Add(legend2);
-            this.chartHistogram.Location = new System.Drawing.Point(171, 9);
+            chartArea4.Name = "ChartArea1";
+            this.chartHistogram.ChartAreas.Add(chartArea4);
+            legend4.Enabled = false;
+            legend4.Name = "Legend1";
+            this.chartHistogram.Legends.Add(legend4);
+            this.chartHistogram.Location = new System.Drawing.Point(194, 0);
             this.chartHistogram.Name = "chartHistogram";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chartHistogram.Series.Add(series2);
-            this.chartHistogram.Size = new System.Drawing.Size(718, 160);
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chartHistogram.Series.Add(series4);
+            this.chartHistogram.Size = new System.Drawing.Size(718, 124);
             this.chartHistogram.TabIndex = 3;
             // 
             // labelCamName
@@ -596,12 +612,14 @@
             // splitContainer3.Panel1
             // 
             this.splitContainer3.Panel1.Controls.Add(this.tableLayoutPanelPic);
+            this.splitContainer3.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.gMapControl1);
-            this.splitContainer3.Size = new System.Drawing.Size(874, 409);
-            this.splitContainer3.SplitterDistance = 463;
+            this.splitContainer3.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer3.Size = new System.Drawing.Size(937, 499);
+            this.splitContainer3.SplitterDistance = 496;
             this.splitContainer3.TabIndex = 2;
             // 
             // tableLayoutPanelPic
@@ -613,7 +631,7 @@
             this.tableLayoutPanelPic.Name = "tableLayoutPanelPic";
             this.tableLayoutPanelPic.RowCount = 1;
             this.tableLayoutPanelPic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelPic.Size = new System.Drawing.Size(463, 409);
+            this.tableLayoutPanelPic.Size = new System.Drawing.Size(496, 499);
             this.tableLayoutPanelPic.TabIndex = 0;
             // 
             // gMapControl1
@@ -639,24 +657,30 @@
             this.gMapControl1.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapControl1.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapControl1.ShowTileGridLines = false;
-            this.gMapControl1.Size = new System.Drawing.Size(407, 409);
+            this.gMapControl1.Size = new System.Drawing.Size(437, 499);
             this.gMapControl1.TabIndex = 1;
             this.gMapControl1.Zoom = 16D;
             this.gMapControl1.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl1_OnMarkerClick);
             // 
-            // nothingToolStripMenuItem
+            // olvColumnDate
             // 
-            this.nothingToolStripMenuItem.CheckOnClick = true;
-            this.nothingToolStripMenuItem.Name = "nothingToolStripMenuItem";
-            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.nothingToolStripMenuItem.Text = "Nothing";
-            this.nothingToolStripMenuItem.Click += new System.EventHandler(this.nothingToolStripMenuItem_Click);
+            this.olvColumnDate.DisplayIndex = 2;
+            this.olvColumnDate.IsVisible = false;
+            this.olvColumnDate.MinimumWidth = 60;
+            this.olvColumnDate.Text = "Date";
+            // 
+            // dateToolStripMenuItem
+            // 
+            this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
+            this.dateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dateToolStripMenuItem.Text = "Date";
+            this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1492, 636);
+            this.ClientSize = new System.Drawing.Size(1599, 636);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
@@ -744,6 +768,8 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnNew;
         private System.Windows.Forms.ToolStripMenuItem nothingToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvColumnDate;
+        private System.Windows.Forms.ToolStripMenuItem dateToolStripMenuItem;
     }
 }
 
