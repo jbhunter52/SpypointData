@@ -31,7 +31,7 @@ namespace SpyPointSettings
         public SpyPointSettingsForm()
         {
             InitializeComponent();
-
+            Log("Application started");
             Data = new DataCollection();
 
             if (File.Exists(file))
@@ -62,6 +62,7 @@ namespace SpyPointSettings
             fastTimer.Interval = 100;
             fastTimer.Tick += FastTimer_Tick;
             fastTimer.Start();
+            Log("Initialize Complete");
         }
 
         private void FastTimer_Tick(object sender, EventArgs e)
@@ -120,6 +121,8 @@ namespace SpyPointSettings
                     }
                 }
             }
+            Log("TriggerMorningChange");
+            RefreshCameraInfo();
         }
         public void TriggerEveningChange()
         {
@@ -137,6 +140,8 @@ namespace SpyPointSettings
                     }
                 }
             }
+            Log("TriggerEveningChange");
+            RefreshCameraInfo();
         }
         public void RefreshSunriseSunset(int minOffset)
         {
@@ -164,6 +169,7 @@ namespace SpyPointSettings
                 spc.GetCameraInfo();
             }
             RefreshTables();
+            Log("RefreshCameraInfo");
         }
         public void RefreshTables()
         {
@@ -185,6 +191,14 @@ namespace SpyPointSettings
         private void buttonRefreshCameraDisplay_Click(object sender, EventArgs e)
         {
             RefreshCameraInfo();
+        }
+
+        private void Log(string mess)
+        {
+            string dt = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
+            string log = String.Format("{0}, {1}\n", dt, mess);
+            richTextBoxLog.AppendText(log);
+            richTextBoxLog.ScrollToCaret();
         }
     }
 }
