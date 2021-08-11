@@ -51,7 +51,10 @@ namespace SpyPointSettings
                 TriggerMorningChange();
             }
             else
+            {
+                MorningChange = true;
                 TriggerEveningChange();
+            }
 
             timer = new Timer();
             timer.Interval = 1000 * 60; //every minute
