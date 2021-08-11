@@ -82,7 +82,6 @@ namespace SpyPointSettings
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
-
             if (!PrevDateTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
             {
                 //New Date

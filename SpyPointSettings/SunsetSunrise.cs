@@ -22,7 +22,7 @@ namespace SpyPointSettings
         public DateTime BeforeSunset;
         public DateTime ShootTimeMorn;
         public DateTime ShootTimeEve;
-        public string format = "h:m:s tt";
+        public string format = "M/d/yyyy h:m:s tt";
 
         public SunriseSunsetResult Result;
         public SunsetSunrise(int minOffset)
@@ -55,9 +55,11 @@ namespace SpyPointSettings
 
         private void UpdateTimes(int minOffset)
         {
- 
-            Sunrise = DateTime.ParseExact(Result.results.sunrise, format, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-            Sunset = DateTime.ParseExact(Result.results.sunset, format, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+            var dt = DateTime.Now;
+            Sunrise = DateTime.ParseExact(DateTime.Now.ToShortDateString() + " " + Result.results.sunrise, format, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+            Sunset = DateTime.ParseExact(DateTime.Now.ToShortDateString() + " " + Result.results.sunset, format, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+            Sunrise = new DateTime(dt.Year, dt.Month, dt.Day, Sunrise.Hour, Sunrise.Minute, Sunrise.Second);
+            Sunset = new DateTime(dt.Year, dt.Month, dt.Day, Sunset.Hour, Sunset.Minute, Sunset.Second);
 
             AfterSunrise = Sunrise.AddMinutes(minOffset);
             BeforeSunset = Sunset.Subtract(new TimeSpan(0,minOffset,0));
