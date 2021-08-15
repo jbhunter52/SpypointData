@@ -90,6 +90,12 @@ namespace SpyPointData
         public bool HidePhoto { get; set; }
         public bool New { get; set; }
 
+        public string GetSimpleCameraName()
+        {
+            if (CameraName == null)
+                return "null";
+            return System.Text.RegularExpressions.Regex.Replace(CameraName, @"[\d-]", string.Empty).Replace(".","").Trim();
+        }
         public bool CheckFilter(FilterCriteria fc)
         {
             Photo p = this;
@@ -139,6 +145,17 @@ namespace SpyPointData
                     keep = false;
 
             }
+            if (fc.LocationOn)
+            {
+                
+                if (!fc.Locations.Contains(p.GetSimpleCameraName()))
+                    keep = false;
+            }
+            if (fc.RectangleOn)
+            {
+                if (!fc.InRectangle(p.Latitude, p.Longitude))
+                    keep = false;
+            }    
             return keep;
         }
 

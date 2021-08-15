@@ -1136,5 +1136,35 @@ namespace SpyPointData
             }
             treeListView1.UpdateColumnFiltering();
         }
+
+        private void locationToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FilterLocationForm form = new FilterLocationForm(Data);
+            if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+                Data.Filter.LocationOn = true;
+                Data.Filter.Locations = form.Locations;
+
+                if (form.Rectangle != null)
+                {
+                    Data.Filter.LocationOn = false;
+                    Data.Filter.Locations = new List<string>();
+
+                    Data.Filter.RectangleOn = true;
+                    Data.Filter.RectanglePoints = form.RectanglePoints;
+                    Data.Filter.SetRectBounds();
+                }
+
+                treeListView1.UpdateColumnFiltering();
+            }
+            else
+            {
+                Data.Filter.LocationOn = false;
+                Data.Filter.Locations = new List<string>();
+                Data.Filter.RectangleOn = false;
+                Data.Filter.RectanglePoints = new List<GMap.NET.PointLatLng>();
+            }
+        }
     }
 }

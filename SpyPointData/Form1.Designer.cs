@@ -89,6 +89,7 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
+            this.locationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -195,14 +196,14 @@
             // buckIDToolStripMenuItem
             // 
             this.buckIDToolStripMenuItem.Name = "buckIDToolStripMenuItem";
-            this.buckIDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.buckIDToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.buckIDToolStripMenuItem.Text = "BuckID";
             this.buckIDToolStripMenuItem.Click += new System.EventHandler(this.buckIDToolStripMenuItem_Click);
             // 
             // cameraDetailsToolStripMenuItem1
             // 
             this.cameraDetailsToolStripMenuItem1.Name = "cameraDetailsToolStripMenuItem1";
-            this.cameraDetailsToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.cameraDetailsToolStripMenuItem1.Size = new System.Drawing.Size(153, 22);
             this.cameraDetailsToolStripMenuItem1.Text = "Camera Details";
             this.cameraDetailsToolStripMenuItem1.Click += new System.EventHandler(this.cameraDetailsToolStripMenuItem_Click);
             // 
@@ -214,7 +215,8 @@
             this.deerToolStripMenuItem,
             this.bucksToolStripMenuItem,
             this.buckAgeToolStripMenuItem,
-            this.dateToolStripMenuItem});
+            this.dateToolStripMenuItem,
+            this.locationToolStripMenuItem1});
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             this.filterToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.filterToolStripMenuItem.Text = "Filter";
@@ -223,7 +225,7 @@
             // 
             this.newToolStripMenuItem.CheckOnClick = true;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -231,7 +233,7 @@
             // 
             this.nothingToolStripMenuItem.CheckOnClick = true;
             this.nothingToolStripMenuItem.Name = "nothingToolStripMenuItem";
-            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nothingToolStripMenuItem.Text = "Nothing";
             this.nothingToolStripMenuItem.Click += new System.EventHandler(this.nothingToolStripMenuItem_Click);
             // 
@@ -239,7 +241,7 @@
             // 
             this.deerToolStripMenuItem.CheckOnClick = true;
             this.deerToolStripMenuItem.Name = "deerToolStripMenuItem";
-            this.deerToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.deerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deerToolStripMenuItem.Text = "Deer";
             this.deerToolStripMenuItem.Click += new System.EventHandler(this.deerToolStripMenuItem_Click);
             // 
@@ -247,7 +249,7 @@
             // 
             this.bucksToolStripMenuItem.CheckOnClick = true;
             this.bucksToolStripMenuItem.Name = "bucksToolStripMenuItem";
-            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.bucksToolStripMenuItem.Text = "Bucks";
             this.bucksToolStripMenuItem.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
             // 
@@ -260,7 +262,7 @@
             this.toolStripMenuItemAge3p5,
             this.toolStripMenuItemAge4p5});
             this.buckAgeToolStripMenuItem.Name = "buckAgeToolStripMenuItem";
-            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.buckAgeToolStripMenuItem.Text = "Buck Age";
             // 
             // toolStripMenuItemAge0p5
@@ -316,7 +318,7 @@
             // dateToolStripMenuItem
             // 
             this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
-            this.dateToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.dateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dateToolStripMenuItem.Text = "Date";
             this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
@@ -676,6 +678,13 @@
             this.gMapControl1.Zoom = 16D;
             this.gMapControl1.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl1_OnMarkerClick);
             // 
+            // locationToolStripMenuItem1
+            // 
+            this.locationToolStripMenuItem1.Name = "locationToolStripMenuItem1";
+            this.locationToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.locationToolStripMenuItem1.Text = "Location";
+            this.locationToolStripMenuItem1.Click += new System.EventHandler(this.locationToolStripMenuItem1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -770,6 +779,7 @@
         private System.Windows.Forms.ToolStripMenuItem nothingToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnDate;
         private System.Windows.Forms.ToolStripMenuItem dateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem locationToolStripMenuItem1;
     }
 }
 
