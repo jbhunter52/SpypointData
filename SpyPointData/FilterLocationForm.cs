@@ -20,7 +20,9 @@ namespace SpyPointData
         public HashSet<PointLatLng> PicMarkersLocs;
         public GMapPolygon Rectangle;
         public List<PointLatLng> RectanglePoints;
-
+        public Dictionary<string, SortedSet<string>> DictAll;
+        public Dictionary<string, SortedSet<string>> DictFiltered;
+        public string SearchString = "";
         public FilterLocationForm(DataCollection data)
         {
             InitializeComponent();
@@ -59,6 +61,21 @@ namespace SpyPointData
                     return false;
             };
 
+
+            treeListView1.AdditionalFilter = new ModelFilter(delegate (object o)
+            {
+                if (o is string)
+                {
+                    string s = (string)o;
+                    if (s.ToLower().Contains(SearchString))
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return true;
+            });
+
             OLVColumn newCol = treeListView1.AllColumns.Find(c => c.Text.Equals("Name"));
             newCol.AspectGetter = delegate (object obj)
             {
@@ -73,7 +90,7 @@ namespace SpyPointData
                     return "";
             };
 
-            Dictionary<string, SortedSet<string>> dict = new Dictionary<string, SortedSet<string>>();
+            DictAll = new Dictionary<string, SortedSet<string>>();
             foreach (var spc in data.Connections)
             {
                 foreach (var kvp in spc.CameraPictures)
@@ -81,17 +98,17 @@ namespace SpyPointData
                     var cp = kvp.Value.photos;
                     foreach (var p in cp)
                     {
-                        if (!dict.ContainsKey(spc.UserLogin.Username))
-                            dict.Add(spc.UserLogin.Username, new SortedSet<string>(StringComparer.OrdinalIgnoreCase));
+                        if (!DictAll.ContainsKey(spc.UserLogin.Username))
+                            DictAll.Add(spc.UserLogin.Username, new SortedSet<string>(StringComparer.OrdinalIgnoreCase));
                         else
-                            dict[spc.UserLogin.Username].Add(p.GetSimpleCameraName());
+                            DictAll[spc.UserLogin.Username].Add(p.GetSimpleCameraName());
                         PicMarkersLocs.Add(new PointLatLng(p.Latitude, p.Longitude));
                     }
 
                 }
             }
 
-            treeListView1.SetObjects(dict);
+            treeListView1.SetObjects(DictAll);
 
 
 
@@ -130,7 +147,6 @@ namespace SpyPointData
             gMapControl1.ZoomAndCenterMarkers("markers");
             gMapControl1.Zoom = 16;
         }
-
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
@@ -196,6 +212,12 @@ namespace SpyPointData
                 gMapControl1.Overlays.Add(polygons);
                 gMapControl1.Position = new PointLatLng(gMapControl1.Position.Lat+0.00000001, gMapControl1.Position.Lng);
             }
+        }
+
+        private void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            SearchString = textBoxSearch.Text.ToLower();
+            treeListView1.UpdateColumnFiltering();
         }
     }
 
