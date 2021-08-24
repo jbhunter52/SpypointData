@@ -165,6 +165,7 @@ namespace SpyPointData
         public object lastPhoto { get; set; }
         public List<Subscription> subscriptions { get; set; }
         public object dataMatrixKey { get; set; } 
+        public bool ManualDisable { get; set; }
 
 
         public override string ToString()

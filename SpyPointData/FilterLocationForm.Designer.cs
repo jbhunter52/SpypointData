@@ -35,10 +35,10 @@ namespace SpyPointData
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonApply = new System.Windows.Forms.Button();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.treeListView1 = new BrightIdeasSoftware.TreeListView();
             this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.textBoxSearch = new System.Windows.Forms.TextBox();
-            this.buttonApply = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -125,6 +125,25 @@ namespace SpyPointData
             this.tableLayoutPanel2.Size = new System.Drawing.Size(225, 444);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
+            // buttonApply
+            // 
+            this.buttonApply.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonApply.Location = new System.Drawing.Point(3, 380);
+            this.buttonApply.Name = "buttonApply";
+            this.buttonApply.Size = new System.Drawing.Size(219, 61);
+            this.buttonApply.TabIndex = 8;
+            this.buttonApply.Text = "Apply";
+            this.buttonApply.UseVisualStyleBackColor = true;
+            // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxSearch.Location = new System.Drawing.Point(3, 3);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(219, 20);
+            this.textBoxSearch.TabIndex = 7;
+            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
+            // 
             // treeListView1
             // 
             this.treeListView1.AllColumns.Add(this.olvColumnName);
@@ -140,34 +159,15 @@ namespace SpyPointData
             this.treeListView1.Size = new System.Drawing.Size(219, 351);
             this.treeListView1.TabIndex = 5;
             this.treeListView1.UseCompatibleStateImageBehavior = false;
+            this.treeListView1.UseFiltering = true;
             this.treeListView1.View = System.Windows.Forms.View.Details;
             this.treeListView1.VirtualMode = true;
-            this.treeListView1.UseFiltering = true;
             // 
             // olvColumnName
             // 
             this.olvColumnName.FillsFreeSpace = true;
             this.olvColumnName.Text = "Name";
             this.olvColumnName.Width = 249;
-            // 
-            // textBoxSearch
-            // 
-            this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxSearch.Location = new System.Drawing.Point(3, 3);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(219, 20);
-            this.textBoxSearch.TabIndex = 7;
-            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
-            // 
-            // buttonApply
-            // 
-            this.buttonApply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonApply.Location = new System.Drawing.Point(3, 380);
-            this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(219, 61);
-            this.buttonApply.TabIndex = 8;
-            this.buttonApply.Text = "Apply";
-            this.buttonApply.UseVisualStyleBackColor = true;
             // 
             // FilterLocationForm
             // 

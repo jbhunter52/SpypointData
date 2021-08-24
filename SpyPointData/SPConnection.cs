@@ -57,6 +57,8 @@ namespace SpyPointData
             foreach (var kvp in CameraInfoList)
             {
                 CameraInfo ci = kvp.Value;
+                if (ci.ManualDisable)
+                    continue;
                 GetPicInfoFromCamera(ci);
             }
         }
@@ -237,26 +239,35 @@ namespace SpyPointData
             string response = "";
             string url = "https://restapi.spypoint.com/api/v3/camera/settings/" + ci.id;
 
-            using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+            try
             {
-                client.Method = "PUT";
-                client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id + "/settings");
-                client.Headers.Add("Authorization", "bearer " + token);
-                client.Headers.Add("Accept", "application/json, text/plain, */*");
-                client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
-                client.Headers.Add("Content-Type", "application/json;charset=utf-8");
-                response = client.UploadString(url, "PUT", delay.GetJson());
-            }
+                using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+                {
+                    client.Method = "PUT";
+                    client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id + "/settings");
+                    client.Headers.Add("Authorization", "bearer " + token);
+                    client.Headers.Add("Accept", "application/json, text/plain, */*");
+                    client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
+                    client.Headers.Add("Content-Type", "application/json;charset=utf-8");
+                    response = client.UploadString(url, "PUT", delay.GetJson());
+                }
 
-            using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+                using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+                {
+                    client.Method = "PUT";
+                    client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id + "/settings");
+                    client.Headers.Add("Authorization", "bearer " + token);
+                    client.Headers.Add("Accept", "application/json, text/plain, */*");
+                    client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
+                    client.Headers.Add("Content-Type", "application/json;charset=utf-8");
+                    response = client.UploadString(url, "PUT", multishot.GetJson());
+                }
+            }
+            catch (WebException ex)
             {
-                client.Method = "PUT";
-                client.Headers.Add("Referer", "https://webapp.spypoint.com/camera/" + ci.id + "/settings");
-                client.Headers.Add("Authorization", "bearer " + token);
-                client.Headers.Add("Accept", "application/json, text/plain, */*");
-                client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
-                client.Headers.Add("Content-Type", "application/json;charset=utf-8");
-                response = client.UploadString(url,"PUT",multishot.GetJson());
+                string mess = "Error updating " + ci.config.name;
+                System.Diagnostics.Debug.WriteLine(mess);
+
             }
         }
         public void GetPicInfoFromCamera(CameraInfo ci)
@@ -313,6 +324,8 @@ namespace SpyPointData
             foreach (var kvp in CameraInfoList)
             {
                 CameraInfo ci = kvp.Value;
+                if (ci.ManualDisable)
+                    continue;
                 DownloadPhotosFromCamera(ci);
             }
         }

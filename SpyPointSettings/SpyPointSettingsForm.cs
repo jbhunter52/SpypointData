@@ -11,6 +11,7 @@ using System.IO;
 
 using SpyPointData;
 using System.Globalization;
+using NLog;
 
 namespace SpyPointSettings
 {
@@ -119,7 +120,11 @@ namespace SpyPointSettings
                     foreach (KeyValuePair<string, CameraInfo> kvp in conn.CameraInfoList)
                     {
                         CameraInfo ci = kvp.Value;
+                        if (ci.ManualDisable)
+                            continue;
+                        Log("TriggerMorningChange(), started " + ci.config.name);
                         conn.SetCameraSettings(ci, new DelayOptions(delay._15min), new MutiShotOptions(multishot._1));
+                        Log("TriggerMorningChange(), ended " + ci.config.name);
                     }
                 }
             }
@@ -138,7 +143,11 @@ namespace SpyPointSettings
                     foreach (KeyValuePair<string,CameraInfo> kvp in conn.CameraInfoList)
                     {
                         CameraInfo ci = kvp.Value;
+                        if (ci.ManualDisable)
+                            continue;
+                        Log("TriggerEveningChange(), started " + ci.config.name);
                         conn.SetCameraSettings(ci, new DelayOptions(delay._10s), new MutiShotOptions(multishot._2));
+                        Log("TriggerEveningChange(), ended " + ci.config.name);
                     }
                 }
             }
@@ -197,6 +206,9 @@ namespace SpyPointSettings
 
         private void Log(string mess)
         {
+            NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Debug(mess);
+
             string dt = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
             string log = String.Format("{0}, {1}\n", dt, mess);
             richTextBoxLog.AppendText(log);
