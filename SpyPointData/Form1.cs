@@ -1166,5 +1166,38 @@ namespace SpyPointData
                 Data.Filter.RectanglePoints = new List<GMap.NET.PointLatLng>();
             }
         }
+
+        private void exportPicturesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Zip file | *.zip";
+            if (sfd.ShowDialog()== DialogResult.OK)
+            {
+                string tmp = Path.Combine(Path.GetTempPath() + Path.GetRandomFileName());
+                if (!Directory.Exists(tmp))
+                    Directory.CreateDirectory(tmp);
+                System.IO.Compression.ZipStorer zip = new System.IO.Compression.ZipStorer();
+                
+                int cnt = 1;
+                foreach (object obj in treeListView1.SelectedObjects)
+                {
+                    if (obj is Photo)
+                    {
+                        Photo p = (Photo)obj;
+                        string file_name = String.Format("{0}_{1}.jpg", p.CameraName, cnt);
+                        string full_name = Path.Combine(tmp, file_name);
+                        File.Copy(p.GetBestPhotoFile(), full_name);
+                        File.SetLastWriteTime(full_name, p.originDate);
+                        File.SetCreationTime(full_name, p.originDate);
+                        cnt++;
+                    }
+                }
+
+                System.IO.Compression.ZipFile.CreateFromDirectory(tmp, sfd.FileName, System.IO.Compression.CompressionLevel.Optimal, false);
+
+                Directory.Delete(tmp, true);
+            }
+        }
     }
 }
