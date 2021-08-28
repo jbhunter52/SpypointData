@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
+using NLog;
 
 namespace SpyPointSettings
 {
     public class SunsetSunrise
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public string Latitude = "37.987525510757038";
         public string Longitude = "-89.485037326812744";
         public string Response = "";
@@ -27,6 +29,7 @@ namespace SpyPointSettings
         public SunriseSunsetResult Result;
         public SunsetSunrise(int minOffset)
         {
+            logger.Debug("Starting SunriseSunset refresh");
             string date = DateTime.Now.ToString("yyyy-MM-dd");
             string url = String.Format("https://api.sunrise-sunset.org/json?lat={0}&lng={1}&date={2}",Latitude, Longitude,date);
 
@@ -51,6 +54,7 @@ namespace SpyPointSettings
             Result = JsonConvert.DeserializeObject<SunriseSunsetResult>(response, settings);
 
             UpdateTimes(minOffset);
+            logger.Debug("Web API SunriseSunset complete");
         }
 
         private void UpdateTimes(int minOffset)

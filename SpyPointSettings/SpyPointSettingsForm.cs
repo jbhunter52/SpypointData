@@ -17,6 +17,7 @@ namespace SpyPointSettings
 {
     public partial class SpyPointSettingsForm : Form
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private Timer timer;
         private Timer fastTimer;
         private DataCollection Data;
@@ -34,6 +35,8 @@ namespace SpyPointSettings
             InitializeComponent();
             Log("Application started");
             Data = new DataCollection();
+
+            double test = 8 / 0.0;
 
             if (File.Exists(file))
             {
@@ -206,7 +209,6 @@ namespace SpyPointSettings
 
         private void Log(string mess)
         {
-            NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
             logger.Debug(mess);
 
             string dt = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
