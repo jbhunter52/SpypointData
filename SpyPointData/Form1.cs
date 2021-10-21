@@ -913,22 +913,47 @@ namespace SpyPointData
 
                 if (cp.HaveLocation && enableMapToolStripMenuItem.Checked)
                     UpdateMapMarkers(new List<object>() { cp });
+                imageViewer.NullPicture(tableLayoutPanelPic);
                 LastSelectedPhoto = null;
+            }
+            else if (obj is SPConnection)
+            {
+                List<object> objs = new List<object>();
+                foreach (var o in treeListView1.SelectedObjects)
+                    objs.Add(o);
+
+                List<SPConnection> connections = objs.Where(x => x is SPConnection).Select(x => (SPConnection)x).ToList();
+                List<CameraPics> cameras = new List<CameraPics>();
+                foreach (var spc in connections)
+                    cameras.AddRange(spc.CameraPictures.Values.ToList());
+                objs = new List<object>();
+                foreach (var c in cameras)
+                    objs.Add((object)c);
+                UpdateMapMarkers(objs);
+
             }
             else if (treeListView1.SelectedObject == null)
             {
                 //NullPicture();
 
+                List<object> objs = new List<object>();
+                List<Photo> pics = new List<Photo>();
                 if (enableMapToolStripMenuItem.Checked && treeListView1.SelectedObjects.Count > 0)
                 {
-                    List<object> objs = new List<object>();
-                    List<Photo> pics = new List<Photo>();
                     foreach (object o in treeListView1.SelectedObjects)
                     {
                         objs.Add(o);
 
                         if (o is Photo)
                             pics.Add((Photo)o);
+                        else if (obj is SPConnection)
+                        {
+                            objs.Add(obj);
+                        }
+                        else if (obj is KeyValuePair<string, CameraPics>)
+                        {
+                            objs.Add(((KeyValuePair<string, CameraPics>)obj).Value);
+                        }
                     }
                     UpdateMapMarkers(objs);
                     if (pics.Count > 0 && pics.Count <= imageViewer.MaxPics)
@@ -985,6 +1010,23 @@ namespace SpyPointData
                         lat = cp.Latitude;
                         lng = cp.Longitude;
                         id = cp.cameraId;
+                    }
+                }
+                else if (o is SPConnection)
+                {
+                    var spc = (SPConnection)o;
+                    foreach (var kvp in spc.CameraPictures)
+                    {
+                        var cam = (CameraPics)kvp.Value;
+                        if (cam.HaveLocation)
+                        {
+                            GMap.NET.WindowsForms.GMapMarker marker =
+                            new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                            new GMap.NET.PointLatLng(cam.Latitude, cam.Longitude),
+                            GMap.NET.WindowsForms.Markers.GMarkerGoogleType.blue_pushpin);
+                            marker.Tag = id;
+                            markers.Markers.Add(marker);
+                        }
                     }
                 }
 
@@ -1113,10 +1155,10 @@ namespace SpyPointData
 
             DumpData dd = new DumpData(Data, weather);
 
-            string pfile = Path.Combine("C:\\Users\\Jared\\Google Drive\\R\\Deer\\photos.csv");
+            string pfile = Path.Combine("C:\\Users\\Jared\\GoogleDrive\\R\\Deer\\photos.csv");
             dd.DumpPhotos(pfile);
 
-            string wfile = Path.Combine("C:\\Users\\Jared\\Google Drive\\R\\Deer\\weather.csv");
+            string wfile = Path.Combine("C:\\Users\\Jared\\GoogleDrive\\R\\Deer\\weather.csv");
             dd.DumpWeather(wfile);
         }
 

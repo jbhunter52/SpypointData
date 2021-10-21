@@ -160,6 +160,7 @@
     <Compile Include="SetCoordinatesForm.Designer.cs">
       <DependentUpon>SetCoordinatesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="SPConnection.cs" />
     <EmbeddedResource Include="EditLogin.resx">
       <DependentUpon>EditLogin.cs</DependentUpon>

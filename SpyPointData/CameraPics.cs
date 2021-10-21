@@ -103,8 +103,8 @@ namespace SpyPointData
 
             if (fc.Nothing)
             {
-                if (p.Buck)
-                    keep = false;
+                //if (p.Buck)
+                //    keep = false;
                 if (p.Deer)
                     keep = false;
             }

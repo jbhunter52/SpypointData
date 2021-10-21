@@ -36,7 +36,6 @@ namespace SpyPointSettings
             Log("Application started");
             Data = new DataCollection();
 
-            double test = 8 / 0.0;
 
             if (File.Exists(file))
             {
@@ -170,6 +169,14 @@ namespace SpyPointSettings
             textBoxShootTimeMorn.Text = s.ShootTimeMorn.ToString(s.format);
             textBoxShootTimeEve.Text = s.ShootTimeEve.ToString(s.format);
             CurrentSunsetSunrise = s;
+
+            Log("New Date");
+            Log("Sunrise, " + textBoxSunrise.Text);
+            Log("AfterSunrise, " + textBoxAfterSunrise.Text);
+            Log("ShootTimeMorning, " + textBoxShootTimeMorn.Text);
+            Log("Sunset, " + textBoxSunset.Text);
+            Log("BeforeSunset, " + textBoxBeforeSunset.Text);
+            Log("ShootTimeEvening, " + textBoxShootTimeEve.Text);
         }
         public void RefreshCameraInfo()
         {

@@ -49,6 +49,7 @@ namespace SpyPointData
                     if (IBs.Count == 0)
                         IBs.Add(new ImageBox());
                     IBs = new List<ImageBox>() { IBs[0] };
+                    IBs[0].ZoomToFit();
                     p.PicToImageBox(IBs[0]);
                     if (IBs.Count > 1)
                     {
