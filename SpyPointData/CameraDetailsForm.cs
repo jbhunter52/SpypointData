@@ -43,6 +43,7 @@ namespace SpyPointData
             dt.Columns.Add(new DataColumn("LastUpdate", typeof(string)));
             dt.Columns.Add(new DataColumn("Type", typeof(string)));
             dt.Columns.Add(new DataColumn("sim", typeof(string)));
+            dt.Columns.Add(new DataColumn("lastPicDays", typeof(string)));
             dt.Columns.Add(new DataColumn("Battery", typeof(int)));
             dt.Columns.Add(new DataColumn("Signal", typeof(int)));
             dt.Columns.Add(new DataColumn("PlanName", typeof(string)));
@@ -63,6 +64,10 @@ namespace SpyPointData
                 {
                     CameraInfo ci = kvp.Value;
 
+                    string lastPicDays = "-";
+                    if (ci.lastPhotoDate > new DateTime(1990, 1, 1))
+                        lastPicDays = ((int)DateTime.Now.Subtract(ci.lastPhotoDate).TotalDays).ToString();
+
                     DataRow dr = dt.NewRow();
                     dr["User"] = login;
                     dr["ID"] = ci.id;
@@ -72,6 +77,7 @@ namespace SpyPointData
                     dr["LastUpdate"] = ci.status.lastUpdate.ToShortDateString();
                     dr["Type"] = ci.status.signal.type;
                     dr["sim"] = ci.status.sim;
+                    dr["lastPicDays"] = lastPicDays;
                     dr["Battery"] = ci.status.batteries[0];
                     dr["Signal"] = ci.status.signal.dBm;
                     dr["PlanName"] = ci.subscriptions[0].plan.name;
@@ -87,7 +93,48 @@ namespace SpyPointData
                     dt.Rows.Add(dr);
                 }
             }
+            ToCSV(dt, "cameraData.csv");
             return dt;
+        }
+
+        public void ToCSV(DataTable dtDataTable, string strFilePath)
+        {
+            var sw = new System.IO.StreamWriter(strFilePath, false);
+            //headers    
+            for (int i = 0; i < dtDataTable.Columns.Count; i++)
+            {
+                sw.Write(dtDataTable.Columns[i]);
+                if (i < dtDataTable.Columns.Count - 1)
+                {
+                    sw.Write(",");
+                }
+            }
+            sw.Write(sw.NewLine);
+            foreach (DataRow dr in dtDataTable.Rows)
+            {
+                for (int i = 0; i < dtDataTable.Columns.Count; i++)
+                {
+                    if (!Convert.IsDBNull(dr[i]))
+                    {
+                        string value = dr[i].ToString();
+                        if (value.Contains(','))
+                        {
+                            value = String.Format("\"{0}\"", value);
+                            sw.Write(value);
+                        }
+                        else
+                        {
+                            sw.Write(dr[i].ToString());
+                        }
+                    }
+                    if (i < dtDataTable.Columns.Count - 1)
+                    {
+                        sw.Write(",");
+                    }
+                }
+                sw.Write(sw.NewLine);
+            }
+            sw.Close();
         }
     }
 }

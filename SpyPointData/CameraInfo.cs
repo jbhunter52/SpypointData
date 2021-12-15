@@ -162,7 +162,7 @@ namespace SpyPointData
         public Config config { get; set; }
         public DateTime hdSince { get; set; } 
         public bool isCellular { get; set; }
-        public object lastPhoto { get; set; }
+        public DateTime lastPhotoDate { get; set; }
         public List<Subscription> subscriptions { get; set; }
         public object dataMatrixKey { get; set; } 
         public bool ManualDisable { get; set; }

@@ -30,6 +30,8 @@ namespace SpyPointData
         public delegate void ProgressUpdate(string s);
         public event ProgressUpdate OnProgressUpdate;
 
+        public DateTime LastPicture;
+
         public SPConnection(LoginInfo login)
         {
             UserLogin = login;
@@ -42,6 +44,7 @@ namespace SpyPointData
             if (!Directory.Exists(Dir))
                 Directory.CreateDirectory(Dir);
         }
+
         public List<Photo> GetFilteredPhotos(FilterCriteria fc)
         {
             List<Photo> photos = new List<Photo>();
@@ -232,7 +235,9 @@ namespace SpyPointData
                 }
                 else
                     CameraInfoList.Add(ci.id, ci);
-            }
+                if (this.CameraPictures[ci.id].photos.Count > 0)
+                    ci.lastPhotoDate = this.CameraPictures[ci.id].photos.Max(p => p.originDate);
+            };
         }
         public void SetCameraSettings(CameraInfo ci, DelayOptions delay, MutiShotOptions multishot)
         {

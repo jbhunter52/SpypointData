@@ -19,6 +19,7 @@ namespace SpyPointSettings
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private Timer timer;
+        private Timer mediumTimer;
         private Timer fastTimer;
         private DataCollection Data;
         private string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SpyPoint", "Data.json");
@@ -64,11 +65,21 @@ namespace SpyPointSettings
             timer.Tick += Timer_Tick;
             timer.Start();
 
+            mediumTimer = new Timer();
+            mediumTimer.Interval = 1000 * 60 * 5; //every 5 minutes
+            mediumTimer.Tick += MediumTimer_Tick;
+            mediumTimer.Start();
+
             fastTimer = new Timer();
             fastTimer.Interval = 100;
             fastTimer.Tick += FastTimer_Tick;
             fastTimer.Start();
             Log("Initialize Complete");
+        }
+
+        private void MediumTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshCameraInfo();
         }
 
         private void FastTimer_Tick(object sender, EventArgs e)
