@@ -330,4 +330,5 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-/SpyPoint.7z
+*.7z
+*.csv

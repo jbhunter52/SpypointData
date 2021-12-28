@@ -66,7 +66,7 @@ namespace SpyPointSettings
             timer.Start();
 
             mediumTimer = new Timer();
-            mediumTimer.Interval = 1000 * 60 * 5; //every 5 minutes
+            mediumTimer.Interval = 1000 * 60 * 30; //every 5 minutes
             mediumTimer.Tick += MediumTimer_Tick;
             mediumTimer.Start();
 
@@ -199,6 +199,7 @@ namespace SpyPointSettings
                 //SP.GetCameraInfo();
                 spc.Login();
                 spc.GetCameraInfo();
+                spc.UpdateFirstPics();
             }
             RefreshTables();
             Log("RefreshCameraInfo");

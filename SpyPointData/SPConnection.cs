@@ -66,6 +66,22 @@ namespace SpyPointData
             }
         }
 
+        public void UpdateFirstPics()
+        {
+            foreach (var kvp in CameraInfoList)
+            {
+                CameraInfo ci = kvp.Value;
+                if (ci.ManualDisable)
+                    continue;
+                var pics = GetFirstPicInfoFromCamera(ci);
+                if (pics.photos.Count > 0)
+                {
+                    DateTime last = pics.photos.Max(p => p.originDate);
+                    ci.lastPhotoDate = last;
+                }
+            }
+        }
+
         public string GetNodeName(Photo p)
         {
             return p.originDate.ToShortDateString() + ", " + p.originDate.ToString("hh:mm:ss tt");
@@ -235,8 +251,6 @@ namespace SpyPointData
                 }
                 else
                     CameraInfoList.Add(ci.id, ci);
-                if (this.CameraPictures[ci.id].photos.Count > 0)
-                    ci.lastPhotoDate = this.CameraPictures[ci.id].photos.Max(p => p.originDate);
             };
         }
         public void SetCameraSettings(CameraInfo ci, DelayOptions delay, MutiShotOptions multishot)
@@ -275,6 +289,31 @@ namespace SpyPointData
 
             }
         }
+        public CameraPics GetFirstPicInfoFromCamera(CameraInfo ci)
+        {
+            CameraPics allPics = new CameraPics(ci.id);
+            Debug("Getting, " + ci.config.name);
+            string response = "";
+            string url = "https://restapi.spypoint.com/api/v3/photo/all";
+            bool more = true;
+            string date = "2100-01-01T00:00:00.000Z";
+            string postdata = "{\"dateEnd\":\"" + date + "\"}";
+            postdata = JsonConvert.SerializeObject(new PostRequest_AllCamPic(ci.id, date));
+
+            using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+            {
+                client.Method = "POST";
+                client.Headers.Add("Referer", "https://webapp.spypoint.com/");
+                client.Headers.Add("Authorization", "bearer " + token);
+                Debug(date);
+                response = client.UploadString(url, postdata);
+            }
+            //Debug(response);
+            CameraPics pics = JsonConvert.DeserializeObject<CameraPics>(response);
+            Debug(pics.countPhotos.ToString() + ", pictures");
+            return pics;
+        }
+
         public void GetPicInfoFromCamera(CameraInfo ci)
         {
             CameraPics allPics = new CameraPics(ci.id);
