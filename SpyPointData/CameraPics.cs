@@ -139,9 +139,29 @@ namespace SpyPointData
             }
             if (fc.Date)
             {
-                if (p.originDate < fc.MinDate)
+                DateTime picTime = p.originDate;
+                DateTime minDateTime = fc.MinDate;
+                DateTime maxDateTime = fc.MaxDate;
+
+                if (fc.DateIgnoreYear)
+                {
+                    picTime = DateTimeSetYear(picTime, 1990);
+                    minDateTime = DateTimeSetYear(minDateTime, 1990);
+                    maxDateTime = DateTimeSetYear(maxDateTime, 1990);
+
+
+
+                    if (maxDateTime < minDateTime)
+                    {
+                        if (picTime < minDateTime && picTime < maxDateTime)
+                            picTime = DateTimeSetYear(picTime, 1991);
+                        maxDateTime = DateTimeSetYear(maxDateTime, 1991);
+                    }
+                }
+
+                if (picTime < minDateTime)
                     keep = false;
-                if (p.originDate > fc.MaxDate)
+                if (picTime > maxDateTime)
                     keep = false;
 
             }
@@ -157,6 +177,11 @@ namespace SpyPointData
                     keep = false;
             }    
             return keep;
+        }
+
+        public DateTime DateTimeSetYear(DateTime dt, int year)
+        {
+            return new DateTime(year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
         }
 
         public string GetNodeName()

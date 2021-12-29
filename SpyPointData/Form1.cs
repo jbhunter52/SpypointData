@@ -1093,6 +1093,7 @@ namespace SpyPointData
 
             SelectingMarker = true;
             treeListView1.SelectObject(p, true);
+            treeListView1.EnsureVisible(treeListView1.SelectedIndex);
         }
 
         private void debugDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1138,13 +1139,8 @@ namespace SpyPointData
                             MessageBox.Show("New login failed");
                             Data.Connections.Remove(SP);
                         }
-
                     }
-
-
                 }
-
-
             }
         }
 
@@ -1165,7 +1161,6 @@ namespace SpyPointData
         private void cameraDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CameraDetailsForm cdf = new CameraDetailsForm(Data);
-
             cdf.ShowDialog();
         }
 

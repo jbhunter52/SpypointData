@@ -19,6 +19,7 @@ namespace SpyPointData
             Filter = filter;
             dateTimePickerMin.Value = Filter.MinDate;
             dateTimePickerMax.Value = Filter.MaxDate;
+            checkBoxIgnoreYear.Checked = Filter.DateIgnoreYear;
         }
 
         private void buttonFilter_Click(object sender, EventArgs e)
@@ -26,6 +27,7 @@ namespace SpyPointData
             Filter.MinDate = dateTimePickerMin.Value;
             Filter.MaxDate = dateTimePickerMax.Value;
             Filter.Date = true;
+            Filter.DateIgnoreYear = checkBoxIgnoreYear.Checked;
             DialogResult = DialogResult.OK;
         }
 

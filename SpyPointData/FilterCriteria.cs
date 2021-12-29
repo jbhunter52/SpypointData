@@ -19,6 +19,7 @@ namespace SpyPointData
         public bool Age3;
         public bool Age4;
         public bool Date;
+        public bool DateIgnoreYear;
         public DateTime MinDate;
         public DateTime MaxDate;
         public bool LocationOn;
@@ -47,6 +48,7 @@ namespace SpyPointData
             RectanglePoints = new List<PointLatLng>();
             MinDate = new DateTime(2017, 1, 1,0,0,0);
             MaxDate = DateTime.Today;
+            DateIgnoreYear = false;
         }
 
         public void SetRectBounds()
