@@ -25,6 +25,8 @@ namespace SpyPointData
         public bool LocationOn;
         public List<string> Locations;
         public bool RectangleOn;
+        public bool NoLocation;
+        public bool CardPicOnly;
         public List<PointLatLng> RectanglePoints;
 
         private double MinLng;
@@ -45,6 +47,8 @@ namespace SpyPointData
             LocationOn = false;
             Locations = new List<string>();
             RectangleOn = false;
+            NoLocation = false;
+            CardPicOnly = false;
             RectanglePoints = new List<PointLatLng>();
             MinDate = new DateTime(2017, 1, 1,0,0,0);
             MaxDate = DateTime.Today;

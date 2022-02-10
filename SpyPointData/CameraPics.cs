@@ -171,6 +171,18 @@ namespace SpyPointData
                 if (!fc.Locations.Contains(p.GetSimpleCameraName()))
                     keep = false;
             }
+            if (fc.NoLocation)
+            {
+                if (p.HaveLocation)
+                    keep = false;
+            }
+            if (fc.CardPicOnly)
+            {
+                if (p.CardPicFilename == null)
+                    keep = false;
+                else if (!p.CardPicFilename.Equals(p.FileName))
+                    keep = false;
+            }
             if (fc.RectangleOn)
             {
                 if (!fc.InRectangle(p.Latitude, p.Longitude))

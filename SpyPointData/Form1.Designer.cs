@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,6 +40,7 @@
             this.mergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCardPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importManualPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportPicturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buckIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,7 +91,8 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            this.exportPicturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CardPicOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -140,49 +142,56 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // editLoginToolStripMenuItem
             // 
             this.editLoginToolStripMenuItem.Name = "editLoginToolStripMenuItem";
-            this.editLoginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editLoginToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.editLoginToolStripMenuItem.Text = "Edit Logins";
             this.editLoginToolStripMenuItem.Click += new System.EventHandler(this.editLoginToolStripMenuItem_Click);
             // 
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.importToolStripMenuItem.Text = "Import From Server";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // mergeToolStripMenuItem
             // 
             this.mergeToolStripMenuItem.Name = "mergeToolStripMenuItem";
-            this.mergeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.mergeToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.mergeToolStripMenuItem.Text = "Merge from Server";
             this.mergeToolStripMenuItem.Click += new System.EventHandler(this.mergeToolStripMenuItem_Click);
             // 
             // importCardPicsToolStripMenuItem
             // 
             this.importCardPicsToolStripMenuItem.Name = "importCardPicsToolStripMenuItem";
-            this.importCardPicsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importCardPicsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.importCardPicsToolStripMenuItem.Text = "Import Card Pics";
             this.importCardPicsToolStripMenuItem.Click += new System.EventHandler(this.importCardPicsToolStripMenuItem_Click);
             // 
             // importManualPicsToolStripMenuItem
             // 
             this.importManualPicsToolStripMenuItem.Name = "importManualPicsToolStripMenuItem";
-            this.importManualPicsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importManualPicsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.importManualPicsToolStripMenuItem.Text = "Import Manual Pics";
             this.importManualPicsToolStripMenuItem.Click += new System.EventHandler(this.importManualPicsToolStripMenuItem_Click);
+            // 
+            // exportPicturesToolStripMenuItem
+            // 
+            this.exportPicturesToolStripMenuItem.Name = "exportPicturesToolStripMenuItem";
+            this.exportPicturesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.exportPicturesToolStripMenuItem.Text = "Export Pictures";
+            this.exportPicturesToolStripMenuItem.Click += new System.EventHandler(this.exportPicturesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -218,7 +227,9 @@
             this.bucksToolStripMenuItem,
             this.buckAgeToolStripMenuItem,
             this.dateToolStripMenuItem,
-            this.locationToolStripMenuItem1});
+            this.locationToolStripMenuItem1,
+            this.noLocationToolStripMenuItem,
+            this.CardPicOnlyToolStripMenuItem});
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             this.filterToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.filterToolStripMenuItem.Text = "Filter";
@@ -227,7 +238,7 @@
             // 
             this.newToolStripMenuItem.CheckOnClick = true;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -235,7 +246,7 @@
             // 
             this.nothingToolStripMenuItem.CheckOnClick = true;
             this.nothingToolStripMenuItem.Name = "nothingToolStripMenuItem";
-            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nothingToolStripMenuItem.Text = "Nothing";
             this.nothingToolStripMenuItem.Click += new System.EventHandler(this.nothingToolStripMenuItem_Click);
             // 
@@ -243,7 +254,7 @@
             // 
             this.deerToolStripMenuItem.CheckOnClick = true;
             this.deerToolStripMenuItem.Name = "deerToolStripMenuItem";
-            this.deerToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.deerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deerToolStripMenuItem.Text = "Deer";
             this.deerToolStripMenuItem.Click += new System.EventHandler(this.deerToolStripMenuItem_Click);
             // 
@@ -251,7 +262,7 @@
             // 
             this.bucksToolStripMenuItem.CheckOnClick = true;
             this.bucksToolStripMenuItem.Name = "bucksToolStripMenuItem";
-            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.bucksToolStripMenuItem.Text = "Bucks";
             this.bucksToolStripMenuItem.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
             // 
@@ -264,7 +275,7 @@
             this.toolStripMenuItemAge3p5,
             this.toolStripMenuItemAge4p5});
             this.buckAgeToolStripMenuItem.Name = "buckAgeToolStripMenuItem";
-            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.buckAgeToolStripMenuItem.Text = "Buck Age";
             // 
             // toolStripMenuItemAge0p5
@@ -320,14 +331,14 @@
             // dateToolStripMenuItem
             // 
             this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
-            this.dateToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.dateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dateToolStripMenuItem.Text = "Date";
             this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
             // locationToolStripMenuItem1
             // 
             this.locationToolStripMenuItem1.Name = "locationToolStripMenuItem1";
-            this.locationToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+            this.locationToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.locationToolStripMenuItem1.Text = "Location";
             this.locationToolStripMenuItem1.Click += new System.EventHandler(this.locationToolStripMenuItem1_Click);
             // 
@@ -606,17 +617,17 @@
             // 
             // chartHistogram
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartHistogram.ChartAreas.Add(chartArea1);
-            legend1.Enabled = false;
-            legend1.Name = "Legend1";
-            this.chartHistogram.Legends.Add(legend1);
+            chartArea2.Name = "ChartArea1";
+            this.chartHistogram.ChartAreas.Add(chartArea2);
+            legend2.Enabled = false;
+            legend2.Name = "Legend1";
+            this.chartHistogram.Legends.Add(legend2);
             this.chartHistogram.Location = new System.Drawing.Point(194, 0);
             this.chartHistogram.Name = "chartHistogram";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartHistogram.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartHistogram.Series.Add(series2);
             this.chartHistogram.Size = new System.Drawing.Size(718, 124);
             this.chartHistogram.TabIndex = 3;
             // 
@@ -687,12 +698,21 @@
             this.gMapControl1.Zoom = 16D;
             this.gMapControl1.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl1_OnMarkerClick);
             // 
-            // exportPicturesToolStripMenuItem
+            // noLocationToolStripMenuItem
             // 
-            this.exportPicturesToolStripMenuItem.Name = "exportPicturesToolStripMenuItem";
-            this.exportPicturesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportPicturesToolStripMenuItem.Text = "Export Pictures";
-            this.exportPicturesToolStripMenuItem.Click += new System.EventHandler(this.exportPicturesToolStripMenuItem_Click);
+            this.noLocationToolStripMenuItem.CheckOnClick = true;
+            this.noLocationToolStripMenuItem.Name = "noLocationToolStripMenuItem";
+            this.noLocationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.noLocationToolStripMenuItem.Text = "No Location";
+            this.noLocationToolStripMenuItem.Click += new System.EventHandler(this.noLocationToolStripMenuItem_Click);
+            // 
+            // CardPicOnlyToolStripMenuItem
+            // 
+            this.CardPicOnlyToolStripMenuItem.CheckOnClick = true;
+            this.CardPicOnlyToolStripMenuItem.Name = "CardPicOnlyToolStripMenuItem";
+            this.CardPicOnlyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CardPicOnlyToolStripMenuItem.Text = "Card Pic Only";
+            this.CardPicOnlyToolStripMenuItem.Click += new System.EventHandler(this.CardPicOnlyToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -790,6 +810,8 @@
         private System.Windows.Forms.ToolStripMenuItem dateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem locationToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exportPicturesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noLocationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CardPicOnlyToolStripMenuItem;
     }
 }
 

@@ -619,6 +619,16 @@ namespace SpyPointData
             Data.Filter.New = newToolStripMenuItem.Checked;
             treeListView1.UpdateColumnFiltering();
         }
+        private void CardPicOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Data.Filter.CardPicOnly = CardPicOnlyToolStripMenuItem.Checked;
+            treeListView1.UpdateColumnFiltering();
+        }
+        private void noLocationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Data.Filter.NoLocation = noLocationToolStripMenuItem.Checked;
+            treeListView1.UpdateColumnFiltering();
+        }
         private void comboBoxChartType_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateHistogram();
