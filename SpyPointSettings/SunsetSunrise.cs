@@ -32,7 +32,7 @@ namespace SpyPointSettings
             logger.Debug("Starting SunriseSunset refresh");
             string date = DateTime.Now.ToString("yyyy-MM-dd");
             string url = String.Format("https://api.sunrise-sunset.org/json?lat={0}&lng={1}&date={2}",Latitude, Longitude,date);
-
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
             string response = "";
             using (var client = new WebClient()) // WebClient class inherits IDisposable
             {
