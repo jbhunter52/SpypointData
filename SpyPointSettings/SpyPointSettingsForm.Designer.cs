@@ -321,6 +321,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "SpyPointSettingsForm";
             this.Text = "Form1";
+            this.Shown += new System.EventHandler(this.SpyPointSettingsForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dataListView)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
