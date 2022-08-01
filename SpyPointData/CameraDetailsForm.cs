@@ -44,8 +44,8 @@ namespace SpyPointData
             dt.Columns.Add(new DataColumn("Type", typeof(string)));
             dt.Columns.Add(new DataColumn("sim", typeof(string)));
             dt.Columns.Add(new DataColumn("lastPicDays", typeof(string)));
-            dt.Columns.Add(new DataColumn("Battery", typeof(int)));
-            dt.Columns.Add(new DataColumn("Signal", typeof(int)));
+            dt.Columns.Add(new DataColumn("Battery", typeof(string)));
+            dt.Columns.Add(new DataColumn("Signal", typeof(string)));
             dt.Columns.Add(new DataColumn("PlanName", typeof(string)));
             dt.Columns.Add(new DataColumn("MaxThisMonth", typeof(int)));
             dt.Columns.Add(new DataColumn("ThisMonth", typeof(int)));
@@ -73,13 +73,13 @@ namespace SpyPointData
                     dr["ID"] = ci.id;
                     dr["Name"] = ci.config.name;
                     dr["Model"] = ci.status.model;
-                    dr["Version"] = ci.status.version;
+                    dr["Version"] =  ci.status.version ??  ""; //possible null
                     dr["LastUpdate"] = ci.status.lastUpdate.ToShortDateString();
-                    dr["Type"] = ci.status.signal.type;
-                    dr["sim"] = ci.status.sim;
+                    dr["Type"] = (ci.status.signal == null) ? "": ci.status.signal.type; //possible null
+                    dr["sim"] = ci.status.sim ?? ""; //possible null
                     dr["lastPicDays"] = lastPicDays;
-                    dr["Battery"] = ci.status.batteries[0];
-                    dr["Signal"] = ci.status.signal.dBm;
+                    dr["Battery"] = (ci.status.batteries == null) ? "": ci.status.batteries[0].ToString(); //possible null
+                    dr["Signal"] = (ci.status.signal == null) ? "": ci.status.signal.dBm.ToString(); //possible null
                     dr["PlanName"] = ci.subscriptions[0].plan.name;
                     dr["MaxThisMonth"] = ci.subscriptions[0].plan.photoCountPerMonth;
                     dr["ThisMonth"] = ci.subscriptions[0].photoCount;
