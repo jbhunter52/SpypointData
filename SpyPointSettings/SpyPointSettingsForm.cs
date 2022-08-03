@@ -107,7 +107,15 @@ namespace SpyPointSettings
                         if (ci.ManualDisable)
                             continue;
                         Log("TriggerMorningChange(), started " + ci.config.name);
-                        conn.SetCameraSettings(ci, new DelayOptions(delay._15min), new MutiShotOptions(multishot._1));
+                        try
+                        {
+                            conn.SetCameraSettings(ci, new DelayOptions(delay._15min), new MutiShotOptions(multishot._1));
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
+                            logger.Log(LogLevel.Error, ex.Message);
+                        }
                         Log("TriggerMorningChange(), ended " + ci.config.name);
                     }
                 }
@@ -130,7 +138,15 @@ namespace SpyPointSettings
                         if (ci.ManualDisable)
                             continue;
                         Log("TriggerEveningChange(), started " + ci.config.name);
-                        conn.SetCameraSettings(ci, new DelayOptions(delay._10s), new MutiShotOptions(multishot._2));
+                        try
+                        {
+                            conn.SetCameraSettings(ci, new DelayOptions(delay._10s), new MutiShotOptions(multishot._2));
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
+                            logger.Log(LogLevel.Error, ex.Message);
+                        }
                         Log("TriggerEveningChange(), ended " + ci.config.name);
                     }
                 }
@@ -178,9 +194,37 @@ namespace SpyPointSettings
                 //SP.Login();
 
                 //SP.GetCameraInfo();
-                spc.Login();
-                spc.GetCameraInfo();
-                spc.UpdateFirstPics();
+                try
+                {
+                    spc.Login();
+                }
+                catch (Exception ex)
+                {
+                    logger.Log(LogLevel.Error, String.Format("Exception logging into user:{0}",spc.UserLogin.Username));
+                    logger.Log(LogLevel.Error, ex.Message);
+                    logger.Log(LogLevel.Error, ex.InnerException.Message);
+                }
+                try
+                {
+                    spc.GetCameraInfo();
+                }
+                catch (Exception ex)
+                {
+                    logger.Log(LogLevel.Error, String.Format("Exception getting camera info on user:{0}", spc.UserLogin.Username));
+                    logger.Log(LogLevel.Error, ex.Message);
+                    logger.Log(LogLevel.Error, ex.InnerException.Message);
+                }
+                try
+                {
+                    spc.UpdateFirstPics();
+                }
+                catch (Exception ex)
+                {
+                    logger.Log(LogLevel.Error, String.Format("Exception updating pics on user:{0}", spc.UserLogin.Username));
+                    logger.Log(LogLevel.Error, ex.Message);
+                    logger.Log(LogLevel.Error, ex.InnerException.Message);
+                }
+
             }
             RefreshTables();
             Log("RefreshCameraInfo");

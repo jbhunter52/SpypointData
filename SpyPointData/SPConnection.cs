@@ -224,34 +224,41 @@ namespace SpyPointData
 
         public void GetCameraInfo()
         {
-            string response = "";
-            string CameraAllURL = "https://restapi.spypoint.com/api/v3/camera/all";
-            using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+            try
             {
-                client.Method = "GET";
-                client.Headers.Add("Referer", "https://webapp.spypoint.com/");
-                client.Headers.Add("Authorization", "bearer " + token);
-                response = client.DownloadString(CameraAllURL);
-            }
-            Debug(response, false);
-
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.NullValueHandling = NullValueHandling.Ignore;
-
-            List<CameraInfo> list = JsonConvert.DeserializeObject<List<CameraInfo>>(response, settings);
-            foreach (CameraInfo ci in list)
-            {
-                string dir = Path.Combine(Dir, ci.id);
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
-
-                if (CameraInfoList.ContainsKey(ci.id))
+                string response = "";
+                string CameraAllURL = "https://restapi.spypoint.com/api/v3/camera/all";
+                using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
                 {
-                    CameraInfoList[ci.id] = ci;
+                    client.Method = "GET";
+                    client.Headers.Add("Referer", "https://webapp.spypoint.com/");
+                    client.Headers.Add("Authorization", "bearer " + token);
+                    response = client.DownloadString(CameraAllURL);
                 }
-                else
-                    CameraInfoList.Add(ci.id, ci);
-            };
+                Debug(response, false);
+
+                JsonSerializerSettings settings = new JsonSerializerSettings();
+                settings.NullValueHandling = NullValueHandling.Ignore;
+
+                List<CameraInfo> list = JsonConvert.DeserializeObject<List<CameraInfo>>(response, settings);
+                foreach (CameraInfo ci in list)
+                {
+                    string dir = Path.Combine(Dir, ci.id);
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
+
+                    if (CameraInfoList.ContainsKey(ci.id))
+                    {
+                        CameraInfoList[ci.id] = ci;
+                    }
+                    else
+                        CameraInfoList.Add(ci.id, ci);
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(String.Format("Error updating camera lists for user:{0}", this.UserLogin.Username), ex);
+            }
         }
         public void SetCameraSettings(CameraInfo ci, DelayOptions delay, MutiShotOptions multishot)
         {
@@ -291,27 +298,34 @@ namespace SpyPointData
         }
         public CameraPics GetFirstPicInfoFromCamera(CameraInfo ci)
         {
-            CameraPics allPics = new CameraPics(ci.id);
-            Debug("Getting, " + ci.config.name);
-            string response = "";
-            string url = "https://restapi.spypoint.com/api/v3/photo/all";
-            bool more = true;
-            string date = "2100-01-01T00:00:00.000Z";
-            string postdata = "{\"dateEnd\":\"" + date + "\"}";
-            postdata = JsonConvert.SerializeObject(new PostRequest_AllCamPic(ci.id, date));
-
-            using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+            try
             {
-                client.Method = "POST";
-                client.Headers.Add("Referer", "https://webapp.spypoint.com/");
-                client.Headers.Add("Authorization", "bearer " + token);
-                Debug(date);
-                response = client.UploadString(url, postdata);
+                CameraPics allPics = new CameraPics(ci.id);
+                Debug("Getting, " + ci.config.name);
+                string response = "";
+                string url = "https://restapi.spypoint.com/api/v3/photo/all";
+                bool more = true;
+                string date = "2100-01-01T00:00:00.000Z";
+                string postdata = "{\"dateEnd\":\"" + date + "\"}";
+                postdata = JsonConvert.SerializeObject(new PostRequest_AllCamPic(ci.id, date));
+
+                using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+                {
+                    client.Method = "POST";
+                    client.Headers.Add("Referer", "https://webapp.spypoint.com/");
+                    client.Headers.Add("Authorization", "bearer " + token);
+                    Debug(date);
+                    response = client.UploadString(url, postdata);
+                }
+                //Debug(response);
+                CameraPics pics = JsonConvert.DeserializeObject<CameraPics>(response);
+                Debug(pics.countPhotos.ToString() + ", pictures");
+                return pics;
             }
-            //Debug(response);
-            CameraPics pics = JsonConvert.DeserializeObject<CameraPics>(response);
-            Debug(pics.countPhotos.ToString() + ", pictures");
-            return pics;
+            catch (Exception ex)
+            {
+                throw new Exception(String.Format("Error update camera pics for {0}", ci.config.name), ex);
+            }
         }
 
         public void GetPicInfoFromCamera(CameraInfo ci)
