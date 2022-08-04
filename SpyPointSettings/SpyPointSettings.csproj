@@ -114,6 +114,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetDir)*.exe $(SolutionDir)Build
-copy $(TargetDir)*.dll $(SolutionDir)Build</PostBuildEvent>
+copy $(TargetDir)*.dll $(SolutionDir)Build
+copy $(TargetDir)Nlog.config $(SolutionDir)Build</PostBuildEvent>
   </PropertyGroup>
 </Project>

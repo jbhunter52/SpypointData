@@ -440,7 +440,17 @@ namespace SpyPointData
             data.OnProgressUpdate += Data_OnProgressUpdate;
             Data.OnProgressUpdate += Data_OnProgressUpdate;
             Data.RegisterEvents();
-            
+
+            int numCameras = 0;
+            foreach (var spc in Data.Connections)
+            {
+                foreach (var cam in spc.CameraInfoList)
+                {
+                    numCameras++;
+                }
+            }
+
+
             foreach (var spc in Data.Connections)
             {
                 SPConnection SP = data.Add(spc.UserLogin);
