@@ -50,6 +50,13 @@ namespace SpyPointData
             TreeViewRightClickContext = new ContextMenuStrip();
             TreeViewRightClickContext.Items.Add(new ToolStripMenuItem("Add"));
             TreeViewRightClickContext.ItemClicked += NodeRightClickContext_ItemClicked;
+
+            //Update BuckID combobox
+            comboBoxBuckIDs.Items.Add("");
+            foreach (BuckID id in Data.BuckData.IDs)
+            {
+                comboBoxBuckIDs.Items.Add(id.Name);
+            }
         }
         private TreeNode rightClickedNode;
         void NodeRightClickContext_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -160,7 +167,7 @@ namespace SpyPointData
                         markers.Markers.Add(marker);
                         
                     }
-                    
+
                 }
                 gMapControl1.Overlays.Add(markers);
                 gMapControl1.ZoomAndCenterMarkers("markers");
@@ -170,9 +177,19 @@ namespace SpyPointData
 
 
             //Must be a photo selected
-
             string tag = (string)e.Node.Tag;
             p = Data.FindPhoto(tag);
+
+            //Update BuckId combobox
+            string name = Data.BuckData.CheckForPhoto(p.id);
+            if (name == null)
+                comboBoxBuckIDs.SelectedItem = null;
+            else
+            {
+                comboBoxBuckIDs.SelectedIndexChanged -= comboBoxBuckIDs_SelectedIndexChanged;
+                comboBoxBuckIDs.SelectedItem = name;
+                comboBoxBuckIDs.SelectedIndexChanged += comboBoxBuckIDs_SelectedIndexChanged;
+            }
 
             if (p == null)
             {
@@ -321,6 +338,26 @@ namespace SpyPointData
                     }
                 }
             }
+        }
+
+        private void comboBoxBuckIDs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Photo p;
+            string idName = (string)comboBoxBuckIDs.SelectedItem;
+
+            if (idName == null)
+                return;
+
+            string tag = (string)treeView1.SelectedNode.Tag;
+            p = Data.FindPhoto(tag);
+
+            if (p == null)
+                return;
+
+            Data.BuckData.AddConnection(idName, p);
+            ReDraw();
+
+            return;
         }
     }
 }

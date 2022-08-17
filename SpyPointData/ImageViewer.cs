@@ -95,10 +95,10 @@ namespace SpyPointData
                         }
                     }
                     int cnt = 0;
-                    int size = SetTableLayout(thisShowCount, tlp);
-                    for (int i = 0; i < size; i++)
+                    int[] size = SetTableLayout(thisShowCount, tlp);
+                    for (int i = 0; i < size[0]; i++)
                     {
-                        for (int j = 0; j < size; j++)
+                        for (int j = 0; j < size[1]; j++)
                         {
                             tlp.Controls.Add(IBs[cnt], j, i);
                             cnt++;
@@ -147,10 +147,10 @@ namespace SpyPointData
 
 
                     int cnt = 0;
-                    int size = SetTableLayout(thisShowCount, tlp);
-                    for (int i = 0; i < size; i++)
+                    int[] size = SetTableLayout(thisShowCount, tlp);
+                    for (int i = 0; i < size[0]; i++)
                     {
-                        for (int j = 0; j < size; j++)
+                        for (int j = 0; j < size[1]; j++)
                         {
                             tlp.Controls.Add(IBs[cnt], j, i);
                             cnt++;
@@ -196,31 +196,58 @@ namespace SpyPointData
                 MessageBox.Show("Error on displaying images");
             }
         }
-        public int SetTableLayout(int num, TableLayoutPanel tlp)
+        public int[] SetTableLayout(int num, TableLayoutPanel tlp)
         {
             int rc;
+            int cc;
             if (num == 1)
+            {
                 rc = 1;
+                cc = 1;
+            }
+            if (num == 2)
+            {
+                rc = 2;
+                cc = 1;
+            }
             else if (num <= 4)
             {
                 rc = 2;
+                cc = 2;
+            }
+            else if (num <= 6)
+            {
+                rc = 2;
+                cc = 3;
             }
             else if (num <= 9)
+            {
                 rc = 3;
+                cc = 3;
+            }
             else
+            {
                 rc = 0;
+                cc = 0;
+            }
 
             tlp.RowStyles.Clear();
             tlp.ColumnStyles.Clear();
             tlp.RowCount = rc;
-            tlp.ColumnCount = rc;
+            tlp.ColumnCount = cc;
 
             for (int i = 0; i < rc; i++)
             {
                 tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, tlp.Height / rc));
-                tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, tlp.Width / rc));
+                //tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, tlp.Width / rc));
             }
-            return rc;
+
+            for (int i = 0; i < cc; i++)
+            {
+                //tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, tlp.Height / rc));
+                tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, tlp.Width / cc));
+            }
+            return new int[] { rc, cc };
         }
     }
 }

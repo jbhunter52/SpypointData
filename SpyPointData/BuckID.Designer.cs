@@ -42,10 +42,11 @@
             this.pictureBoxArrow = new System.Windows.Forms.PictureBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
+            this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
+            this.comboBoxBuckIDs = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -116,6 +117,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.comboBoxBuckIDs);
             this.splitContainer3.Panel1.Controls.Add(this.textBoxBearing);
             this.splitContainer3.Panel1.Controls.Add(this.label3);
             this.splitContainer3.Panel1.Controls.Add(this.textBoxSpeed);
@@ -134,7 +136,7 @@
             // 
             // textBoxBearing
             // 
-            this.textBoxBearing.Location = new System.Drawing.Point(622, 49);
+            this.textBoxBearing.Location = new System.Drawing.Point(680, 49);
             this.textBoxBearing.Name = "textBoxBearing";
             this.textBoxBearing.Size = new System.Drawing.Size(58, 20);
             this.textBoxBearing.TabIndex = 7;
@@ -142,7 +144,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(578, 52);
+            this.label3.Location = new System.Drawing.Point(636, 52);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 6;
@@ -150,7 +152,7 @@
             // 
             // textBoxSpeed
             // 
-            this.textBoxSpeed.Location = new System.Drawing.Point(490, 49);
+            this.textBoxSpeed.Location = new System.Drawing.Point(548, 49);
             this.textBoxSpeed.Name = "textBoxSpeed";
             this.textBoxSpeed.Size = new System.Drawing.Size(58, 20);
             this.textBoxSpeed.TabIndex = 5;
@@ -158,7 +160,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(446, 52);
+            this.label2.Location = new System.Drawing.Point(504, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 4;
@@ -166,7 +168,7 @@
             // 
             // textBoxTime
             // 
-            this.textBoxTime.Location = new System.Drawing.Point(182, 46);
+            this.textBoxTime.Location = new System.Drawing.Point(337, 46);
             this.textBoxTime.Name = "textBoxTime";
             this.textBoxTime.Size = new System.Drawing.Size(149, 20);
             this.textBoxTime.TabIndex = 3;
@@ -174,7 +176,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(101, 49);
+            this.label1.Location = new System.Drawing.Point(256, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 2;
@@ -226,6 +228,18 @@
             this.gMapControl1.TabIndex = 0;
             this.gMapControl1.Zoom = 16D;
             // 
+            // tableLayoutPanelPic
+            // 
+            this.tableLayoutPanelPic.ColumnCount = 1;
+            this.tableLayoutPanelPic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelPic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelPic.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelPic.Name = "tableLayoutPanelPic";
+            this.tableLayoutPanelPic.RowCount = 1;
+            this.tableLayoutPanelPic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelPic.Size = new System.Drawing.Size(978, 329);
+            this.tableLayoutPanelPic.TabIndex = 0;
+            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -248,17 +262,15 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // tableLayoutPanelPic
+            // comboBoxBuckIDs
             // 
-            this.tableLayoutPanelPic.ColumnCount = 1;
-            this.tableLayoutPanelPic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelPic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelPic.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelPic.Name = "tableLayoutPanelPic";
-            this.tableLayoutPanelPic.RowCount = 1;
-            this.tableLayoutPanelPic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelPic.Size = new System.Drawing.Size(978, 329);
-            this.tableLayoutPanelPic.TabIndex = 0;
+            this.comboBoxBuckIDs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxBuckIDs.FormattingEnabled = true;
+            this.comboBoxBuckIDs.Location = new System.Drawing.Point(28, 46);
+            this.comboBoxBuckIDs.Name = "comboBoxBuckIDs";
+            this.comboBoxBuckIDs.Size = new System.Drawing.Size(172, 21);
+            this.comboBoxBuckIDs.TabIndex = 9;
+            this.comboBoxBuckIDs.SelectedIndexChanged += new System.EventHandler(this.comboBoxBuckIDs_SelectedIndexChanged);
             // 
             // BuckIDForm
             // 
@@ -312,5 +324,6 @@
         private System.Windows.Forms.TextBox textBoxSpeed;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelPic;
+        private System.Windows.Forms.ComboBox comboBoxBuckIDs;
     }
 }
