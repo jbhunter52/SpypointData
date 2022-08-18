@@ -96,7 +96,7 @@ namespace SpyPointData
                 return "null";
             return System.Text.RegularExpressions.Regex.Replace(CameraName, @"[\d-]", string.Empty).Replace(".","").Trim();
         }
-        public bool CheckFilter(FilterCriteria fc)
+        public bool CheckFilter(FilterCriteria fc, string buckID)
         {
             Photo p = this;
             bool keep = true;
@@ -187,7 +187,14 @@ namespace SpyPointData
             {
                 if (!fc.InRectangle(p.Latitude, p.Longitude))
                     keep = false;
-            }    
+            }
+            if (fc.BuckIDs.Count > 0)
+            {
+                if (buckID == null)
+                    keep = false;
+                else if (!fc.BuckIDs.Contains(buckID))
+                    keep = false;
+            }
             return keep;
         }
 
@@ -265,12 +272,12 @@ namespace SpyPointData
             cameraId = id;
             countPhotos = 0;
         }
-        public List<Photo> GetFilteredPhotos(FilterCriteria fc)
+        public List<Photo> GetFilteredPhotos(FilterCriteria fc, BuckData buckData)
         {
             List<Photo> filtered = new List<Photo>();
             foreach (Photo p in this.photos)
             {
-                if (p.CheckFilter(fc))
+                if (p.CheckFilter(fc, buckData.CheckForPhoto(p.id)))
                     filtered.Add(p);
             }
             return filtered;

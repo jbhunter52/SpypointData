@@ -88,7 +88,7 @@ namespace SpyPointData
             List<Photo> photos = new List<Photo>();
             foreach (var conn in Connections)
             {
-                photos.AddRange(conn.GetFilteredPhotos(Filter));
+                photos.AddRange(conn.GetFilteredPhotos(Filter, BuckData));
             }
             return photos;
         }

@@ -11,6 +11,8 @@ namespace SpyPointData
     public class BuckData
     {
         public List<BuckID> IDs { get; set; }
+        [JsonIgnore]
+        public HashSet<string> pIDs { get; set; }
 
         public BuckData()
         {
@@ -22,6 +24,7 @@ namespace SpyPointData
             foreach (BuckID id in IDs)
             {
                 id.Photos.RemoveAll(i => i.PhotoID.Equals(p.id));
+                pIDs.Remove(p.id);
             }
 
             //If name is blank then it has already been removed above, return from function
@@ -31,16 +34,33 @@ namespace SpyPointData
             //Now add connection     
             BuckID buckID = IDs.Find(id => id.Name.Equals(name));
             buckID.Photos.Add(new BuckIDPhoto(p.id));
+            pIDs.Add(p.id);
         }
         public string CheckForPhoto(string photoID)
         {
-            foreach (BuckID buckID in IDs)
+            if (pIDs == null)
             {
-                foreach (var buckIDPhoto in buckID.Photos)
+                pIDs = new HashSet<string>();
+                foreach (BuckID buckID in IDs)
                 {
-                    if (buckIDPhoto.PhotoID.Equals(photoID))
+                    foreach (var buckIDPhoto in buckID.Photos)
                     {
-                        return buckID.Name;
+                        if (!pIDs.Contains(buckIDPhoto.PhotoID))
+                            pIDs.Add(buckIDPhoto.PhotoID);
+                    }
+                }
+            }
+
+            if (pIDs.Contains(photoID))
+            {
+                foreach (BuckID buckID in IDs)
+                {
+                    foreach (var buckIDPhoto in buckID.Photos)
+                    {
+                        if (buckIDPhoto.PhotoID.Equals(photoID))
+                        {
+                            return buckID.Name;
+                        }
                     }
                 }
             }

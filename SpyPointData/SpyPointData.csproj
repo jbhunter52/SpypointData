@@ -105,6 +105,12 @@
     </Compile>
     <Compile Include="DelayOptions.cs" />
     <Compile Include="DumpData.cs" />
+    <Compile Include="FilterBuckIDForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilterBuckIDForm.Designer.cs">
+      <DependentUpon>FilterBuckIDForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FilterLocationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DateFilterForm.resx">
       <DependentUpon>DateFilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterBuckIDForm.resx">
+      <DependentUpon>FilterBuckIDForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FilterLocationForm.resx">
       <DependentUpon>FilterLocationForm.cs</DependentUpon>

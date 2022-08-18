@@ -28,6 +28,7 @@ namespace SpyPointData
         public bool NoLocation;
         public bool CardPicOnly;
         public List<PointLatLng> RectanglePoints;
+        public List<string> BuckIDs;
 
         private double MinLng;
         private double MaxLng;
@@ -53,6 +54,7 @@ namespace SpyPointData
             MinDate = new DateTime(2017, 1, 1,0,0,0);
             MaxDate = DateTime.Today;
             DateIgnoreYear = false;
+            BuckIDs = new List<string>();
         }
 
         public void SetRectBounds()

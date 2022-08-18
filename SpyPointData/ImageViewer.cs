@@ -205,7 +205,7 @@ namespace SpyPointData
                 rc = 1;
                 cc = 1;
             }
-            if (num == 2)
+            else if (num == 2)
             {
                 rc = 2;
                 cc = 1;

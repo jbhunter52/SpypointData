@@ -114,7 +114,7 @@ namespace SpyPointData
                 }
             }
         }
-        public TreeNode GetNodes(FilterCriteria fc)
+        public TreeNode GetNodes(FilterCriteria fc, BuckData buckData)
         {
             List<TreeNode> nodes = new List<TreeNode>();
 
@@ -131,7 +131,7 @@ namespace SpyPointData
                     if (p.Deer)
                         n.BackColor = System.Drawing.Color.LightGray;
                     //Apply filters
-                    if (p.CheckFilter(fc))
+                    if (p.CheckFilter(fc, buckData.CheckForPhoto(p.id)))
                         nodes.Add(n);  
                                  
             }
@@ -140,12 +140,12 @@ namespace SpyPointData
             manualNode.Nodes.AddRange(nodes.ToArray());
             return manualNode;
         }
-        public List<Photo> GetFilteredPhotos(FilterCriteria fc)
+        public List<Photo> GetFilteredPhotos(FilterCriteria fc, BuckData buckData)
         {
             List<Photo> photos = new List<Photo>();
             foreach (Photo p in Photos)
             {
-                if (p.CheckFilter(fc))
+                if (p.CheckFilter(fc, buckData.CheckForPhoto(p.id)))
                     photos.Add(p);
             }
             return photos;

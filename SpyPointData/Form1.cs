@@ -117,7 +117,7 @@ namespace SpyPointData
                 if (o is Photo)
                 {
                     Photo p = (Photo)o;
-                    return p.CheckFilter(Data.Filter);
+                    return p.CheckFilter(Data.Filter, Data.BuckData.CheckForPhoto(p.id));
                 }
                 else
                     return true;
@@ -256,13 +256,13 @@ namespace SpyPointData
                 }
                 else if (obj is SPConnection)
                 {
-                    return ((SPConnection)obj).GetFilteredPhotos(Data.Filter).Count.ToString();
+                    return ((SPConnection)obj).GetFilteredPhotos(Data.Filter, Data.BuckData).Count.ToString();
                 }
                 else if (obj is ManualPics)
-                    return ((ManualPics)obj).GetFilteredPhotos(Data.Filter).Count.ToString();
+                    return ((ManualPics)obj).GetFilteredPhotos(Data.Filter, Data.BuckData).Count.ToString();
                 else if (obj is KeyValuePair<string, CameraPics>)
                 {
-                    return ((KeyValuePair<string, CameraPics>)obj).Value.GetFilteredPhotos(Data.Filter).Count.ToString();
+                    return ((KeyValuePair<string, CameraPics>)obj).Value.GetFilteredPhotos(Data.Filter, Data.BuckData).Count.ToString();
                 }
                 else if (obj is Photo)
                 {
@@ -378,11 +378,11 @@ namespace SpyPointData
             }
             else if (o is SPConnection)
             {
-                photos = ((SPConnection)o).GetFilteredPhotos(Data.Filter);
+                photos = ((SPConnection)o).GetFilteredPhotos(Data.Filter, Data.BuckData);
             }
             else if (o is KeyValuePair<string, CameraPics>)
             {
-                photos = ((KeyValuePair<string, CameraPics>)o).Value.GetFilteredPhotos(Data.Filter);
+                photos = ((KeyValuePair<string, CameraPics>)o).Value.GetFilteredPhotos(Data.Filter, Data.BuckData);
             }
             else if (o is Photo)
             {
@@ -1254,6 +1254,20 @@ namespace SpyPointData
                 System.IO.Compression.ZipFile.CreateFromDirectory(tmp, sfd.FileName, System.IO.Compression.CompressionLevel.Optimal, false);
 
                 Directory.Delete(tmp, true);
+            }
+        }
+
+        private void buckIDToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            List<string> ids = Data.BuckData.IDs.Select(x => x.Name).ToList();
+
+            FilterBuckIDForm form = new FilterBuckIDForm(ids);
+            if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+                Data.Filter.BuckIDs = form.SelectedIDs;
+
+                treeListView1.UpdateColumnFiltering();
             }
         }
     }

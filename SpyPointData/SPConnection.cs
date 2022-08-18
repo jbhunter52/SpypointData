@@ -45,13 +45,13 @@ namespace SpyPointData
                 Directory.CreateDirectory(Dir);
         }
 
-        public List<Photo> GetFilteredPhotos(FilterCriteria fc)
+        public List<Photo> GetFilteredPhotos(FilterCriteria fc, BuckData buckData)
         {
             List<Photo> photos = new List<Photo>();
             foreach (KeyValuePair<string, CameraPics> kvp in CameraPictures)
             {
                 CameraPics cp = kvp.Value;
-                photos.AddRange(cp.GetFilteredPhotos(fc));
+                photos.AddRange(cp.GetFilteredPhotos(fc, buckData));
             }
             return photos;
         }
@@ -96,7 +96,7 @@ namespace SpyPointData
                 CamId = camid;
             }
         }
-        public TreeNode GetNodes(FilterCriteria fc, OrganizeMethod method)
+        public TreeNode GetNodes(FilterCriteria fc, BuckData buckData, OrganizeMethod method)
         {
             TreeNode user = new TreeNode();
             user.Text = this.UserLogin.Username;
@@ -122,7 +122,7 @@ namespace SpyPointData
                         if (p.Deer)
                             n.BackColor = System.Drawing.Color.LightGray;
                         //Apply filters
-                        if (p.CheckFilter(fc))
+                        if (p.CheckFilter(fc, buckData.CheckForPhoto(p.id)))
                             camNode.Nodes.Add(n);
                     }
                     
@@ -165,7 +165,7 @@ namespace SpyPointData
                         if (p.Deer)
                             n.BackColor = System.Drawing.Color.LightGray;
                         //Apply filters
-                        if (p.CheckFilter(fc))
+                        if (p.CheckFilter(fc, buckData.CheckForPhoto(p.id)))
                             locNode.Nodes.Add(n);
                     }
                     if (locNode.Nodes.Count > 0)
