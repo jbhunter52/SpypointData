@@ -23,7 +23,8 @@ namespace SpyPointSettings
         private Timer fastTimer;
         private DataCollection Data;
         private string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SpyPoint", "Data.json");
-
+        private string settingsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SpyPoint", "SpyPointSettings.json");
+        private SPSSettings Settings;
         bool MorningChange = false;
         bool EveningChange = false;
 
@@ -35,6 +36,29 @@ namespace SpyPointSettings
         {
             InitializeComponent();
             Log("Application started");
+            Settings = new SPSSettings();
+            Settings.Load(settingsFile);
+
+            comboBoxDayDelay.SelectedIndexChanged -= comboBoxDayDelay_SelectedIndexChanged;
+            comboBoxDayNumShots.SelectedIndexChanged -= comboBoxDayNumShots_SelectedIndexChanged;
+            comboBoxNightDelay.SelectedIndexChanged -= comboBoxNightDelay_SelectedIndexChanged;
+            comboBoxNightNumShots.SelectedIndexChanged -= comboBoxNightNumShots_SelectedIndexChanged;
+
+            comboBoxDayDelay.DataSource = Enum.GetNames(typeof(delay));
+            comboBoxDayNumShots.DataSource = Enum.GetNames(typeof(multishot));
+            comboBoxNightDelay.DataSource = Enum.GetNames(typeof(delay));
+            comboBoxNightNumShots.DataSource = Enum.GetNames(typeof(multishot));
+
+            comboBoxDayDelay.SelectedItem = Settings.DayDelay;
+            comboBoxDayNumShots.SelectedItem = Settings.DayMultiShot;
+            comboBoxNightDelay.SelectedItem = Settings.NightDelay;
+            comboBoxNightNumShots.SelectedItem = Settings.NightMultiShot;
+
+            comboBoxDayDelay.SelectedIndexChanged += comboBoxDayDelay_SelectedIndexChanged;
+            comboBoxDayNumShots.SelectedIndexChanged += comboBoxDayNumShots_SelectedIndexChanged;
+            comboBoxNightDelay.SelectedIndexChanged += comboBoxNightDelay_SelectedIndexChanged;
+            comboBoxNightNumShots.SelectedIndexChanged += comboBoxNightNumShots_SelectedIndexChanged;
+
             Data = new DataCollection();
 
 
@@ -43,7 +67,7 @@ namespace SpyPointSettings
                 Data.Load(file);
             }
 
-            
+
         }
 
         private void MediumTimer_Tick(object sender, EventArgs e)
@@ -109,7 +133,7 @@ namespace SpyPointSettings
                         Log("TriggerMorningChange(), started " + ci.config.name);
                         try
                         {
-                            conn.SetCameraSettings(ci, new DelayOptions(delay._15min), new MutiShotOptions(multishot._1));
+                            conn.SetCameraSettings(ci, new DelayOptions(Settings.DayDelay), new MutiShotOptions(Settings.NightMultiShot));
                         }
                         catch (Exception ex)
                         {
@@ -140,7 +164,7 @@ namespace SpyPointSettings
                         Log("TriggerEveningChange(), started " + ci.config.name);
                         try
                         {
-                            conn.SetCameraSettings(ci, new DelayOptions(delay._10s), new MutiShotOptions(multishot._2));
+                            conn.SetCameraSettings(ci, new DelayOptions(Settings.NightDelay), new MutiShotOptions(Settings.NightMultiShot));
                         }
                         catch (Exception ex)
                         {
@@ -295,6 +319,30 @@ namespace SpyPointSettings
             fastTimer.Tick += FastTimer_Tick;
             fastTimer.Start();
             Log("Initialize Complete");
+        }
+
+        private void comboBoxDayDelay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.DayDelay = (delay)Enum.Parse(typeof(delay), comboBoxDayDelay.SelectedValue.ToString());
+            Settings.Save(settingsFile);
+        }
+
+        private void comboBoxDayNumShots_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.DayMultiShot = (multishot)Enum.Parse(typeof(multishot), comboBoxDayNumShots.SelectedValue.ToString());
+            Settings.Save(settingsFile);
+        }
+
+        private void comboBoxNightDelay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.NightDelay = (delay)Enum.Parse(typeof(delay), comboBoxNightDelay.SelectedValue.ToString());
+            Settings.Save(settingsFile);
+        }
+
+        private void comboBoxNightNumShots_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.NightMultiShot = (multishot)Enum.Parse(typeof(multishot), comboBoxNightNumShots.SelectedValue.ToString());
+            Settings.Save(settingsFile);
         }
     }
 }
