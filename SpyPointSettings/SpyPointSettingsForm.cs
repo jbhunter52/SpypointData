@@ -36,8 +36,7 @@ namespace SpyPointSettings
         {
             InitializeComponent();
             Log("Application started");
-            Settings = new SPSSettings();
-            Settings.Load(settingsFile);
+            Settings = new SPSSettings(settingsFile);
 
             comboBoxDayDelay.SelectedIndexChanged -= comboBoxDayDelay_SelectedIndexChanged;
             comboBoxDayNumShots.SelectedIndexChanged -= comboBoxDayNumShots_SelectedIndexChanged;

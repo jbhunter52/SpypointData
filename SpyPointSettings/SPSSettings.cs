@@ -20,8 +20,12 @@ namespace SpyPointSettings
         {
             DayDelay = delay._30min;
             DayMultiShot = multishot._1;
-            NightDelay = delay._instant;
+            NightDelay = delay._1min;
             NightMultiShot = multishot._2;
+        }
+        public SPSSettings(string file)
+        {
+            Load(file);
         }
 
         public void Load(string file)
