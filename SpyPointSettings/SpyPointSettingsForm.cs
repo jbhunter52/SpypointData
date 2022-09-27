@@ -43,15 +43,15 @@ namespace SpyPointSettings
             comboBoxNightDelay.SelectedIndexChanged -= comboBoxNightDelay_SelectedIndexChanged;
             comboBoxNightNumShots.SelectedIndexChanged -= comboBoxNightNumShots_SelectedIndexChanged;
 
-            comboBoxDayDelay.DataSource = Enum.GetNames(typeof(delay));
-            comboBoxDayNumShots.DataSource = Enum.GetNames(typeof(multishot));
-            comboBoxNightDelay.DataSource = Enum.GetNames(typeof(delay));
-            comboBoxNightNumShots.DataSource = Enum.GetNames(typeof(multishot));
+            foreach (string s in Enum.GetNames(typeof(delay)).ToArray()) comboBoxDayDelay.Items.Add(s);
+            foreach (string s in Enum.GetNames(typeof(multishot)).ToArray()) comboBoxDayNumShots.Items.Add(s);
+            foreach (string s in Enum.GetNames(typeof(delay)).ToArray()) comboBoxNightDelay.Items.Add(s);
+            foreach (string s in Enum.GetNames(typeof(multishot)).ToArray()) comboBoxNightNumShots.Items.Add(s);
 
-            comboBoxDayDelay.SelectedItem = Settings.DayDelay;
-            comboBoxDayNumShots.SelectedItem = Settings.DayMultiShot;
-            comboBoxNightDelay.SelectedItem = Settings.NightDelay;
-            comboBoxNightNumShots.SelectedItem = Settings.NightMultiShot;
+            comboBoxDayDelay.SelectedItem = Settings.DayDelay.ToString();
+            comboBoxDayNumShots.SelectedItem = Settings.DayMultiShot.ToString();
+            comboBoxNightDelay.SelectedItem = Settings.NightDelay.ToString();
+            comboBoxNightNumShots.SelectedItem = Settings.NightMultiShot.ToString();
 
             comboBoxDayDelay.SelectedIndexChanged += comboBoxDayDelay_SelectedIndexChanged;
             comboBoxDayNumShots.SelectedIndexChanged += comboBoxDayNumShots_SelectedIndexChanged;
@@ -61,17 +61,17 @@ namespace SpyPointSettings
             Data = new DataCollection();
 
 
-            if (File.Exists(file))
-            {
-                Data.Load(file);
-            }
+            //if (File.Exists(file))
+            //{
+            //    Data.Load(file);
+            //}
 
 
         }
 
         private void MediumTimer_Tick(object sender, EventArgs e)
         {
-            RefreshCameraInfo();
+            //RefreshCameraInfo();
         }
 
         private void FastTimer_Tick(object sender, EventArgs e)
@@ -91,28 +91,28 @@ namespace SpyPointSettings
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (!PrevDateTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
-            {
-                //New Date
-                MorningChange = false;
-                EveningChange = false;
-                PrevDateTime = DateTime.Now;
-                int minOffset = int.Parse(textBoxMinOffset.Text);
-                bool result = RefreshSunriseSunset(minOffset);
-                if (result)
-                    return;
-            }
+            //if (!PrevDateTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
+            //{
+            //    //New Date
+            //    MorningChange = false;
+            //    EveningChange = false;
+            //    PrevDateTime = DateTime.Now;
+            //    int minOffset = int.Parse(textBoxMinOffset.Text);
+            //    bool result = RefreshSunriseSunset(minOffset);
+            //    if (result)
+            //        return;
+            //}
 
-            if (DateTime.Now > CurrentSunsetSunrise.AfterSunrise && MorningChange == false)
-            {
-                //Morning setting trigger
-                TriggerMorningChange();
-            }
-            if (DateTime.Now > CurrentSunsetSunrise.BeforeSunset && EveningChange == false)
-            {
-                //Morning setting trigger
-                TriggerEveningChange();
-            }
+            //if (DateTime.Now > CurrentSunsetSunrise.AfterSunrise && MorningChange == false)
+            //{
+            //    //Morning setting trigger
+            //    TriggerMorningChange();
+            //}
+            //if (DateTime.Now > CurrentSunsetSunrise.BeforeSunset && EveningChange == false)
+            //{
+            //    //Morning setting trigger
+            //    TriggerEveningChange();
+            //}
         }
 
         public void TriggerMorningChange()
@@ -322,25 +322,25 @@ namespace SpyPointSettings
 
         private void comboBoxDayDelay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.DayDelay = (delay)Enum.Parse(typeof(delay), comboBoxDayDelay.SelectedValue.ToString());
+            Settings.DayDelay = (delay)Enum.Parse(typeof(delay), comboBoxDayDelay.SelectedItem.ToString());
             Settings.Save(settingsFile);
         }
 
         private void comboBoxDayNumShots_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.DayMultiShot = (multishot)Enum.Parse(typeof(multishot), comboBoxDayNumShots.SelectedValue.ToString());
+            Settings.DayMultiShot = (multishot)Enum.Parse(typeof(multishot), comboBoxDayNumShots.SelectedItem.ToString());
             Settings.Save(settingsFile);
         }
 
         private void comboBoxNightDelay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.NightDelay = (delay)Enum.Parse(typeof(delay), comboBoxNightDelay.SelectedValue.ToString());
+            Settings.NightDelay = (delay)Enum.Parse(typeof(delay), comboBoxNightDelay.SelectedItem.ToString());
             Settings.Save(settingsFile);
         }
 
         private void comboBoxNightNumShots_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.NightMultiShot = (multishot)Enum.Parse(typeof(multishot), comboBoxNightNumShots.SelectedValue.ToString());
+            Settings.NightMultiShot = (multishot)Enum.Parse(typeof(multishot), comboBoxNightNumShots.SelectedItem.ToString());
             Settings.Save(settingsFile);
         }
     }
