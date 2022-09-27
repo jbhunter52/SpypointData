@@ -61,17 +61,17 @@ namespace SpyPointSettings
             Data = new DataCollection();
 
 
-            //if (File.Exists(file))
-            //{
-            //    Data.Load(file);
-            //}
+            if (File.Exists(file))
+            {
+                Data.Load(file);
+            }
 
 
         }
 
         private void MediumTimer_Tick(object sender, EventArgs e)
         {
-            //RefreshCameraInfo();
+            RefreshCameraInfo();
         }
 
         private void FastTimer_Tick(object sender, EventArgs e)
@@ -91,28 +91,28 @@ namespace SpyPointSettings
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
-            //if (!PrevDateTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
-            //{
-            //    //New Date
-            //    MorningChange = false;
-            //    EveningChange = false;
-            //    PrevDateTime = DateTime.Now;
-            //    int minOffset = int.Parse(textBoxMinOffset.Text);
-            //    bool result = RefreshSunriseSunset(minOffset);
-            //    if (result)
-            //        return;
-            //}
+            if (!PrevDateTime.ToShortDateString().Equals(DateTime.Now.ToShortDateString()))
+            {
+                //New Date
+                MorningChange = false;
+                EveningChange = false;
+                PrevDateTime = DateTime.Now;
+                int minOffset = int.Parse(textBoxMinOffset.Text);
+                bool result = RefreshSunriseSunset(minOffset);
+                if (result)
+                    return;
+            }
 
-            //if (DateTime.Now > CurrentSunsetSunrise.AfterSunrise && MorningChange == false)
-            //{
-            //    //Morning setting trigger
-            //    TriggerMorningChange();
-            //}
-            //if (DateTime.Now > CurrentSunsetSunrise.BeforeSunset && EveningChange == false)
-            //{
-            //    //Morning setting trigger
-            //    TriggerEveningChange();
-            //}
+            if (DateTime.Now > CurrentSunsetSunrise.AfterSunrise && MorningChange == false)
+            {
+                //Morning setting trigger
+                TriggerMorningChange();
+            }
+            if (DateTime.Now > CurrentSunsetSunrise.BeforeSunset && EveningChange == false)
+            {
+                //Morning setting trigger
+                TriggerEveningChange();
+            }
         }
 
         public void TriggerMorningChange()
