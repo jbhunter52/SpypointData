@@ -129,21 +129,22 @@ namespace SpyPointSettings
                         CameraInfo ci = kvp.Value;
                         if (ci.ManualDisable)
                             continue;
-                        Log("TriggerMorningChange(), started " + ci.config.name);
+
                         try
                         {
-                            conn.SetCameraSettings(ci, new DelayOptions(Settings.DayDelay), new MutiShotOptions(Settings.NightMultiShot));
+                            conn.SetCameraSettings(ci, new DelayOptions(Settings.DayDelay), new MutiShotOptions(Settings.DayMultiShot));
                         }
                         catch (Exception ex)
                         {
                             logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
                             logger.Log(LogLevel.Error, ex.Message);
                         }
-                        Log("TriggerMorningChange(), ended " + ci.config.name);
+                        Log(String.Format("TriggerMorningChange() ended {0}, Delay={1}, MultiShot={2}",
+                            ci.config.name, Settings.DayDelay.ToString(),
+                            Settings.DayMultiShot.ToString()));
                     }
                 }
             }
-            Log("TriggerMorningChange");
             RefreshCameraInfo();
         }
         public void TriggerEveningChange()
@@ -160,7 +161,6 @@ namespace SpyPointSettings
                         CameraInfo ci = kvp.Value;
                         if (ci.ManualDisable)
                             continue;
-                        Log("TriggerEveningChange(), started " + ci.config.name);
                         try
                         {
                             conn.SetCameraSettings(ci, new DelayOptions(Settings.NightDelay), new MutiShotOptions(Settings.NightMultiShot));
@@ -170,11 +170,12 @@ namespace SpyPointSettings
                             logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
                             logger.Log(LogLevel.Error, ex.Message);
                         }
-                        Log("TriggerEveningChange(), ended " + ci.config.name);
+                        Log(String.Format("TriggerEveningChange() ended {0}, Delay={1}, MultiShot={2}",
+                            ci.config.name, Settings.NightDelay.ToString(),
+                            Settings.NightMultiShot.ToString()));
                     }
                 }
             }
-            Log("TriggerEveningChange");
             RefreshCameraInfo();
         }
         public bool RefreshSunriseSunset(int minOffset)
