@@ -62,7 +62,14 @@ namespace SpyPointData
                 CameraInfo ci = kvp.Value;
                 if (ci.ManualDisable)
                     continue;
-                GetPicInfoFromCamera(ci);
+                try
+                {
+                    GetPicInfoFromCamera(ci);
+                }
+                catch (Exception ex)
+                {
+                    throw (ex);
+                }
             }
         }
 
@@ -340,13 +347,21 @@ namespace SpyPointData
             postdata = JsonConvert.SerializeObject(new PostRequest_AllCamPic(ci.id, date));
             while (more)
             {
-                using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+                try
                 {
-                    client.Method = "POST";
-                    client.Headers.Add("Referer", "https://webapp.spypoint.com/");
-                    client.Headers.Add("Authorization", "bearer " + token);
-                    Debug(date);
-                    response = client.UploadString(url, postdata);
+                    using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
+                    {
+                        client.Method = "POST";
+                        client.Headers.Add("Referer", "https://webapp.spypoint.com/");
+                        client.Headers.Add("Authorization", "bearer " + token);
+                        Debug(date);
+                        response = client.UploadString(url, postdata);
+                    }
+                }
+                catch (WebException ex)
+                {
+                    Debug(String.Format("Status={0}, on {1}", ex.Status, ci.config.name));
+                    throw ex;
                 }
                 //Debug(response);
                 CameraPics pics = JsonConvert.DeserializeObject<CameraPics>(response);
