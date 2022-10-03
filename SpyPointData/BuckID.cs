@@ -24,8 +24,10 @@ namespace SpyPointData
         public BuckIDForm(DataCollection data)
         {
             InitializeComponent();
-            Data = data;
 
+            Data = data;
+            Data.BuckData.InitializeIDPhotoDict(Data);
+            
             DS = new WeatherTracker.DarkSkyData();
             DS.Load();
             DS.UpdateCurves();
@@ -117,7 +119,8 @@ namespace SpyPointData
                 List<Photo> photos = new List<Photo>();
                 foreach (BuckIDPhoto buckIDPhoto in id.Photos)
                 {
-                    Photo p = Data.FindPhoto(buckIDPhoto.PhotoID);
+                    //Photo p = Data.FindPhoto(buckIDPhoto.PhotoID);
+                    Photo p = Data.BuckData.GetPhoto(buckIDPhoto.PhotoID);
                     if (p != null)
                     {
                         photos.Add(p);
@@ -144,16 +147,19 @@ namespace SpyPointData
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            gMapControl1.Overlays.Clear();
             Photo p;
+            BuckID buckID;
             if (e.Node.Parent == null) //Buck Name is selected
             {
-                BuckID buckID = Data.BuckData.IDs.Find(b => b.Name.Equals(e.Node.Text));
+                buckID = Data.BuckData.IDs.Find(b => b.Name.Equals(e.Node.Text));
                 gMapControl1.Overlays.Clear();
 
                 GMap.NET.WindowsForms.GMapOverlay markers = new GMap.NET.WindowsForms.GMapOverlay("markers");
                 foreach (BuckIDPhoto buckIDPhoto in buckID.Photos)
                 {
-                    p = Data.FindPhoto(buckIDPhoto.PhotoID);
+                    //p = Data.FindPhoto(buckIDPhoto.PhotoID);
+                    p = Data.BuckData.GetPhoto(buckIDPhoto.PhotoID);
                     if (p == null)
                         continue;
 
@@ -172,13 +178,18 @@ namespace SpyPointData
                 gMapControl1.Overlays.Add(markers);
                 gMapControl1.ZoomAndCenterMarkers("markers");
                 gMapControl1.Zoom = 16;
+
+
                 return;
             }
 
 
             //Must be a photo selected
             string tag = (string)e.Node.Tag;
-            p = Data.FindPhoto(tag);
+            //p = Data.FindPhoto(tag);
+            p = Data.BuckData.GetPhoto(tag);
+
+
 
             //Update BuckId combobox
             string name = Data.BuckData.CheckForPhoto(p.id);
@@ -224,6 +235,79 @@ namespace SpyPointData
                 gMapControl1.Invalidate();
             }
 
+            //Draw Route
+            List<Photo> photos = new List<Photo>();
+            buckID = Data.BuckData.IDs.Find(b => b.Name.Equals(e.Node.Parent.Text));
+            foreach (var bp in buckID.Photos)
+            {
+                p = Data.BuckData.GetPhoto(bp.PhotoID);
+                if (p != null)
+                    photos.Add(p);
+            }
+            photos = photos.OrderBy(ph => ph.originDate).ToList();
+
+            p = Data.BuckData.GetPhoto((string)e.Node.Tag);
+            int ind = photos.IndexOf(p);
+            //Draw from route
+            GMap.NET.WindowsForms.GMapOverlay routes = new GMap.NET.WindowsForms.GMapOverlay("from-to");
+            if (ind > 0)
+            {
+                if (photos[ind - 1].HaveLocation && photos[ind].HaveLocation)
+                {
+                    if (photos[ind].Longitude != photos[ind - 1].Longitude
+                        &&
+                        photos[ind].Latitude != photos[ind - 1].Latitude)
+                    {
+                        List<GMap.NET.PointLatLng> locations = new List<GMap.NET.PointLatLng>();
+                        List<double> dHours = new List<double>();
+
+                        //Lets get time difference
+                        double dhour = photos[ind].originDate.Subtract(photos[ind - 1].originDate).TotalHours;
+                        dHours.Add(dhour);
+
+                        locations.Add(new GMap.NET.PointLatLng(photos[ind - 1].Latitude, photos[ind - 1].Longitude));
+                        locations.Add(new GMap.NET.PointLatLng(photos[ind].Latitude, photos[ind].Longitude));
+
+                        GMap.NET.WindowsForms.GMapRoute fromRoute = new GMap.NET.WindowsForms.GMapRoute(locations, buckID.Name);
+                        fromRoute.IsVisible = true;
+                        fromRoute.Stroke.Color = Color.Red;
+                        routes.Routes.Add(fromRoute);
+                    }
+                }
+            }
+
+            //Draw to route
+            if (ind < photos.Count-2)
+            {
+                if (photos[ind].HaveLocation && photos[ind+1].HaveLocation)
+                {
+                    if (photos[ind].Longitude != photos[ind + 1].Longitude
+                        &&
+                        photos[ind].Latitude != photos[ind + 1].Latitude)
+                    {
+                        List<GMap.NET.PointLatLng> locations = new List<GMap.NET.PointLatLng>();
+                        List<double> dHours = new List<double>();
+
+                        //Lets get time difference
+                        double dhour = photos[ind+1].originDate.Subtract(photos[ind].originDate).TotalHours;
+                        dHours.Add(dhour);
+
+                        locations.Add(new GMap.NET.PointLatLng(photos[ind].Latitude, photos[ind].Longitude));
+                        locations.Add(new GMap.NET.PointLatLng(photos[ind+1].Latitude, photos[ind+1].Longitude));
+
+                        GMap.NET.WindowsForms.GMapRoute toRoute = new GMap.NET.WindowsForms.GMapRoute(locations, buckID.Name);
+                        toRoute.IsVisible = true;
+                        toRoute.Stroke.Color = Color.Blue;
+                        routes.Routes.Add(toRoute);
+                    }
+                }
+            }
+            gMapControl1.Overlays.Add(routes);
+            gMapControl1.ZoomAndCenterMarkers("markers");
+            gMapControl1.Zoom = 16;
+
+
+
             //Update trackbar
             bool haveWeather = DS.CheckIfHaveDate(p.originDate);
 
@@ -252,7 +336,8 @@ namespace SpyPointData
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             string tag = (string)treeView1.SelectedNode.Tag;
-            Photo p = Data.FindPhoto(tag);
+            //Photo p = Data.FindPhoto(tag);
+            Photo p = Data.BuckData.GetPhoto(tag);
 
             if (p == null)
             {
@@ -349,7 +434,8 @@ namespace SpyPointData
                 return;
 
             string tag = (string)treeView1.SelectedNode.Tag;
-            p = Data.FindPhoto(tag);
+            //p = Data.FindPhoto(tag);
+            p = Data.BuckData.GetPhoto(tag);
 
             if (p == null)
                 return;

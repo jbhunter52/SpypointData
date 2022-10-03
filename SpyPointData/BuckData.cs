@@ -13,11 +13,51 @@ namespace SpyPointData
         public List<BuckID> IDs { get; set; }
         [JsonIgnore]
         public HashSet<string> pIDs { get; set; }
+        [JsonIgnore]
+        public Dictionary<string, Photo> IDPhotoDict {get;set;}
 
         public BuckData()
         {
             IDs = new List<BuckID>();
         }
+
+        public void InitializeIDPhotoDict(DataCollection data)
+        {
+            IDPhotoDict = new Dictionary<string, Photo>();
+            foreach (var buckid in IDs)
+            {
+                foreach (var p in buckid.Photos)
+                {
+                    Photo photo = data.FindPhoto(p.PhotoID);
+                    if (photo != null)
+                    {
+                        if (!IDPhotoDict.ContainsKey(p.PhotoID))
+                        {
+                            IDPhotoDict.Add(p.PhotoID, photo);
+                            continue;
+                        }
+                    }
+
+                    photo = data.ManualPics.FindPhoto(p.PhotoID);
+                    if (photo != null)
+                    {
+                        if (!IDPhotoDict.ContainsKey(p.PhotoID))
+                        {
+                            IDPhotoDict.Add(p.PhotoID, photo);
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        public Photo GetPhoto(string id)
+        {
+            if (IDPhotoDict.ContainsKey(id))
+                return IDPhotoDict[id];
+            else
+                return null;
+        }
+
         public void AddConnection(string name, Photo p)
         {
             //First find if photo is already connected and remove

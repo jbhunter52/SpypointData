@@ -1109,7 +1109,8 @@ namespace SpyPointData
         {
             string id = (string)marker.Tag;
 
-            Photo p = Data.FindPhoto(id);
+            //Photo p = Data.FindPhoto(id);
+            Photo p = Data.BuckData.GetPhoto(id);
 
             SelectingMarker = true;
             treeListView1.SelectObject(p, true);
