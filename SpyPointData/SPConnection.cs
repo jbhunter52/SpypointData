@@ -513,6 +513,8 @@ namespace SpyPointData
                                     //Old photo no hd
                                     p.Buck = old.Buck;
                                     p.Deer = old.Deer;
+                                    p.Latitude = old.Latitude;
+                                    p.Longitude = old.Longitude;
                                     p.New = true;
                                     GetPhotoAndSave(p, ci);
                                     int ind = cpOld.photos.IndexOf(old);
