@@ -42,7 +42,7 @@ namespace SpyPointData
             dt.Columns.Add(new DataColumn("Version", typeof(string)));
             dt.Columns.Add(new DataColumn("LastUpdate", typeof(string)));
             dt.Columns.Add(new DataColumn("Type", typeof(string)));
-            dt.Columns.Add(new DataColumn("sim", typeof(string)));
+            //dt.Columns.Add(new DataColumn("sim", typeof(string)));
             dt.Columns.Add(new DataColumn("lastPicDays", typeof(string)));
             dt.Columns.Add(new DataColumn("Battery", typeof(string)));
             dt.Columns.Add(new DataColumn("Signal", typeof(string)));
@@ -50,12 +50,13 @@ namespace SpyPointData
             dt.Columns.Add(new DataColumn("MaxThisMonth", typeof(int)));
             dt.Columns.Add(new DataColumn("ThisMonth", typeof(int)));
             dt.Columns.Add(new DataColumn("Left", typeof(int)));
-            dt.Columns.Add(new DataColumn("Start", typeof(string)));
-            dt.Columns.Add(new DataColumn("End", typeof(string)));
+            //dt.Columns.Add(new DataColumn("Start", typeof(string)));
+            //dt.Columns.Add(new DataColumn("End", typeof(string)));
             dt.Columns.Add(new DataColumn("DaysLeft", typeof(int)));
             dt.Columns.Add(new DataColumn("AutoRenew", typeof(string)));
             dt.Columns.Add(new DataColumn("Multishot", typeof(int)));
             dt.Columns.Add(new DataColumn("Delay", typeof(string)));
+            dt.Columns.Add(new DataColumn("Location", typeof(string)));
 
             foreach (var conn in Data.Connections)
             {
