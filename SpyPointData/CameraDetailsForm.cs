@@ -102,6 +102,9 @@ namespace SpyPointData
 
         private string GetLocationUrl(SPConnection conn, string camera_id)
         {
+            if (!conn.CameraPictures.ContainsKey(camera_id))
+                return "";
+
             var cp = conn.CameraPictures[camera_id];
             if (cp.HaveLocation)
             {
