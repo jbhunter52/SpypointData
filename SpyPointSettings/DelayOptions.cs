@@ -8,20 +8,26 @@ namespace SpyPointData
 {
     public class DelayOptions
     {
-        public delay delay;
+        public delay_micro delay_micro;
 
-        public DelayOptions(delay d)
+        public DelayOptions(delay_micro d)
         {
-            delay = d;
+            delay_micro = d;
         }
-        public string GetJson()
+        public string GetJson(string cameraModel)
         {
-            //{"delay":"1min"}
-            return "{\"delay\":\"" + delay.ToString().Replace("_","") + "\"}";
+            if (cameraModel.ToLower().StartsWith("flex"))
+            {
+                return "{\"delay\":\"" + delay_micro.ToString().Replace("_", "") + "\"}";
+            }
+            else
+            {
+                return "{\"delay\":\"" + delay_micro.ToString().Replace("_", "") + "\"}";
+            }
         }
 
     }
-    public enum delay
+    public enum delay_micro
     {
         _instant,
         _10s,

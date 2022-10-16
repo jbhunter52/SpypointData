@@ -70,13 +70,13 @@ namespace SpyPointData
 
                     DataRow dr = dt.NewRow();
                     dr["User"] = login;
-                    dr["ID"] = ci.id;
+                    //dr["ID"] = ci.id;
                     dr["Name"] = ci.config.name;
                     dr["Model"] = ci.status.model;
                     dr["Version"] =  ci.status.version ??  ""; //possible null
                     dr["LastUpdate"] = ci.status.lastUpdate.ToShortDateString();
                     dr["Type"] = (ci.status.signal == null) ? "": ci.status.signal.type; //possible null
-                    dr["sim"] = ci.status.sim ?? ""; //possible null
+                    //dr["sim"] = ci.status.sim ?? ""; //possible null
                     dr["lastPicDays"] = lastPicDays;
                     dr["Battery"] = (ci.status.batteries == null) ? "": ci.status.batteries[0].ToString(); //possible null
                     dr["Signal"] = (ci.status.signal == null) ? "": ci.status.signal.dBm.ToString(); //possible null
@@ -84,18 +84,31 @@ namespace SpyPointData
                     dr["MaxThisMonth"] = ci.subscriptions[0].plan.photoCountPerMonth;
                     dr["ThisMonth"] = ci.subscriptions[0].photoCount;
                     dr["Left"] = ci.subscriptions[0].plan.photoCountPerMonth - ci.subscriptions[0].photoCount;
-                    dr["Start"] = ci.subscriptions[0].startDateBillingCycle;
-                    dr["End"] = ci.subscriptions[0].endDateBillingCycle;
+                    //dr["Start"] = ci.subscriptions[0].startDateBillingCycle;
+                    //dr["End"] = ci.subscriptions[0].endDateBillingCycle;
                     dr["DaysLeft"] = ci.subscriptions[0].endDateBillingCycle.Subtract(DateTime.Now).Days;
                     dr["AutoRenew"] = ci.subscriptions[0].isAutoRenew;
                     dr["Multishot"] = ci.config.multiShot;
                     dr["Delay"] = ci.config.delay;
+                    dr["Location"] = GetLocationUrl(conn, ci.id);
+
                     dt.Rows.Add(dr);
                 }
             }
             ToCSV(dt, "cameraData.csv");
             return dt;
         }
+
+        private string GetLocationUrl(SPConnection conn, string camera_id)
+        {
+            var cp = conn.CameraPictures[camera_id];
+            if (cp.HaveLocation)
+            {
+                return String.Format("https://maps.google.com/?q={0},{1}", cp.Latitude.ToString(), cp.Longitude.ToString());
+            }
+            return "";
+        }
+
 
         public void ToCSV(DataTable dtDataTable, string strFilePath)
         {

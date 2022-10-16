@@ -345,8 +345,10 @@ namespace SpyPointData
             string date = "2100-01-01T00:00:00.000Z";
             string postdata = "{\"dateEnd\":\"" + date + "\"}";
             postdata = JsonConvert.SerializeObject(new PostRequest_AllCamPic(ci.id, date));
+            int tries = 0;
             while (more)
             {
+                tries++;
                 try
                 {
                     using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
@@ -360,8 +362,12 @@ namespace SpyPointData
                 }
                 catch (WebException ex)
                 {
-                    Debug(String.Format("Status={0}, on {1}", ex.Status, ci.config.name));
-                    throw ex;
+                    Debug(String.Format("Status={0}, {1}, on {2}", ex.Status, ex.Message, ci.config.name));
+                    System.Threading.Thread.Sleep((tries+1)*100);
+                    if (tries == 3)
+                        throw ex;
+                    else
+                        continue;
                 }
                 //Debug(response);
                 CameraPics pics = JsonConvert.DeserializeObject<CameraPics>(response);

@@ -8,19 +8,19 @@ namespace SpyPointData
 {
     public class MutiShotOptions
     {
-        public multishot multishot;
+        public multishot_micro multishot_micro;
 
-        public MutiShotOptions(multishot m)
+        public MutiShotOptions(multishot_micro m)
         {
-            multishot = m;
+            multishot_micro = m;
         }
         public string GetJson()
         {
             //{"delay":"1min"}
-            return "{\"delay\":\"" + multishot.ToString().Replace("_", "") + "\"}";
+            return "{\"delay\":\"" + multishot_micro.ToString().Replace("_", "") + "\"}";
         }
     }
-    public enum multishot
+    public enum multishot_micro
     {
         _1,
         _2,
