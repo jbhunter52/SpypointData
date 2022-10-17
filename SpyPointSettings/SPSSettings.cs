@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 using System.IO;
 
 using Newtonsoft.Json;
+using SpyPointData;
 
 namespace SpyPointSettings
 {
     public class SPSSettings
     {
-        public delay DayDelay;
-        public multishot DayMultiShot;
-        public delay NightDelay;
-        public multishot NightMultiShot;
+        public delay_micro DayDelay;
+        public multishot_micro DayMultiShot;
+        public delay_micro NightDelay;
+        public multishot_micro NightMultiShot;
 
         public SPSSettings()
         {
-            DayDelay = delay._30min;
-            DayMultiShot = multishot._1;
-            NightDelay = delay._1min;
-            NightMultiShot = multishot._2;
+            DayDelay = delay_micro._30min;
+            DayMultiShot = multishot_micro._1;
+            NightDelay = delay_micro._1min;
+            NightMultiShot = multishot_micro._2;
         }
         public SPSSettings(string file)
         {

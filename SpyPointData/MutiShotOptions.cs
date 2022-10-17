@@ -8,19 +8,27 @@ namespace SpyPointSettings
 {
     public class MutiShotOptions
     {
-        public multishot multishot;
+        public multishot_micro multishot_micro;
 
-        public MutiShotOptions(multishot m)
+        public MutiShotOptions(multishot_micro m)
         {
-            multishot = m;
+            multishot_micro = m;
         }
-        public string GetJson()
+        public string GetJson(string cameraModel)
         {
-            //{"delay":"1min"}
-            return "{\"multiShot\":" + multishot.ToString().Replace("_", "") + "}";
+            if (cameraModel.ToLower().StartsWith("flex"))
+            {
+                return "{\"config\":" + "{\"multiShot\":\"" + multishot_micro.ToString().Replace("_", "") + "\"}}";
+
+            }
+            else
+            {
+                //{"multiShot":"1min"}
+                return "{\"multiShot\":" + multishot_micro.ToString().Replace("_", "") + "}";
+            }
         }
     }
-    public enum multishot
+    public enum multishot_micro
     {
         _1,
         _2,

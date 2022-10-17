@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelayOptions.cs" />
     <Compile Include="EditLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,7 +104,6 @@
     <Compile Include="DateFilterForm.Designer.cs">
       <DependentUpon>DateFilterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DelayOptions.cs" />
     <Compile Include="DumpData.cs" />
     <Compile Include="FilterBuckIDForm.cs">
       <SubType>Form</SubType>

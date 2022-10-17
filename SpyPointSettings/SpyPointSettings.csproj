@@ -57,8 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DelayOptions.cs" />
-    <Compile Include="MutiShotOptions.cs" />
     <Compile Include="SPSSettings.cs" />
     <Compile Include="SpyPointSettingsForm.cs">
       <SubType>Form</SubType>

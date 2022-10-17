@@ -282,7 +282,7 @@ namespace SpyPointData
                     client.Headers.Add("Accept", "application/json, text/plain, */*");
                     client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
                     client.Headers.Add("Content-Type", "application/json;charset=utf-8");
-                    response = client.UploadString(url, "PUT", delay.GetJson());
+                    response = client.UploadString(url, "PUT", delay.GetJson(ci.status.model));
                 }
 
                 using (var client = new CookieAwareWebClient()) // WebClient class inherits IDisposable
@@ -293,7 +293,7 @@ namespace SpyPointData
                     client.Headers.Add("Accept", "application/json, text/plain, */*");
                     client.Headers.Add("Accept-Encoding", "gzip, deflate, br");
                     client.Headers.Add("Content-Type", "application/json;charset=utf-8");
-                    response = client.UploadString(url, "PUT", multishot.GetJson());
+                    response = client.UploadString(url, "PUT", multishot.GetJson(ci.status.model));
                 }
             }
             catch (WebException ex)
