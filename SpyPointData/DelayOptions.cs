@@ -28,7 +28,8 @@ namespace SpyPointData
                 else if (delay_micro == delay_micro._15min) delaySecs = 15 * 60;
                 else if (delay_micro == delay_micro._30min) delaySecs = 30 * 60;
 
-                return "{\"config\":" + "{\"motionDelay\":\"" + delay_micro.ToString().Replace("_", "") + "\"}}";
+                //return "{\"config\":" + "{\"motionDelay\":\"" + delay_micro.ToString().Replace("_", "") + "\"}}";
+                return "{\"motionDelay\":" + delaySecs.ToString() + "}";
 
             }
             else

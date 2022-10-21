@@ -18,7 +18,8 @@ namespace SpyPointSettings
         {
             if (cameraModel.ToLower().StartsWith("flex"))
             {
-                return "{\"config\":" + "{\"multiShot\":\"" + multishot_micro.ToString().Replace("_", "") + "\"}}";
+                //return "{\"config\":" + "{\"multiShot\":\"" + multishot_micro.ToString().Replace("_", "") + "\"}}";
+                return "{\"multiShot\":" + multishot_micro.ToString().Replace("_", "") + "}";
 
             }
             else
