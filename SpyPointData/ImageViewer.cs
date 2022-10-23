@@ -48,9 +48,11 @@ namespace SpyPointData
                     //SetTableLayout(1);
                     if (IBs.Count == 0)
                         IBs.Add(new ImageBox());
-                    IBs = new List<ImageBox>() { IBs[0] };
-                    IBs[0].ZoomToFit();
+                    //IBs = new List<ImageBox>() { IBs[0] };
                     p.PicToImageBox(IBs[0]);
+                    IBs[0].ZoomToFit();
+                    IBs[0].Dock = DockStyle.Fill;
+                    
                     if (IBs.Count > 1)
                     {
                         IBs.RemoveRange(1, IBs.Count - 1);
@@ -58,6 +60,7 @@ namespace SpyPointData
                     //tableLayoutPanelPic.Controls.Clear();
                     SetTableLayout(thisShowCount, tlp);
                     tlp.Controls.Add(IBs[0]);
+                    IBs[0].ZoomToFit();
                 }
 
                 if (thisShowCount < LastShowCount && thisShowCount == 1) // moved from list to single pic selected
