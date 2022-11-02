@@ -130,6 +130,7 @@ namespace SpyPointSettings
                         if (ci.ManualDisable)
                             continue;
 
+
                         try
                         {
                             conn.SetCameraSettings(ci, new DelayOptions(Settings.DayDelay), new MutiShotOptions(Settings.DayMultiShot));
@@ -310,12 +311,12 @@ namespace SpyPointSettings
             timer.Start();
 
             mediumTimer = new Timer();
-            mediumTimer.Interval = 1000 * 60 * 30; //every 5 minutes
+            mediumTimer.Interval = 1000 * 60 * 30; //every 30 minutes
             mediumTimer.Tick += MediumTimer_Tick;
             mediumTimer.Start();
 
             fastTimer = new Timer();
-            fastTimer.Interval = 100;
+            fastTimer.Interval = 1000; //Every 1000 ms
             fastTimer.Tick += FastTimer_Tick;
             fastTimer.Start();
             Log("Initialize Complete");
@@ -343,6 +344,33 @@ namespace SpyPointSettings
         {
             Settings.NightMultiShot = (multishot_micro)Enum.Parse(typeof(multishot_micro), comboBoxNightNumShots.SelectedItem.ToString());
             Settings.Save(settingsFile);
+        }
+
+        private void refreshDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void RefreshData()
+        {
+            string backup = @"\\Amd\d\Spypoint\Data.json";
+
+            if (File.Exists(backup))
+            {
+                var backup_info = new FileInfo(backup);
+                var current = new FileInfo(file);
+
+                if (backup_info.LastWriteTime > current.LastWriteTime)
+                {
+                    File.Copy(backup, file, true);
+
+                    if (File.Exists(file))
+                    {
+                        Data.Load(file);
+                    }
+                }
+            }
+            RefreshCameraInfo();
         }
     }
 }

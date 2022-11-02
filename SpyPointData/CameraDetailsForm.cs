@@ -65,6 +65,9 @@ namespace SpyPointData
                 {
                     CameraInfo ci = kvp.Value;
 
+                    if (ci.ManualDisable)
+                        continue;
+
                     string lastPicDays = "-";
                     if (ci.lastPhotoDate > new DateTime(1990, 1, 1))
                         lastPicDays = ((int)DateTime.Now.Subtract(ci.lastPhotoDate).TotalDays).ToString();

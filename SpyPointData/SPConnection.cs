@@ -269,6 +269,12 @@ namespace SpyPointData
         }
         public void SetCameraSettings(CameraInfo ci, DelayOptions delay, MutiShotOptions multishot)
         {
+            if (ci.status.model.ToLower().StartsWith("flex"))
+            {
+                //skip flex update
+                return;
+            }
+
             string response = "";
             string url = "https://restapi.spypoint.com/api/v3/camera/settings/" + ci.id;
 

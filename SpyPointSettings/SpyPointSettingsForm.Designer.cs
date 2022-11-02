@@ -53,25 +53,26 @@
             this.textBoxSunrise = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBoxNightNumShots = new System.Windows.Forms.ComboBox();
+            this.comboBoxNightDelay = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxDayNumShots = new System.Windows.Forms.ComboBox();
             this.comboBoxDayDelay = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.comboBoxDayNumShots = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.comboBoxNightNumShots = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.comboBoxNightDelay = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.refreshDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataListView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEveningStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMorningStatus)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataListView
@@ -100,6 +101,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshDataToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -108,7 +110,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // buttonRefreshCameraDisplay
@@ -316,14 +318,76 @@
             this.panel1.Size = new System.Drawing.Size(1277, 127);
             this.panel1.TabIndex = 0;
             // 
-            // richTextBoxLog
+            // groupBox2
             // 
-            this.richTextBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxLog.Location = new System.Drawing.Point(3, 569);
-            this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.Size = new System.Drawing.Size(1277, 138);
-            this.richTextBoxLog.TabIndex = 1;
-            this.richTextBoxLog.Text = "";
+            this.groupBox2.Controls.Add(this.comboBoxNightNumShots);
+            this.groupBox2.Controls.Add(this.comboBoxNightDelay);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Location = new System.Drawing.Point(1054, 13);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(155, 100);
+            this.groupBox2.TabIndex = 29;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Night";
+            // 
+            // comboBoxNightNumShots
+            // 
+            this.comboBoxNightNumShots.FormattingEnabled = true;
+            this.comboBoxNightNumShots.Location = new System.Drawing.Point(63, 57);
+            this.comboBoxNightNumShots.Name = "comboBoxNightNumShots";
+            this.comboBoxNightNumShots.Size = new System.Drawing.Size(74, 21);
+            this.comboBoxNightNumShots.TabIndex = 26;
+            this.comboBoxNightNumShots.SelectedIndexChanged += new System.EventHandler(this.comboBoxNightNumShots_SelectedIndexChanged);
+            // 
+            // comboBoxNightDelay
+            // 
+            this.comboBoxNightDelay.FormattingEnabled = true;
+            this.comboBoxNightDelay.Location = new System.Drawing.Point(63, 30);
+            this.comboBoxNightDelay.Name = "comboBoxNightDelay";
+            this.comboBoxNightDelay.Size = new System.Drawing.Size(74, 21);
+            this.comboBoxNightDelay.TabIndex = 24;
+            this.comboBoxNightDelay.SelectedIndexChanged += new System.EventHandler(this.comboBoxNightDelay_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(22, 61);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 13);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "Shots";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(22, 34);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(34, 13);
+            this.label11.TabIndex = 25;
+            this.label11.Text = "Delay";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.comboBoxDayNumShots);
+            this.groupBox1.Controls.Add(this.comboBoxDayDelay);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Location = new System.Drawing.Point(876, 13);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(155, 100);
+            this.groupBox1.TabIndex = 28;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Day";
+            // 
+            // comboBoxDayNumShots
+            // 
+            this.comboBoxDayNumShots.FormattingEnabled = true;
+            this.comboBoxDayNumShots.Location = new System.Drawing.Point(61, 56);
+            this.comboBoxDayNumShots.Name = "comboBoxDayNumShots";
+            this.comboBoxDayNumShots.Size = new System.Drawing.Size(74, 21);
+            this.comboBoxDayNumShots.TabIndex = 22;
+            this.comboBoxDayNumShots.SelectedIndexChanged += new System.EventHandler(this.comboBoxDayNumShots_SelectedIndexChanged);
             // 
             // comboBoxDayDelay
             // 
@@ -352,76 +416,21 @@
             this.label9.TabIndex = 23;
             this.label9.Text = "Shots";
             // 
-            // comboBoxDayNumShots
+            // richTextBoxLog
             // 
-            this.comboBoxDayNumShots.FormattingEnabled = true;
-            this.comboBoxDayNumShots.Location = new System.Drawing.Point(61, 56);
-            this.comboBoxDayNumShots.Name = "comboBoxDayNumShots";
-            this.comboBoxDayNumShots.Size = new System.Drawing.Size(74, 21);
-            this.comboBoxDayNumShots.TabIndex = 22;
-            this.comboBoxDayNumShots.SelectedIndexChanged += new System.EventHandler(this.comboBoxDayNumShots_SelectedIndexChanged);
+            this.richTextBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxLog.Location = new System.Drawing.Point(3, 569);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(1277, 138);
+            this.richTextBoxLog.TabIndex = 1;
+            this.richTextBoxLog.Text = "";
             // 
-            // label10
+            // refreshDataToolStripMenuItem
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(22, 61);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(34, 13);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "Shots";
-            // 
-            // comboBoxNightNumShots
-            // 
-            this.comboBoxNightNumShots.FormattingEnabled = true;
-            this.comboBoxNightNumShots.Location = new System.Drawing.Point(63, 57);
-            this.comboBoxNightNumShots.Name = "comboBoxNightNumShots";
-            this.comboBoxNightNumShots.Size = new System.Drawing.Size(74, 21);
-            this.comboBoxNightNumShots.TabIndex = 26;
-            this.comboBoxNightNumShots.SelectedIndexChanged += new System.EventHandler(this.comboBoxNightNumShots_SelectedIndexChanged);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(22, 34);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(34, 13);
-            this.label11.TabIndex = 25;
-            this.label11.Text = "Delay";
-            // 
-            // comboBoxNightDelay
-            // 
-            this.comboBoxNightDelay.FormattingEnabled = true;
-            this.comboBoxNightDelay.Location = new System.Drawing.Point(63, 30);
-            this.comboBoxNightDelay.Name = "comboBoxNightDelay";
-            this.comboBoxNightDelay.Size = new System.Drawing.Size(74, 21);
-            this.comboBoxNightDelay.TabIndex = 24;
-            this.comboBoxNightDelay.SelectedIndexChanged += new System.EventHandler(this.comboBoxNightDelay_SelectedIndexChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.comboBoxDayNumShots);
-            this.groupBox1.Controls.Add(this.comboBoxDayDelay);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Location = new System.Drawing.Point(876, 13);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(155, 100);
-            this.groupBox1.TabIndex = 28;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Day";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.comboBoxNightNumShots);
-            this.groupBox2.Controls.Add(this.comboBoxNightDelay);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Location = new System.Drawing.Point(1054, 13);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(155, 100);
-            this.groupBox2.TabIndex = 29;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Night";
+            this.refreshDataToolStripMenuItem.Name = "refreshDataToolStripMenuItem";
+            this.refreshDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshDataToolStripMenuItem.Text = "Refresh Data";
+            this.refreshDataToolStripMenuItem.Click += new System.EventHandler(this.refreshDataToolStripMenuItem_Click);
             // 
             // SpyPointSettingsForm
             // 
@@ -442,10 +451,10 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -489,6 +498,7 @@
         private System.Windows.Forms.ComboBox comboBoxNightDelay;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ToolStripMenuItem refreshDataToolStripMenuItem;
     }
 }
 
