@@ -95,6 +95,7 @@ namespace SpyPointData
         public string captureMode { get; set; }
         public string dateFormat { get; set; }
         public string delay { get; set; }
+        public int motionDelay { get; set; }
         public int multiShot { get; set; }
         public Sensibility sensibility { get; set; }
         public bool stamp { get; set; }

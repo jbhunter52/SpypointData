@@ -56,6 +56,7 @@ namespace SpyPointData
             dt.Columns.Add(new DataColumn("AutoRenew", typeof(string)));
             dt.Columns.Add(new DataColumn("Multishot", typeof(int)));
             dt.Columns.Add(new DataColumn("Delay", typeof(string)));
+            dt.Columns.Add(new DataColumn("MotionDelay", typeof(string)));
             dt.Columns.Add(new DataColumn("Location", typeof(string)));
 
             foreach (var conn in Data.Connections)
@@ -94,6 +95,7 @@ namespace SpyPointData
                     dr["AutoRenew"] = ci.subscriptions[0].isAutoRenew;
                     dr["Multishot"] = ci.config.multiShot;
                     dr["Delay"] = ci.config.delay;
+                    dr["MotionDelay"] = (ci.config.motionDelay / 60).ToString() + " mins"; ;
                     dr["Location"] = GetLocationUrl(conn, ci.id);
 
                     dt.Rows.Add(dr);

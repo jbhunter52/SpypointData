@@ -257,7 +257,9 @@ namespace SpyPointSettings
                 }
                 catch (Exception ex)
                 {
-                    logger.Log(LogLevel.Error, String.Format("Exception getting camera info on user:{0}", spc.UserLogin.Username));
+                    string mess = String.Format(ex.Message + ", user:" + spc.UserLogin.Username);
+                    Log(mess);
+                    logger.Log(LogLevel.Error, mess);
                     logger.Log(LogLevel.Error, ex.Message);
                     logger.Log(LogLevel.Error, ex.InnerException.Message);
                 }
@@ -267,7 +269,9 @@ namespace SpyPointSettings
                 }
                 catch (Exception ex)
                 {
-                    logger.Log(LogLevel.Error, String.Format("Exception updating pics on user:{0}", spc.UserLogin.Username));
+                    string mess = String.Format(ex.Message + ", user:" + spc.UserLogin.Username);
+                    Log(mess);
+                    logger.Log(LogLevel.Error, mess);
                     logger.Log(LogLevel.Error, ex.Message);
                     logger.Log(LogLevel.Error, ex.InnerException.Message);
                 }
