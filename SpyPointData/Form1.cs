@@ -1271,5 +1271,47 @@ namespace SpyPointData
                 treeListView1.UpdateColumnFiltering();
             }
         }
+
+        private void fixMergeDuplicatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var acc in Data.Connections)
+            {
+                foreach (var kvp in acc.CameraPictures)
+                {
+                    var cm = kvp.Value;
+
+                    var dts = cm.photos.Select(p => p.originDate).Distinct();
+                    var removePics = new List<Photo>();
+                    foreach (var dt in dts)
+                    {
+                        var ps = cm.photos.Where(p => p.originDate == dt).ToList();
+
+                        if (ps.Count == 2)
+                        {
+                            var cps = ps.Where(p => p.HaveCardPic == true);
+                            var nps = ps.Where(p => p.HaveCardPic == false);
+
+                            Photo cp = null;
+                            Photo np = null;
+                            if (cps.Count() > 0) cp = cps.First();
+                            if (nps.Count() > 0) np = nps.First();
+
+
+                            if (cp != null && np != null)
+                            {
+                                np.HaveCardPic = true;
+                                if (cp.CameraName.Length > np.CameraName.Length) np.CameraName = cp.CameraName;
+                                np.CardPicFilename = cp.CardPicFilename;
+                                removePics.Add(cp);
+                            }
+                        }
+                    }
+                    foreach (var rp in removePics)
+                    {
+                        cm.photos.Remove(rp);
+                    }
+                }
+            }
+        }
     }
 }

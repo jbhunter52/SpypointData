@@ -226,13 +226,16 @@ namespace SpyPointData
                 {
                     img = new System.Drawing.Bitmap(bmpTemp);
                 }
-                return img;
+                return img;// System.Drawing.Image.FromFile(file);
             }
-
-
-
             return null;
         }
+        public System.Drawing.Image SuperFastLoad(string path)
+        {
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(System.IO.File.ReadAllBytes(path)))
+                return System.Drawing.Image.FromStream(ms, false, false);
+        }
+
         public string GetBestPhotoFile()
         {
             if (CardPicFilename != null)

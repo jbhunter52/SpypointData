@@ -11,7 +11,6 @@ using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Reflection;
-using SpyPointSettings;
 
 namespace SpyPointData
 {
@@ -267,13 +266,16 @@ namespace SpyPointData
                 throw new Exception(String.Format("Error updating camera lists for user:{0}", this.UserLogin.Username), ex);
             }
         }
-        public void SetCameraSettings(CameraInfo ci, DelayOptions delay, MutiShotOptions multishot)
+        public void SetCameraSettings(CameraInfo ci, DayNight type, SPSSettings settings)// DelayOptions delay, MutiShotOptions multishot)
         {
-            if (ci.status.model.ToLower().StartsWith("flex"))
-            {
-                //skip flex update
-                return;
-            }
+            //if (ci.status.model.ToLower().StartsWith("flex"))
+            //{
+            //    //skip flex update
+            //    return;
+            //}
+
+            DelayOptions delay = new DelayOptions(settings.GetDelay(ci.status.model, type));
+            MutiShotOptions multishot = new MutiShotOptions(settings.GetMultiShot(ci.status.model, type));
 
             string response = "";
             string url = "https://restapi.spypoint.com/api/v3/camera/settings/" + ci.id;

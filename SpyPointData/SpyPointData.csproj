@@ -167,6 +167,7 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SPConnection.cs" />
+    <Compile Include="SPSSettings.cs" />
     <EmbeddedResource Include="EditLogin.resx">
       <DependentUpon>EditLogin.cs</DependentUpon>
     </EmbeddedResource>

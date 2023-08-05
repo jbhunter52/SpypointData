@@ -42,21 +42,23 @@ namespace SpyPointSettings
             comboBoxDayNumShots.SelectedIndexChanged -= comboBoxDayNumShots_SelectedIndexChanged;
             comboBoxNightDelay.SelectedIndexChanged -= comboBoxNightDelay_SelectedIndexChanged;
             comboBoxNightNumShots.SelectedIndexChanged -= comboBoxNightNumShots_SelectedIndexChanged;
+            comboBoxOptionsCamType.SelectedIndexChanged -= ComboBoxOptionsCamType_SelectedIndexChanged;
 
             foreach (string s in Enum.GetNames(typeof(delay_micro)).ToArray()) comboBoxDayDelay.Items.Add(s);
             foreach (string s in Enum.GetNames(typeof(multishot_micro)).ToArray()) comboBoxDayNumShots.Items.Add(s);
             foreach (string s in Enum.GetNames(typeof(delay_micro)).ToArray()) comboBoxNightDelay.Items.Add(s);
             foreach (string s in Enum.GetNames(typeof(multishot_micro)).ToArray()) comboBoxNightNumShots.Items.Add(s);
+            foreach (string s in Enum.GetNames(typeof(CamType)).ToArray()) comboBoxOptionsCamType.Items.Add(s);
 
-            comboBoxDayDelay.SelectedItem = Settings.DayDelay.ToString();
-            comboBoxDayNumShots.SelectedItem = Settings.DayMultiShot.ToString();
-            comboBoxNightDelay.SelectedItem = Settings.NightDelay.ToString();
-            comboBoxNightNumShots.SelectedItem = Settings.NightMultiShot.ToString();
+            //comboBoxOptionsCamType.SelectedItem = CamType.Micro.ToString();
 
             comboBoxDayDelay.SelectedIndexChanged += comboBoxDayDelay_SelectedIndexChanged;
             comboBoxDayNumShots.SelectedIndexChanged += comboBoxDayNumShots_SelectedIndexChanged;
             comboBoxNightDelay.SelectedIndexChanged += comboBoxNightDelay_SelectedIndexChanged;
             comboBoxNightNumShots.SelectedIndexChanged += comboBoxNightNumShots_SelectedIndexChanged;
+            comboBoxOptionsCamType.SelectedIndexChanged += ComboBoxOptionsCamType_SelectedIndexChanged;
+
+            comboBoxOptionsCamType.SelectedItem = CamType.Micro.ToString();
 
             Data = new DataCollection();
 
@@ -67,6 +69,26 @@ namespace SpyPointSettings
             }
 
 
+        }
+
+        private void ComboBoxOptionsCamType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string model = ((ComboBox)sender).SelectedItem.ToString();
+
+            comboBoxDayDelay.SelectedIndexChanged -= comboBoxDayDelay_SelectedIndexChanged;
+            comboBoxDayNumShots.SelectedIndexChanged -= comboBoxDayNumShots_SelectedIndexChanged;
+            comboBoxNightDelay.SelectedIndexChanged -= comboBoxNightDelay_SelectedIndexChanged;
+            comboBoxNightNumShots.SelectedIndexChanged -= comboBoxNightNumShots_SelectedIndexChanged;
+
+            comboBoxDayDelay.SelectedItem = Settings.GetDelay(model, DayNight.Day).ToString();
+            comboBoxDayNumShots.SelectedItem = Settings.GetMultiShot(model, DayNight.Day).ToString();
+            comboBoxNightDelay.SelectedItem = Settings.GetDelay(model, DayNight.Night).ToString();
+            comboBoxNightNumShots.SelectedItem = Settings.GetMultiShot(model, DayNight.Night).ToString();
+
+            comboBoxDayDelay.SelectedIndexChanged += comboBoxDayDelay_SelectedIndexChanged;
+            comboBoxDayNumShots.SelectedIndexChanged += comboBoxDayNumShots_SelectedIndexChanged;
+            comboBoxNightDelay.SelectedIndexChanged += comboBoxNightDelay_SelectedIndexChanged;
+            comboBoxNightNumShots.SelectedIndexChanged += comboBoxNightNumShots_SelectedIndexChanged;
         }
 
         private void MediumTimer_Tick(object sender, EventArgs e)
@@ -130,19 +152,19 @@ namespace SpyPointSettings
                         if (ci.ManualDisable)
                             continue;
 
-
                         try
                         {
-                            conn.SetCameraSettings(ci, new DelayOptions(Settings.DayDelay), new MutiShotOptions(Settings.DayMultiShot));
+                            conn.SetCameraSettings(ci, DayNight.Day, Settings);
                         }
                         catch (Exception ex)
                         {
                             logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
                             logger.Log(LogLevel.Error, ex.Message);
                         }
+                        var csettings = Settings.GetSettings(ci.status.model);
                         Log(String.Format("TriggerMorningChange() ended {0}, Delay={1}, MultiShot={2}",
-                            ci.config.name, Settings.DayDelay.ToString(),
-                            Settings.DayMultiShot.ToString()));
+                            ci.config.name, Settings.GetDelay(ci.status.model, DayNight.Day).ToString(),
+                            Settings.GetMultiShot(ci.status.model, DayNight.Day).ToString()));
                     }
                 }
             }
@@ -164,7 +186,7 @@ namespace SpyPointSettings
                             continue;
                         try
                         {
-                            conn.SetCameraSettings(ci, new DelayOptions(Settings.NightDelay), new MutiShotOptions(Settings.NightMultiShot));
+                            conn.SetCameraSettings(ci, DayNight.Night, Settings);
                         }
                         catch (Exception ex)
                         {
@@ -172,8 +194,8 @@ namespace SpyPointSettings
                             logger.Log(LogLevel.Error, ex.Message);
                         }
                         Log(String.Format("TriggerEveningChange() ended {0}, Delay={1}, MultiShot={2}",
-                            ci.config.name, Settings.NightDelay.ToString(),
-                            Settings.NightMultiShot.ToString()));
+                            ci.config.name, Settings.GetDelay(ci.status.model, DayNight.Night).ToString(),
+                            Settings.GetMultiShot(ci.status.model, DayNight.Night).ToString()));
                     }
                 }
             }
@@ -324,25 +346,37 @@ namespace SpyPointSettings
 
         private void comboBoxDayDelay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.DayDelay = (delay_micro)Enum.Parse(typeof(delay_micro), comboBoxDayDelay.SelectedItem.ToString());
+            var delay = (delay_micro)Enum.Parse(typeof(delay_micro), comboBoxDayDelay.SelectedItem.ToString());
+            var daynight = DayNight.Day;
+            var cam = (CamType)Enum.Parse(typeof(CamType), comboBoxOptionsCamType.SelectedItem.ToString());
+            Settings.SetDelay(cam.ToString(), daynight, delay);
             Settings.Save(settingsFile);
         }
 
         private void comboBoxDayNumShots_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.DayMultiShot = (multishot_micro)Enum.Parse(typeof(multishot_micro), comboBoxDayNumShots.SelectedItem.ToString());
+            var multishot = (multishot_micro)Enum.Parse(typeof(multishot_micro), comboBoxDayNumShots.SelectedItem.ToString());
+            var daynight = DayNight.Day;
+            var cam = (CamType)Enum.Parse(typeof(CamType), comboBoxOptionsCamType.SelectedItem.ToString());
+            Settings.SetMultishot(cam.ToString(), daynight, multishot);
             Settings.Save(settingsFile);
         }
 
         private void comboBoxNightDelay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.NightDelay = (delay_micro)Enum.Parse(typeof(delay_micro), comboBoxNightDelay.SelectedItem.ToString());
+            var delay = (delay_micro)Enum.Parse(typeof(delay_micro), comboBoxNightDelay.SelectedItem.ToString());
+            var daynight = DayNight.Night;
+            var cam = (CamType)Enum.Parse(typeof(CamType), comboBoxOptionsCamType.SelectedItem.ToString());
+            Settings.SetDelay(cam.ToString(), daynight, delay);
             Settings.Save(settingsFile);
         }
 
         private void comboBoxNightNumShots_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.NightMultiShot = (multishot_micro)Enum.Parse(typeof(multishot_micro), comboBoxNightNumShots.SelectedItem.ToString());
+            var multishot = (multishot_micro)Enum.Parse(typeof(multishot_micro), comboBoxNightNumShots.SelectedItem.ToString());
+            var daynight = DayNight.Night;
+            var cam = (CamType)Enum.Parse(typeof(CamType), comboBoxOptionsCamType.SelectedItem.ToString());
+            Settings.SetMultishot(cam.ToString(), daynight, multishot);
             Settings.Save(settingsFile);
         }
 
@@ -372,5 +406,12 @@ namespace SpyPointSettings
             }
             RefreshCameraInfo();
         }
+    }
+
+    public enum CamType
+    {
+        Micro,
+        Flex,
+        LM2
     }
 }

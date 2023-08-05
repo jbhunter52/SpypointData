@@ -31,6 +31,7 @@
             this.dataListView = new BrightIdeasSoftware.DataListView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonRefreshCameraDisplay = new System.Windows.Forms.Button();
             this.pictureBoxEveningStatus = new System.Windows.Forms.PictureBox();
@@ -64,7 +65,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
-            this.refreshDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBoxOptionsCamType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataListView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEveningStatus)).BeginInit();
@@ -107,10 +108,17 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // refreshDataToolStripMenuItem
+            // 
+            this.refreshDataToolStripMenuItem.Name = "refreshDataToolStripMenuItem";
+            this.refreshDataToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.refreshDataToolStripMenuItem.Text = "Refresh Data";
+            this.refreshDataToolStripMenuItem.Click += new System.EventHandler(this.refreshDataToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // buttonRefreshCameraDisplay
@@ -291,6 +299,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.comboBoxOptionsCamType);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.buttonRefreshCameraDisplay);
@@ -425,12 +434,13 @@
             this.richTextBoxLog.TabIndex = 1;
             this.richTextBoxLog.Text = "";
             // 
-            // refreshDataToolStripMenuItem
+            // comboBoxOptionsCamType
             // 
-            this.refreshDataToolStripMenuItem.Name = "refreshDataToolStripMenuItem";
-            this.refreshDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.refreshDataToolStripMenuItem.Text = "Refresh Data";
-            this.refreshDataToolStripMenuItem.Click += new System.EventHandler(this.refreshDataToolStripMenuItem_Click);
+            this.comboBoxOptionsCamType.FormattingEnabled = true;
+            this.comboBoxOptionsCamType.Location = new System.Drawing.Point(726, 92);
+            this.comboBoxOptionsCamType.Name = "comboBoxOptionsCamType";
+            this.comboBoxOptionsCamType.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxOptionsCamType.TabIndex = 24;
             // 
             // SpyPointSettingsForm
             // 
@@ -499,6 +509,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripMenuItem refreshDataToolStripMenuItem;
+        private System.Windows.Forms.ComboBox comboBoxOptionsCamType;
     }
 }
 
