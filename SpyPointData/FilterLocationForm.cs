@@ -26,7 +26,7 @@ namespace SpyPointData
         public FilterLocationForm(DataCollection data)
         {
             InitializeComponent();
-
+            DialogResult = DialogResult.Cancel;
             gMapControl1.MapProvider = GMap.NET.MapProviders.GoogleHybridMapProvider.Instance;
             GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerOnly;
             gMapControl1.Position = new GMap.NET.PointLatLng(38.0323, -89.5657);
@@ -219,6 +219,7 @@ namespace SpyPointData
             SearchString = textBoxSearch.Text.ToLower();
             treeListView1.UpdateColumnFiltering();
         }
+
     }
 
 }

@@ -1222,6 +1222,8 @@ namespace SpyPointData
                 Data.Filter.Locations = new List<string>();
                 Data.Filter.RectangleOn = false;
                 Data.Filter.RectanglePoints = new List<GMap.NET.PointLatLng>();
+
+                treeListView1.UpdateColumnFiltering();
             }
         }
 
