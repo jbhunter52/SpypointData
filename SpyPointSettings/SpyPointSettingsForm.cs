@@ -27,6 +27,7 @@ namespace SpyPointSettings
         private SPSSettings Settings;
         bool MorningChange = false;
         bool EveningChange = false;
+        List<string> updateUsernames = new List<string>() { "jbhunter52@yahoo.com" };
 
         SunsetSunrise CurrentSunsetSunrise;
 
@@ -143,7 +144,7 @@ namespace SpyPointSettings
 
             foreach (SPConnection conn in Data.Connections)
             {
-                if (conn.UserLogin.Username == "jbhunter52@yahoo.com" || conn.UserLogin.Username == "M17BEHRMAN@GMAIL.COM")
+                if (updateUsernames.Contains(conn.UserLogin.Username))
                 {
                     conn.Login();
                     foreach (KeyValuePair<string, CameraInfo> kvp in conn.CameraInfoList)
@@ -176,7 +177,7 @@ namespace SpyPointSettings
 
             foreach (SPConnection conn in Data.Connections)
             {
-                if (conn.UserLogin.Username == "jbhunter52@yahoo.com" || conn.UserLogin.Username == "M17BEHRMAN@GMAIL.COM")
+                if (updateUsernames.Contains(conn.UserLogin.Username))
                 {
                     conn.Login();
                     foreach (KeyValuePair<string,CameraInfo> kvp in conn.CameraInfoList)
