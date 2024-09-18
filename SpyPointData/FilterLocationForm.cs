@@ -28,7 +28,7 @@ namespace SpyPointData
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
             gMapControl1.MapProvider = GMap.NET.MapProviders.GoogleHybridMapProvider.Instance;
-            GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerOnly;
+            GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerAndCache;
             gMapControl1.Position = new GMap.NET.PointLatLng(38.0323, -89.5657);
             gMapControl1.ShowCenter = false;
             gMapControl1.Overlays.Clear();
