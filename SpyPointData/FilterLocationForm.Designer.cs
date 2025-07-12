@@ -96,6 +96,7 @@ namespace SpyPointData
             this.gMapControl1.Size = new System.Drawing.Size(563, 444);
             this.gMapControl1.TabIndex = 3;
             this.gMapControl1.Zoom = 13D;
+            this.gMapControl1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.gMapControl1_MouseDoubleClick);
             this.gMapControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gMapControl1_MouseDown);
             this.gMapControl1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gMapControl1_MouseUp);
             // 

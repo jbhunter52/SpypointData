@@ -665,7 +665,10 @@ namespace SpyPointData
                 MessageBox.Show("Must select a single camera to import photos to.");
                 return;
             }
-            
+
+            CameraPics cam = Data.GetCameraFromId(camId);
+            int prev_cnt = cam.photos.Count;
+
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             //OpenFileDialog ofd = new OpenFileDialog();
             //ofd.Filter = "Jpeg files (*.jpg)|*.jpg";
@@ -675,11 +678,38 @@ namespace SpyPointData
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 List<string> files = GetPhotosFromDir(fbd.SelectedPath, "*.jpg", true);
+                Dictionary<DateTime, string> pics = new Dictionary<DateTime, string>();
                 foreach (string file in files)
                 {
-                    Data.AddCardPic(file, camId);
+                    DateTime dt = Data.GetExifDateTime(file); //returns year 1900 if Exif attribute not found
+                    if (dt.Year == 1900)
+                        continue;
+                    var file_size = new FileInfo(file).Length;
+
+                    if (!pics.ContainsKey(dt))
+                    {
+                        pics.Add(dt, file);
+                    }
+                    else
+                    {
+                        var current_size = new FileInfo(pics[dt]).Length;
+                        if (file_size > current_size)
+                        {
+                            pics[dt] = file;
+                        }
+                    }
+                }
+                foreach (var kvp in pics)
+                {
+                    Data.AddCardPic(kvp.Value, kvp.Key, cam);
                 }
                 treeListView1.RefreshObject(Data);
+                int current_cnt = cam.photos.Count;
+                int added_cnt = current_cnt - prev_cnt;
+                if (added_cnt > 0)
+                {
+                    MessageBox.Show(String.Format("Added {0} new photos", added_cnt.ToString()));
+                }
             }
         }
 

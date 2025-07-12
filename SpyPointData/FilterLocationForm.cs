@@ -220,6 +220,27 @@ namespace SpyPointData
             treeListView1.UpdateColumnFiltering();
         }
 
+        private void gMapControl1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            //   Capture the Double Click event when 2 clicks occured
+            if (e.Clicks.Equals(2))
+            {
+                PointLatLng pt = gMapControl1.FromLocalToLatLng(e.X, e.Y);
+
+                gMapControl1.Position = pt;
+
+                if(e.Button.Equals(MouseButtons.Left))
+                {
+                    // Zoom in with left mouse button
+                    gMapControl1.Zoom += 1;
+                }
+                else if(e.Button.Equals(MouseButtons.Right))
+                {
+                    // Zoom out with right mouse button
+                    gMapControl1.Zoom -= 1;
+                }
+            }
+        }
     }
 
 }

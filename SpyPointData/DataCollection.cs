@@ -189,65 +189,73 @@ namespace SpyPointData
                 }
             }
         }
-        public void AddCardPic(string filename, string camid)
+        public DateTime GetExifDateTime(string filename)
         {
             using (ExifReader reader = new ExifReader(filename))
             {
                 DateTime date;
                 if (reader.GetTagValue<DateTime>(ExifTags.DateTimeOriginal, out date))
                 {
-                    //string dateString = date.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                    return date;
+                }
+            }
+            return new DateTime(1900,1,1);
+        }
+        public CameraPics GetCameraFromId(string camid)
+        {
+            foreach (SPConnection account in Connections)
+            {
+                foreach (var kvp in account.CameraPictures)
+                {
+                    CameraPics pics = kvp.Value;
+                    if (!pics.cameraId.Equals(camid))
+                        continue;
+                    return pics;
+                }
+            }
+            return null;
+        }
+        public void AddCardPic(string filename, DateTime date, CameraPics pics)
+        {
+            string camid = pics.cameraId;
+            bool added = false;
+            foreach (Photo p in pics.photos)
+            {
+                if (p.originDate.Equals(date))
+                {
+                    if (p.FileName == null)
+                        p.FileName = p.CardPicFilename;
+                    string newName = Path.Combine(Path.GetDirectoryName(p.FileName), Path.GetFileNameWithoutExtension(p.FileName) + "_camPic.jpg");
+                    added = true;
+                    if (File.Exists(newName))
+                        File.Delete(newName);
 
-                    foreach (SPConnection account in Connections)
+                    if (!File.Exists(newName))
                     {
-                        foreach (var kvp in account.CameraPictures)
-                        {
-                            CameraPics pics = kvp.Value;
-                            if (!pics.cameraId.Equals(camid))
-                                continue;
-
-                            bool added = false;
-                            foreach (Photo p in pics.photos)
-                            {
-                                if (p.originDate.Equals(date))
-                                {
-                                    if (p.FileName == null)
-                                        p.FileName = p.CardPicFilename;
-                                    string newName = Path.Combine(Path.GetDirectoryName(p.FileName), Path.GetFileNameWithoutExtension(p.FileName) + "_camPic.jpg");
-                                    added = true;
-                                    if (File.Exists(newName))
-                                        File.Delete(newName);
-
-                                    if (!File.Exists(newName))
-                                    {
-                                        File.Copy(filename, newName);
-                                        p.HaveCardPic = true;
-                                        p.CardPicFilename = newName;
-                                    }
-                                }
-                            }
-                            if (added == false)
-                            {
-                                //Add new Photo object for photo
-                                Photo p = new Photo();
-                                string dir = Path.Combine(this.Dir, camid);
-                                string randomSeq = Guid.NewGuid().ToString();
-                                string newName = Path.Combine(dir, randomSeq + "_camPic.jpg");
-                                File.Copy(filename, newName);
-                                p.Latitude = pics.Latitude;
-                                p.Longitude = pics.Longitude;
-                                CameraInfo ci = this.FindCameraId(camid);
-                                p.CameraName = ci.config.name;
-                                p.id = randomSeq;
-                                p.HaveCardPic = true;
-                                p.originDate = (new FileInfo(filename)).LastWriteTime;
-                                p.CardPicFilename = newName;
-                                p.FileName = newName;
-                                pics.photos.Add(p);
-                            }
-                        }
+                        File.Copy(filename, newName);
+                        p.HaveCardPic = true;
+                        p.CardPicFilename = newName;
                     }
                 }
+            }
+            if (added == false)
+            {
+                //Add new Photo object for photo
+                Photo p = new Photo();
+                string dir = Path.Combine(this.Dir, camid);
+                string randomSeq = Guid.NewGuid().ToString();
+                string newName = Path.Combine(dir, randomSeq + "_camPic.jpg");
+                File.Copy(filename, newName);
+                p.Latitude = pics.Latitude;
+                p.Longitude = pics.Longitude;
+                CameraInfo ci = this.FindCameraId(camid);
+                p.CameraName = ci.config.name;
+                p.id = randomSeq;
+                p.HaveCardPic = true;
+                p.originDate = (new FileInfo(filename)).LastWriteTime;
+                p.CardPicFilename = newName;
+                p.FileName = newName;
+                pics.photos.Add(p);
             }
         }
         public Chart Histogram(List<Photo> photos, int numBins, Chart c, HistogramType htype)
