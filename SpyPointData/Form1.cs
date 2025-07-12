@@ -49,9 +49,12 @@ namespace SpyPointData
 
             //Update BuckID combobox
             comboBoxBuckIDs.Items.Add("");
-            foreach (BuckID id in Data.BuckData.IDs)
+            if (Data.BuckData != null)
             {
-                comboBoxBuckIDs.Items.Add(id.Name);
+                foreach (BuckID id in Data.BuckData.IDs)
+                {
+                    comboBoxBuckIDs.Items.Add(id.Name);
+                }
             }
         }
 
@@ -423,7 +426,6 @@ namespace SpyPointData
             //pw.Close();
             RefreshTree();
             Data.Save(file);
-
             Data.Filter.New = true;
             newToolStripMenuItem.Checked = true;
             treeListView1.UpdateColumnFiltering();
@@ -450,7 +452,6 @@ namespace SpyPointData
                 }
             }
 
-
             foreach (var spc in Data.Connections)
             {
                 SPConnection SP = data.Add(spc.UserLogin);
@@ -472,6 +473,8 @@ namespace SpyPointData
                     Data.Connections.Add(SP);
                 }
             }
+
+            bgMerge.ReportProgress(100, "Done");
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -867,9 +870,13 @@ namespace SpyPointData
                 Data.BuckData = buckIDform.Data.BuckData;
                 comboBoxBuckIDs.Items.Clear();
                 comboBoxBuckIDs.Items.Add("");
-                foreach (BuckID id in Data.BuckData.IDs)
+
+                if (Data.BuckData != null)
                 {
-                    comboBoxBuckIDs.Items.Add(id.Name);
+                    foreach (BuckID id in Data.BuckData.IDs)
+                    {
+                        comboBoxBuckIDs.Items.Add(id.Name);
+                    }
                 }
             }
         }
@@ -1180,9 +1187,9 @@ namespace SpyPointData
                         bool loginResult = SP.Login();
                         if (loginResult)
                         {
-                            SP.GetCameraInfo();
-                            SP.GetAllPicInfo();
-                            SP.DownloadPhotosFromAllCameras();
+                            //SP.GetCameraInfo();
+                            //SP.GetAllPicInfo();
+                            //SP.DownloadPhotosFromAllCameras();
                             RefreshTree();
                         }
                         else

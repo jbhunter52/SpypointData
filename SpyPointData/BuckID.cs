@@ -26,7 +26,8 @@ namespace SpyPointData
             InitializeComponent();
 
             Data = data;
-            Data.BuckData.InitializeIDPhotoDict(Data);
+            if (Data.BuckData != null)
+                Data.BuckData.InitializeIDPhotoDict(Data);
             
             DS = new WeatherTracker.DarkSkyData();
             DS.Load();
@@ -54,10 +55,13 @@ namespace SpyPointData
             TreeViewRightClickContext.ItemClicked += NodeRightClickContext_ItemClicked;
 
             //Update BuckID combobox
-            comboBoxBuckIDs.Items.Add("");
-            foreach (BuckID id in Data.BuckData.IDs)
+            if (Data.BuckData != null)
             {
-                comboBoxBuckIDs.Items.Add(id.Name);
+                comboBoxBuckIDs.Items.Add("");
+                foreach (BuckID id in Data.BuckData.IDs)
+                {
+                    comboBoxBuckIDs.Items.Add(id.Name);
+                }
             }
         }
         private TreeNode rightClickedNode;
@@ -112,7 +116,8 @@ namespace SpyPointData
         private void ReDraw()
         {
             treeView1.Nodes.Clear();
-
+            if (Data.BuckData == null)
+                return;
             foreach (BuckID id in Data.BuckData.IDs)
             {
                 TreeNode node = new TreeNode(id.Name);

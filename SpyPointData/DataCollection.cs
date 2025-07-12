@@ -27,6 +27,7 @@ namespace SpyPointData
             Connections = new List<SPConnection>();
             ManualPics = new ManualPics();
             Filter = new FilterCriteria();
+            BuckData = new BuckData();
             
         }
 
@@ -126,6 +127,8 @@ namespace SpyPointData
         }
         public void Save(string file)
         {
+            //if (!File.Exists(file))
+            //    return;
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             using (StreamWriter sw = new StreamWriter(file))
             {

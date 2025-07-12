@@ -62,6 +62,7 @@
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(657, 44);
             this.progressBar1.TabIndex = 0;
+            this.progressBar1.UseWaitCursor = true;
             // 
             // richTextBox1
             // 

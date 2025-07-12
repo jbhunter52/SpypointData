@@ -29,5 +29,6 @@ namespace SpyPointData
             progressBar1.MarqueeAnimationSpeed = 200;
             progressBar1.Style = ProgressBarStyle.Marquee;
         }
+
     }
 }
