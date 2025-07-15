@@ -441,7 +441,7 @@ namespace SpyPointData
             DataCollection data = new DataCollection();
             data.OnProgressUpdate += Data_OnProgressUpdate;
             Data.OnProgressUpdate += Data_OnProgressUpdate;
-            Data.RegisterEvents();
+            //Data.RegisterEvents();
 
             int numCameras = 0;
             foreach (var spc in Data.Connections)
@@ -455,10 +455,15 @@ namespace SpyPointData
             foreach (var spc in Data.Connections)
             {
                 SPConnection SP = data.Add(spc.UserLogin);
+                
                 bool loginResult = SP.Login();
                 if (loginResult == false)
+                {
+                    SP.Debug("Login failed for " + spc.UserLogin.Username);
                     MessageBox.Show("Login failed for " + spc.UserLogin.Username);
-    
+                }
+
+                SP.Debug("Checking for updates on " + spc.UserLogin.Username);
                 SP.GetCameraInfo();
                 SP.GetAllPicInfo();
                 if (spc.uuid == null)
@@ -476,6 +481,8 @@ namespace SpyPointData
 
             bgMerge.ReportProgress(100, "Done");
         }
+
+
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {

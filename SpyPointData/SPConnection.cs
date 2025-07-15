@@ -404,6 +404,7 @@ namespace SpyPointData
             foreach (Photo p in cp.photos)
             {
                 GetPhotoAndSave(p, ci);
+                Debug("Adding, " + p.originDate.ToString());
             }
         }
         public void DownloadPhotosFromAllCameras()
@@ -583,7 +584,7 @@ namespace SpyPointData
             Debug("New added, " + cntNew.ToString());
             Debug("Merge Done");
         }
-        private void Debug(string s, bool report = true)
+        public void Debug(string s, bool report = true)
         {
             System.Diagnostics.Debug.WriteLine(s);
 
