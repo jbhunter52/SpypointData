@@ -35,8 +35,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixMergeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editLoginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importCardPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importManualPicsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,7 +94,6 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanelPic = new System.Windows.Forms.TableLayoutPanel();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            this.fixMergeDuplicatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -132,7 +131,6 @@
             this.saveToolStripMenuItem,
             this.fixMergeDuplicatesToolStripMenuItem,
             this.editLoginToolStripMenuItem,
-            this.importToolStripMenuItem,
             this.mergeToolStripMenuItem,
             this.importCardPicsToolStripMenuItem,
             this.importManualPicsToolStripMenuItem,
@@ -149,19 +147,19 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
+            // fixMergeDuplicatesToolStripMenuItem
+            // 
+            this.fixMergeDuplicatesToolStripMenuItem.Name = "fixMergeDuplicatesToolStripMenuItem";
+            this.fixMergeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.fixMergeDuplicatesToolStripMenuItem.Text = "FixMerge Duplicates";
+            this.fixMergeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.fixMergeDuplicatesToolStripMenuItem_Click);
+            // 
             // editLoginToolStripMenuItem
             // 
             this.editLoginToolStripMenuItem.Name = "editLoginToolStripMenuItem";
             this.editLoginToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.editLoginToolStripMenuItem.Text = "Edit Logins";
             this.editLoginToolStripMenuItem.Click += new System.EventHandler(this.editLoginToolStripMenuItem_Click);
-            // 
-            // importToolStripMenuItem
-            // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.importToolStripMenuItem.Text = "Import From Server";
-            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // mergeToolStripMenuItem
             // 
@@ -242,7 +240,7 @@
             // 
             this.newToolStripMenuItem.CheckOnClick = true;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -250,7 +248,7 @@
             // 
             this.nothingToolStripMenuItem.CheckOnClick = true;
             this.nothingToolStripMenuItem.Name = "nothingToolStripMenuItem";
-            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.nothingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nothingToolStripMenuItem.Text = "Nothing";
             this.nothingToolStripMenuItem.Click += new System.EventHandler(this.nothingToolStripMenuItem_Click);
             // 
@@ -258,7 +256,7 @@
             // 
             this.deerToolStripMenuItem.CheckOnClick = true;
             this.deerToolStripMenuItem.Name = "deerToolStripMenuItem";
-            this.deerToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.deerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deerToolStripMenuItem.Text = "Deer";
             this.deerToolStripMenuItem.Click += new System.EventHandler(this.deerToolStripMenuItem_Click);
             // 
@@ -266,7 +264,7 @@
             // 
             this.bucksToolStripMenuItem.CheckOnClick = true;
             this.bucksToolStripMenuItem.Name = "bucksToolStripMenuItem";
-            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.bucksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.bucksToolStripMenuItem.Text = "Bucks";
             this.bucksToolStripMenuItem.Click += new System.EventHandler(this.bucksToolStripMenuItem_Click);
             // 
@@ -279,7 +277,7 @@
             this.toolStripMenuItemAge3p5,
             this.toolStripMenuItemAge4p5});
             this.buckAgeToolStripMenuItem.Name = "buckAgeToolStripMenuItem";
-            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.buckAgeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.buckAgeToolStripMenuItem.Text = "Buck Age";
             // 
             // toolStripMenuItemAge0p5
@@ -335,14 +333,14 @@
             // dateToolStripMenuItem
             // 
             this.dateToolStripMenuItem.Name = "dateToolStripMenuItem";
-            this.dateToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.dateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dateToolStripMenuItem.Text = "Date";
             this.dateToolStripMenuItem.Click += new System.EventHandler(this.dateToolStripMenuItem_Click);
             // 
             // locationToolStripMenuItem1
             // 
             this.locationToolStripMenuItem1.Name = "locationToolStripMenuItem1";
-            this.locationToolStripMenuItem1.Size = new System.Drawing.Size(146, 22);
+            this.locationToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.locationToolStripMenuItem1.Text = "Location";
             this.locationToolStripMenuItem1.Click += new System.EventHandler(this.locationToolStripMenuItem1_Click);
             // 
@@ -350,7 +348,7 @@
             // 
             this.noLocationToolStripMenuItem.CheckOnClick = true;
             this.noLocationToolStripMenuItem.Name = "noLocationToolStripMenuItem";
-            this.noLocationToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.noLocationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.noLocationToolStripMenuItem.Text = "No Location";
             this.noLocationToolStripMenuItem.Click += new System.EventHandler(this.noLocationToolStripMenuItem_Click);
             // 
@@ -358,14 +356,14 @@
             // 
             this.CardPicOnlyToolStripMenuItem.CheckOnClick = true;
             this.CardPicOnlyToolStripMenuItem.Name = "CardPicOnlyToolStripMenuItem";
-            this.CardPicOnlyToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.CardPicOnlyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CardPicOnlyToolStripMenuItem.Text = "Card Pic Only";
             this.CardPicOnlyToolStripMenuItem.Click += new System.EventHandler(this.CardPicOnlyToolStripMenuItem_Click);
             // 
             // buckIDToolStripMenuItem1
             // 
             this.buckIDToolStripMenuItem1.Name = "buckIDToolStripMenuItem1";
-            this.buckIDToolStripMenuItem1.Size = new System.Drawing.Size(146, 22);
+            this.buckIDToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.buckIDToolStripMenuItem1.Text = "BuckID";
             this.buckIDToolStripMenuItem1.Click += new System.EventHandler(this.buckIDToolStripMenuItem1_Click);
             // 
@@ -725,13 +723,6 @@
             this.gMapControl1.Zoom = 16D;
             this.gMapControl1.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl1_OnMarkerClick);
             // 
-            // fixMergeDuplicatesToolStripMenuItem
-            // 
-            this.fixMergeDuplicatesToolStripMenuItem.Name = "fixMergeDuplicatesToolStripMenuItem";
-            this.fixMergeDuplicatesToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.fixMergeDuplicatesToolStripMenuItem.Text = "FixMerge Duplicates";
-            this.fixMergeDuplicatesToolStripMenuItem.Click += new System.EventHandler(this.fixMergeDuplicatesToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -771,7 +762,6 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem mergeToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer2;
