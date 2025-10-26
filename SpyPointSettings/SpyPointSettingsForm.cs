@@ -36,8 +36,21 @@ namespace SpyPointSettings
         public SpyPointSettingsForm()
         {
             InitializeComponent();
+
+
+            // Create a file target and set the filename
+            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "log.txt" };
+
+            // Create a rule to map loggers to the target
+            // This rule sends all logs at the Debug level and higher to the file target
+            var config = new NLog.Config.LoggingConfiguration();
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
+
+            // Apply the configuration
+            LogManager.Configuration = config;
             Log("Application started");
             Settings = new SPSSettings(settingsFile);
+
 
             comboBoxDayDelay.SelectedIndexChanged -= comboBoxDayDelay_SelectedIndexChanged;
             comboBoxDayNumShots.SelectedIndexChanged -= comboBoxDayNumShots_SelectedIndexChanged;
