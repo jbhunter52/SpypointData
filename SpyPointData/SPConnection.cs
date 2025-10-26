@@ -72,10 +72,17 @@ namespace SpyPointData
             }
         }
 
-        public void UpdateFirstPics()
+        public void UpdateFirstPics(SPSSettings settings)
         {
+            List<string> ignoreCameras = new List<string>();
+            if (settings != null)
+                ignoreCameras = settings.IgnoreCameras;
+
             foreach (var kvp in CameraInfoList)
             {
+                if (ignoreCameras.Contains(kvp.Value.config.name))
+                    continue;
+
                 CameraInfo ci = kvp.Value;
                 if (ci.ManualDisable)
                     continue;

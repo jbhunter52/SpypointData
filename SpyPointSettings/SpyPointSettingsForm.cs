@@ -27,7 +27,6 @@ namespace SpyPointSettings
         private SPSSettings Settings;
         bool MorningChange = false;
         bool EveningChange = false;
-        List<string> updateUsernames = new List<string>() { "jbhunter52@yahoo.com" };
 
         SunsetSunrise CurrentSunsetSunrise;
 
@@ -157,30 +156,35 @@ namespace SpyPointSettings
 
             foreach (SPConnection conn in Data.Connections)
             {
-                if (updateUsernames.Contains(conn.UserLogin.Username))
+                if (Settings.IgnoreLogins.Contains(conn.UserLogin.Username))
+                    continue;
+                
+                conn.Login();
+                foreach (KeyValuePair<string, CameraInfo> kvp in conn.CameraInfoList)
                 {
-                    conn.Login();
-                    foreach (KeyValuePair<string, CameraInfo> kvp in conn.CameraInfoList)
-                    {
-                        CameraInfo ci = kvp.Value;
-                        if (ci.ManualDisable)
-                            continue;
+                    CameraInfo ci = kvp.Value;
 
-                        try
-                        {
-                            conn.SetCameraSettings(ci, DayNight.Day, Settings);
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
-                            logger.Log(LogLevel.Error, ex.Message);
-                        }
-                        var csettings = Settings.GetSettings(ci.status.model);
-                        Log(String.Format("TriggerMorningChange() ended {0}, Delay={1}, MultiShot={2}",
-                            ci.config.name, Settings.GetDelay(ci.status.model, DayNight.Day).ToString(),
-                            Settings.GetMultiShot(ci.status.model, DayNight.Day).ToString()));
+                    if (Settings.IgnoreCameras.Contains(ci.config.name))
+                        continue;
+
+                    if (ci.ManualDisable)
+                        continue;
+
+                    try
+                    {
+                        conn.SetCameraSettings(ci, DayNight.Day, Settings);
                     }
+                    catch (Exception ex)
+                    {
+                        logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
+                        logger.Log(LogLevel.Error, ex.Message);
+                    }
+                    var csettings = Settings.GetSettings(ci.status.model);
+                    Log(String.Format("TriggerMorningChange() ended {0}, Delay={1}, MultiShot={2}",
+                        ci.config.name, Settings.GetDelay(ci.status.model, DayNight.Day).ToString(),
+                        Settings.GetMultiShot(ci.status.model, DayNight.Day).ToString()));
                 }
+                
             }
             RefreshCameraInfo();
         }
@@ -190,27 +194,31 @@ namespace SpyPointSettings
 
             foreach (SPConnection conn in Data.Connections)
             {
-                if (updateUsernames.Contains(conn.UserLogin.Username))
+                if (Settings.IgnoreLogins.Contains(conn.UserLogin.Username))
+                    continue;
+
+                conn.Login();
+                foreach (KeyValuePair<string,CameraInfo> kvp in conn.CameraInfoList)
                 {
-                    conn.Login();
-                    foreach (KeyValuePair<string,CameraInfo> kvp in conn.CameraInfoList)
+                    CameraInfo ci = kvp.Value;
+
+                    if (Settings.IgnoreCameras.Contains(ci.config.name))
+                        continue;
+
+                    if (ci.ManualDisable)
+                        continue;
+                    try
                     {
-                        CameraInfo ci = kvp.Value;
-                        if (ci.ManualDisable)
-                            continue;
-                        try
-                        {
-                            conn.SetCameraSettings(ci, DayNight.Night, Settings);
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
-                            logger.Log(LogLevel.Error, ex.Message);
-                        }
-                        Log(String.Format("TriggerEveningChange() ended {0}, Delay={1}, MultiShot={2}",
-                            ci.config.name, Settings.GetDelay(ci.status.model, DayNight.Night).ToString(),
-                            Settings.GetMultiShot(ci.status.model, DayNight.Night).ToString()));
+                        conn.SetCameraSettings(ci, DayNight.Night, Settings);
                     }
+                    catch (Exception ex)
+                    {
+                        logger.Log(LogLevel.Error, String.Format("Exception with changing settings on user:{0} name:{1}", ci.user, ci.config.name));
+                        logger.Log(LogLevel.Error, ex.Message);
+                    }
+                    Log(String.Format("TriggerEveningChange() ended {0}, Delay={1}, MultiShot={2}",
+                        ci.config.name, Settings.GetDelay(ci.status.model, DayNight.Night).ToString(),
+                        Settings.GetMultiShot(ci.status.model, DayNight.Night).ToString()));
                 }
             }
             RefreshCameraInfo();
@@ -255,6 +263,9 @@ namespace SpyPointSettings
                 //SP.Login();
 
                 //SP.GetCameraInfo();
+                bool ignoreAccount = Settings.IgnoreLogins.Contains(spc.UserLogin.Username);
+                if (ignoreAccount)
+                    continue;
                 try
                 {
                     spc.Login();
@@ -279,7 +290,7 @@ namespace SpyPointSettings
                 }
                 try
                 {
-                    spc.UpdateFirstPics();
+                    spc.UpdateFirstPics(Settings);
                 }
                 catch (Exception ex)
                 {

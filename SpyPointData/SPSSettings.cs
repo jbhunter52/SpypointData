@@ -14,6 +14,9 @@ namespace SpyPointData
     {
         public SPSCameraSettings Micro;
         public SPSCameraSettings Flex;
+        public List<string> IgnoreLogins;
+        public List<string> IgnoreCameras;
+
 
         public SPSSettings(string file)
         {
@@ -80,6 +83,8 @@ namespace SpyPointData
             {
                 Micro = new SPSCameraSettings("micro");
                 Flex = new SPSCameraSettings("flex");
+                IgnoreCameras = new List<string>();
+                IgnoreLogins = new List<string>();
                 return;
             }
             string json = File.ReadAllText(file);
@@ -90,6 +95,8 @@ namespace SpyPointData
 
             Micro = spss.Micro;
             Flex = spss.Flex;
+            IgnoreLogins = spss.IgnoreLogins;
+            IgnoreCameras = spss.IgnoreCameras;
         }
         public void Save(string file)
         {
